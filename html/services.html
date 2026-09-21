@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly — Services</title>
+<script>
+  if('scrollRestoration' in history){ history.scrollRestoration = 'manual'; }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="stylesheet" href="../css/services.css">
+</head>
+<body>
+
+<!-- ============ PRELOADER ============ -->
+<div class="preloader" id="preloader">
+  <div class="preloader-inner">
+    <svg class="preloader-crest" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="60" cy="60" r="52" stroke-width="1.2"/>
+      <g stroke-width="1.6">
+        <path d="M60 86V44"/>
+        <path d="M60 58c0-12 9-21 22-21 0 14-9 23-22 21z"/>
+        <path d="M60 68c0-10-7-17-18-17 0 12 7 19 18 17z"/>
+      </g>
+    </svg>
+    <div class="preloader-word">STACKLY</div>
+    <div class="preloader-bar"><div class="preloader-bar-fill" id="preloaderFill"></div></div>
+  </div>
+</div>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ============ HEADER ============ -->
+<header id="siteHeader">
+  <nav class="nav">
+    <a href="index.html#hero" class="logo">
+      <img class="logo-placeholder" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+      <span class="logo-word" style="display:none">AGRITECH SOLUTIONS</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html"><span>Home</span></a>
+      <a href="services.html" class="active"><span>Services</span></a>
+      <a href="about.html"><span>About</span></a>
+      <a href="blog.html"><span>Blog</span></a>
+      <a href="contact.html"><span>Contact</span></a>
+    </div>
+    <div class="nav-right">
+      <a href="login.html" class="nav-login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 5-6 7.5-6s6 2 7.5 6"/></svg>
+        Login
+      </a>
+      <a href="signup.html" class="btn-gold nav-signup" data-magnetic>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c1.2-3.4 4.2-5 6.5-5s5.3 1.6 6.5 5"/><path d="M19 8v6M22 11h-6"/></svg>
+        Sign Up
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ MOBILE MENU ============ -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-top">
+    <a href="index.html#hero" class="logo">
+      <img class="logo-placeholder" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+      <span class="logo-word" style="display:none">AGRITECH SOLUTIONS</span>
+    </a>
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu-links">
+    <a href="index.html">Home</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html" class="nav-login" style="text-align:left;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 5-6 7.5-6s6 2 7.5 6"/></svg>
+      Login
+    </a>
+    <a href="signup.html" class="btn-gold">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c1.2-3.4 4.2-5 6.5-5s5.3 1.6 6.5 5"/><path d="M19 8v6M22 11h-6"/></svg>
+      Sign Up
+    </a>
+  </div>
+</div>
+
+<!-- ============ 1. SERVICES HERO ============ -->
+<section class="svc-hero" id="top">
+  <div class="svc-hero-bg" aria-hidden="true"><span class="svc-hero-rows"></span><span class="svc-hero-glow"></span></div>
+  <div class="wrap">
+    <span class="eyebrow">Services</span>
+    <h1 class="svc-hero-title">
+      <span class="line"><span class="line-in">Everything from</span></span>
+      <span class="line"><span class="line-in">the soil up.</span></span>
+    </h1>
+    <div class="svc-hero-row">
+      <p class="svc-hero-sub">Six services that run as one season plan. Take the whole programme or the single piece your block is missing — the agronomist is the same either way.</p>
+      <div class="svc-hero-actions">
+        <a href="contact.html" class="btn btn-primary" data-magnetic>Book a field visit
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#plans" class="btn btn-outline">See the ways to work</a>
+      </div>
+    </div>
+
+    <div class="svc-hero-strip" id="svcStrip">
+      <figure class="ss"><img src="https://images.unsplash.com/photo-1564493031643-4be2c4347a17?auto=format&fit=crop&w=800&q=70" alt="Cereal block at golden hour" onerror="this.classList.add('is-broken')"><figcaption>Field agronomy</figcaption></figure>
+      <figure class="ss"><img src="https://images.unsplash.com/photo-1656407410275-e63e689bcd90?auto=format&fit=crop&w=800&q=70" alt="Tractor applying a spray pass" onerror="this.classList.add('is-broken')"><figcaption>Application</figcaption></figure>
+      <figure class="ss"><img src="https://images.unsplash.com/photo-1708796705570-33fd29ef67d0?auto=format&fit=crop&w=800&q=70" alt="Protected cropping under glass" onerror="this.classList.add('is-broken')"><figcaption>Under cover</figcaption></figure>
+      <figure class="ss"><img src="https://images.unsplash.com/photo-1635174815612-fd9636f70146?auto=format&fit=crop&w=800&q=70" alt="Harvesters in a cereal block" onerror="this.classList.add('is-broken')"><figcaption>Harvest</figcaption></figure>
+    </div>
+
+    <div class="svc-hero-stats">
+      <div><span class="stat-num" data-count="6">0</span><span class="stat-label">Services</span></div>
+      <div><span class="stat-num" data-count="1240" data-suffix="+">0</span><span class="stat-label">Hectares under plan</span></div>
+      <div><span class="stat-num" data-count="14" data-suffix="%">0</span><span class="stat-label">Average yield lift</span></div>
+      <div><span class="stat-num" data-count="31">0</span><span class="stat-label">Seasons of records</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. WHAT WE DO — sticky media, swaps as you scroll ============ -->
+<section class="svc-index" id="what">
+  <div class="wrap">
+    <div class="svc-index-head">
+      <div>
+        <span class="eyebrow">What we do</span>
+        <h2>Six services, one<br>season plan.</h2>
+      </div>
+      <p class="svc-index-hint">Scroll — the picture keeps up with the list.</p>
+    </div>
+
+    <div class="svc-index-grid">
+      <div class="svc-list" id="svcList">
+        <article class="svc-row is-on" data-svc="0">
+          <span class="svc-row-num">01</span>
+          <div class="svc-row-body">
+            <h3>Soil &amp; nutrition</h3>
+            <p>Sampling to 60cm, mineral nitrogen testing and a variable-rate plan that puts fertiliser where the crop can actually take it up.</p>
+            <ul class="svc-row-tags"><li>Sampling</li><li>Variable rate</li><li>Tissue testing</li></ul>
+          </div>
+          <span class="svc-row-thumb"><img src="https://images.unsplash.com/photo-1595024600400-2a49b9fce270?auto=format&fit=crop&w=700&q=70" alt="Worked soil under cloud" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        </article>
+
+        <article class="svc-row" data-svc="1">
+          <span class="svc-row-num">02</span>
+          <div class="svc-row-body">
+            <h3>Irrigation &amp; water</h3>
+            <p>Moisture probes at three depths, pivot and drip scheduling against forecast demand, and the abstraction reporting that goes with it.</p>
+            <ul class="svc-row-tags"><li>Probes</li><li>Scheduling</li><li>Abstraction</li></ul>
+          </div>
+          <span class="svc-row-thumb"><img src="https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?auto=format&fit=crop&w=700&q=70" alt="Watering under glass" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        </article>
+
+        <article class="svc-row" data-svc="2">
+          <span class="svc-row-num">03</span>
+          <div class="svc-row-body">
+            <h3>Crop protection</h3>
+            <p>Disease and pest pressure walked rather than assumed, spray windows called off the weather station, and every pass logged for assurance.</p>
+            <ul class="svc-row-tags"><li>Scouting</li><li>Spray windows</li><li>Records</li></ul>
+          </div>
+          <span class="svc-row-thumb"><img src="https://images.unsplash.com/photo-1656407410275-e63e689bcd90?auto=format&fit=crop&w=700&q=70" alt="Tractor applying a spray pass" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        </article>
+
+        <article class="svc-row" data-svc="3">
+          <span class="svc-row-num">04</span>
+          <div class="svc-row-body">
+            <h3>Protected cropping</h3>
+            <p>Glass and tunnel work: climate set points, substrate and feed monitoring, and a planting calendar that matches what the buyer ordered.</p>
+            <ul class="svc-row-tags"><li>Climate</li><li>Feed</li><li>Planting plan</li></ul>
+          </div>
+          <span class="svc-row-thumb"><img src="https://images.unsplash.com/photo-1508857650881-64475119d798?auto=format&fit=crop&w=700&q=70" alt="Inside a growing house" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        </article>
+
+        <article class="svc-row" data-svc="4">
+          <span class="svc-row-num">05</span>
+          <div class="svc-row-body">
+            <h3>Harvest &amp; logistics</h3>
+            <p>Readiness sampling, crew and haulage booked to the day, and grade-out tracked through the packhouse so the contract is met without a scramble.</p>
+            <ul class="svc-row-tags"><li>Readiness</li><li>Haulage</li><li>Grade-out</li></ul>
+          </div>
+          <span class="svc-row-thumb"><img src="https://images.unsplash.com/photo-1634143174678-ecd0c3c2375b?auto=format&fit=crop&w=700&q=70" alt="Tractor working a field" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        </article>
+
+        <article class="svc-row" data-svc="5">
+          <span class="svc-row-num">06</span>
+          <div class="svc-row-body">
+            <h3>Data &amp; reporting</h3>
+            <p>Every probe, pass and load against the block it came from — with a season close-out report that makes next year's plan an argument from evidence.</p>
+            <ul class="svc-row-tags"><li>Telemetry</li><li>Yield maps</li><li>Close-out</li></ul>
+          </div>
+          <span class="svc-row-thumb"><img src="https://images.unsplash.com/photo-1566678408000-b4ed750a936e?auto=format&fit=crop&w=700&q=70" alt="Drone above a field" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        </article>
+      </div>
+
+      <div class="svc-sticky">
+        <div class="svc-stage" id="svcStage">
+          <figure class="svc-shot is-on"><img src="https://images.unsplash.com/photo-1595024600400-2a49b9fce270?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></figure>
+          <figure class="svc-shot"><img src="https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></figure>
+          <figure class="svc-shot"><img src="https://images.unsplash.com/photo-1656407410275-e63e689bcd90?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></figure>
+          <figure class="svc-shot"><img src="https://images.unsplash.com/photo-1508857650881-64475119d798?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></figure>
+          <figure class="svc-shot"><img src="https://images.unsplash.com/photo-1634143174678-ecd0c3c2375b?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></figure>
+          <figure class="svc-shot"><img src="https://images.unsplash.com/photo-1566678408000-b4ed750a936e?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></figure>
+          <span class="svc-stage-veil"></span>
+          <span class="svc-stage-label" id="svcStageLabel">01 · Soil &amp; nutrition</span>
+          <span class="svc-stage-rail"><span class="svc-stage-fill" id="svcStageFill"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. IN DETAIL — card grid ============ -->
+<section class="svc-cards" id="detail">
+  <div class="wrap">
+    <span class="eyebrow">In detail</span>
+    <h2 class="section-title">What each service puts on the ground.</h2>
+
+    <div class="card-grid">
+      <article class="svc-card">
+        <span class="svc-card-media"><img src="https://images.unsplash.com/photo-1593455071238-92dd081a39b1?auto=format&fit=crop&w=700&q=70" alt="Bare ground before drilling" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"><span class="svc-card-veil"></span></span>
+        <div class="svc-card-body">
+          <h3>Soil &amp; nutrition</h3>
+          <ul>
+            <li>Grid sampling to 60cm, every third season</li>
+            <li>Soil mineral nitrogen before the first pass</li>
+            <li>Variable-rate maps for your spreader</li>
+            <li>Tissue tests at two growth stages</li>
+          </ul>
+          <span class="svc-card-foot">From <b>$38</b> / ha / season</span>
+        </div>
+      </article>
+
+      <article class="svc-card">
+        <span class="svc-card-media"><img src="https://images.unsplash.com/photo-1524486361537-8ad15938e1a3?auto=format&fit=crop&w=700&q=70" alt="Dense foliage under irrigation" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"><span class="svc-card-veil"></span></span>
+        <div class="svc-card-body">
+          <h3>Irrigation &amp; water</h3>
+          <ul>
+            <li>Probes at 20, 40 and 60cm per zone</li>
+            <li>Weekly schedule against forecast demand</li>
+            <li>Pivot and drip commissioning checks</li>
+            <li>Abstraction returns prepared for you</li>
+          </ul>
+          <span class="svc-card-foot">From <b>$46</b> / ha / season</span>
+        </div>
+      </article>
+
+      <article class="svc-card">
+        <span class="svc-card-media"><img src="https://images.unsplash.com/photo-1591268315196-2c9b815d71cd?auto=format&fit=crop&w=700&q=70" alt="Green cereal crop" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"><span class="svc-card-veil"></span></span>
+        <div class="svc-card-body">
+          <h3>Crop protection</h3>
+          <ul>
+            <li>Fortnightly scouting through the season</li>
+            <li>Spray windows called off the weather station</li>
+            <li>Resistance planning across the rotation</li>
+            <li>Every application logged for assurance</li>
+          </ul>
+          <span class="svc-card-foot">From <b>$34</b> / ha / season</span>
+        </div>
+      </article>
+
+      <article class="svc-card">
+        <span class="svc-card-media"><img src="https://images.unsplash.com/photo-1533321942807-08e4008b2025?auto=format&fit=crop&w=700&q=70" alt="Young leaves close up" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"><span class="svc-card-veil"></span></span>
+        <div class="svc-card-body">
+          <h3>Protected cropping</h3>
+          <ul>
+            <li>Climate set points reviewed weekly</li>
+            <li>Substrate, EC and pH monitoring</li>
+            <li>Planting calendar built to the order book</li>
+            <li>Pollination and biocontrol programme</li>
+          </ul>
+          <span class="svc-card-foot">From <b>$120</b> / house / month</span>
+        </div>
+      </article>
+
+      <article class="svc-card">
+        <span class="svc-card-media"><img src="https://images.unsplash.com/photo-1627920769842-6887c6df05ca?auto=format&fit=crop&w=700&q=70" alt="Farm machinery in the yard" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"><span class="svc-card-veil"></span></span>
+        <div class="svc-card-body">
+          <h3>Harvest &amp; logistics</h3>
+          <ul>
+            <li>Readiness sampling — brix, firmness, moisture</li>
+            <li>Crew and haulage booked to the day</li>
+            <li>Weighbridge tickets tied to the block</li>
+            <li>Grade-out tracked through the packhouse</li>
+          </ul>
+          <span class="svc-card-foot">From <b>$29</b> / ha / season</span>
+        </div>
+      </article>
+
+      <article class="svc-card">
+        <span class="svc-card-media"><img src="https://images.unsplash.com/photo-1523438927869-e5819c560724?auto=format&fit=crop&w=700&q=70" alt="Survey drone lifting off" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"><span class="svc-card-veil"></span></span>
+        <div class="svc-card-body">
+          <h3>Data &amp; reporting</h3>
+          <ul>
+            <li>Telemetry from every probe and station</li>
+            <li>Drone imagery three times a season</li>
+            <li>Yield maps against the season plan</li>
+            <li>Close-out report each January</li>
+          </ul>
+          <span class="svc-card-foot">Included on <b>full programme</b></span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. HOW AN ENGAGEMENT RUNS — drawn timeline ============ -->
+<section class="svc-flow" id="flow">
+  <div class="wrap">
+    <div class="svc-flow-head">
+      <div>
+        <span class="eyebrow">How it runs</span>
+        <h2>From the first walk<br>to the close-out.</h2>
+      </div>
+      <p>Five stages on every block, whether it is one glasshouse or four hundred hectares.</p>
+    </div>
+
+    <div class="flow" id="flow">
+      <span class="flow-line"><span class="flow-line-fill" id="flowFill"></span></span>
+
+      <article class="flow-step">
+        <span class="flow-dot"></span>
+        <div class="flow-card">
+          <span class="flow-when">Week 0</span>
+          <h3>The field walk</h3>
+          <p>An hour on the block with the agronomist who would run it. History, soil type and target yield written down before anything is quoted.</p>
+        </div>
+      </article>
+
+      <article class="flow-step">
+        <span class="flow-dot"></span>
+        <div class="flow-card">
+          <span class="flow-when">Weeks 1–2</span>
+          <h3>Baseline and install</h3>
+          <p>Samples away to the lab, probes and a weather station installed, and the block mapped so every later reading has somewhere to live.</p>
+        </div>
+      </article>
+
+      <article class="flow-step">
+        <span class="flow-dot"></span>
+        <div class="flow-card">
+          <span class="flow-when">Week 3</span>
+          <h3>The season plan</h3>
+          <p>One document: nutrition, water, protection and the decision points, with the cost per hectare set out before you commit to it.</p>
+        </div>
+      </article>
+
+      <article class="flow-step">
+        <span class="flow-dot"></span>
+        <div class="flow-card">
+          <span class="flow-when">In season</span>
+          <h3>Walks and calls</h3>
+          <p>Fortnightly scouting, weekly readings and a phone answered by someone who has stood in the block. Plans change when the season does.</p>
+        </div>
+      </article>
+
+      <article class="flow-step">
+        <span class="flow-dot"></span>
+        <div class="flow-card">
+          <span class="flow-when">After harvest</span>
+          <h3>Close-out</h3>
+          <p>Yield mapped against the plan, inputs reconciled, and an honest note on what worked — so next season argues from evidence, not memory.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. WHAT WE PUT IN THE FIELD ============ -->
+<section class="svc-kit" id="kit">
+  <div class="wrap svc-kit-grid">
+    <div class="svc-kit-media">
+      <img src="https://images.unsplash.com/photo-1713952160156-bb59cac789a9?auto=format&fit=crop&w=900&q=70" alt="Drone working above a crop" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+      <span class="svc-kit-veil"></span>
+      <span class="svc-kit-badge"><b data-count="80">0</b><span>probes live across managed blocks</span></span>
+    </div>
+    <div class="svc-kit-copy">
+      <span class="eyebrow">What we put in the field</span>
+      <h2>Hardware you<br>never have to buy.</h2>
+      <p>Sensors, stations and survey time come with the programme. We install them, we maintain them, and we take them away at the end if you ever stop.</p>
+      <dl class="svc-specs">
+        <div><dt>Soil moisture probes</dt><dd>3 depths · 15 min interval</dd></div>
+        <div><dt>Weather stations</dt><dd>1 per 120 ha · rain, wind, ET</dd></div>
+        <div><dt>Drone survey</dt><dd>3 passes a season · NDVI + RGB</dd></div>
+        <div><dt>Grain store sensors</dt><dd>Temperature and moisture</dd></div>
+        <div><dt>Data retention</dt><dd>Full history, exportable</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack">
+      <span>Soil sampling</span><i></i><span>Variable rate</span><i></i><span>Moisture probes</span><i></i><span>Pivot scheduling</span><i></i><span>Crop scouting</span><i></i><span>Spray windows</span><i></i><span>Drone survey</span><i></i><span>Yield mapping</span><i></i><span>Grade-out tracking</span><i></i><span>Close-out reports</span><i></i>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. WAYS TO WORK WITH US ============ -->
+<section class="svc-plans" id="plans">
+  <div class="wrap">
+    <div class="svc-plans-head">
+      <div>
+        <span class="eyebrow">Ways to work with us</span>
+        <h2>Three ways in.</h2>
+      </div>
+      <div class="plan-toggle" id="planToggle" data-mode="season">
+        <span class="plan-ind" id="planInd"></span>
+        <button type="button" class="plan-btn active" data-mode="season">Per season</button>
+        <button type="button" class="plan-btn" data-mode="year">Per year <em>−15%</em></button>
+      </div>
+    </div>
+
+    <div class="plan-grid">
+      <article class="plan">
+        <h3>Single service</h3>
+        <p class="plan-note">One piece of the plan — usually soil or water.</p>
+        <span class="plan-price"><b class="plan-figure" data-season="38" data-year="32">38</b><em>/ ha / season</em></span>
+        <ul class="plan-list">
+          <li>One service of your choosing</li>
+          <li>Two field walks a season</li>
+          <li>Readings in the grower portal</li>
+          <li>Email support in working hours</li>
+        </ul>
+        <a href="contact.html" class="btn btn-outline plan-cta">Ask about this</a>
+      </article>
+
+      <article class="plan is-featured">
+        <span class="plan-flag">Most blocks start here</span>
+        <h3>Season programme</h3>
+        <p class="plan-note">The whole plan, one agronomist, one number.</p>
+        <span class="plan-price"><b class="plan-figure" data-season="119" data-year="101">119</b><em>/ ha / season</em></span>
+        <ul class="plan-list">
+          <li>All six services on the block</li>
+          <li>Fortnightly walks through the season</li>
+          <li>Probes and weather station installed</li>
+          <li>Drone survey three times a season</li>
+          <li>Close-out report each January</li>
+        </ul>
+        <a href="contact.html" class="btn btn-primary plan-cta">Book a field visit</a>
+      </article>
+
+      <article class="plan">
+        <h3>Estate</h3>
+        <p class="plan-note">Several holdings, one agronomy team.</p>
+        <span class="plan-price"><b>Tailored</b><em>/ on assessment</em></span>
+        <ul class="plan-list">
+          <li>Everything in the season programme</li>
+          <li>Named agronomist plus cover</li>
+          <li>Quarterly board-level reporting</li>
+          <li>Assurance and audit preparation</li>
+          <li>Machinery and contractor scheduling</li>
+        </ul>
+        <a href="contact.html" class="btn btn-outline plan-cta">Talk to the farm office</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. WHAT'S INCLUDED ============ -->
+<section class="svc-compare" id="included">
+  <div class="wrap">
+    <div class="svc-compare-head">
+      <div>
+        <span class="eyebrow">What's included</span>
+        <h2>Side by side.</h2>
+      </div>
+      <p>Everything below is in writing before the first invoice.</p>
+    </div>
+
+    <div class="compare-wrap">
+      <table class="compare">
+        <thead>
+          <tr><th>Included</th><th>Single</th><th>Season</th><th>Estate</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-label="Included">Field walks</td><td data-label="Single">2 a season</td><td data-label="Season">Fortnightly</td><td data-label="Estate">Weekly</td></tr>
+          <tr><td data-label="Included">Soil sampling</td><td data-label="Single">On request</td><td data-label="Season">Every 3rd season</td><td data-label="Estate">Annual, all blocks</td></tr>
+          <tr><td data-label="Included">Moisture probes</td><td data-label="Single"><span class="no">—</span></td><td data-label="Season"><span class="yes">Installed</span></td><td data-label="Estate"><span class="yes">Installed</span></td></tr>
+          <tr><td data-label="Included">Weather station</td><td data-label="Single"><span class="no">—</span></td><td data-label="Season"><span class="yes">1 per 120 ha</span></td><td data-label="Estate"><span class="yes">Per holding</span></td></tr>
+          <tr><td data-label="Included">Drone survey</td><td data-label="Single">Chargeable</td><td data-label="Season">3 a season</td><td data-label="Estate">5 a season</td></tr>
+          <tr><td data-label="Included">Grower portal</td><td data-label="Single"><span class="yes">Yes</span></td><td data-label="Season"><span class="yes">Yes</span></td><td data-label="Estate"><span class="yes">Yes, multi-site</span></td></tr>
+          <tr><td data-label="Included">Assurance records</td><td data-label="Single">Your own</td><td data-label="Season"><span class="yes">Kept for you</span></td><td data-label="Estate"><span class="yes">Audit prepared</span></td></tr>
+          <tr><td data-label="Included">Close-out report</td><td data-label="Single"><span class="no">—</span></td><td data-label="Season"><span class="yes">January</span></td><td data-label="Estate"><span class="yes">Quarterly</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. PROOF + FIRST VISIT ============ -->
+<section class="svc-proof" id="proof">
+  <div class="wrap">
+    <div class="proof-head">
+      <div>
+        <span class="eyebrow">Proof</span>
+        <h2>What changed on<br>real blocks.</h2>
+      </div>
+      <p class="proof-hint">Three blocks, first season on the programme — figures as published each January.</p>
+    </div>
+
+    <div class="proof-grid">
+
+      <article class="proof-card">
+        <span class="proof-crop">Winter wheat</span>
+        <h3>North Ridge</h3>
+        <span class="proof-meta">84 ha · heavy clay · first season</span>
+        <p class="proof-change"><b>What we changed —</b> one heavy nitrogen pass split into three, timed against tissue tests rather than the calendar.</p>
+
+        <div class="proof-bars">
+          <div class="pb">
+            <span class="pb-top">
+              <span class="pb-label">Yield</span>
+              <span class="pb-vals"><i>8.2</i>→<b><span class="pb-num" data-from="8.2" data-to="9.3" data-dec="1">8.2</span> t/ha</b></span>
+            </span>
+            <span class="pb-track"><span class="pb-was" data-w="72"></span><span class="pb-now" data-w="82"></span></span>
+          </div>
+          <div class="pb">
+            <span class="pb-top">
+              <span class="pb-label">Nitrogen applied</span>
+              <span class="pb-vals"><i>210</i>→<b><span class="pb-num" data-from="210" data-to="185" data-dec="0">210</span> kg/ha</b></span>
+            </span>
+            <span class="pb-track"><span class="pb-was" data-w="84"></span><span class="pb-now" data-w="74"></span></span>
+          </div>
+        </div>
+        <span class="proof-out">+13% yield · −12% nitrogen</span>
+      </article>
+
+      <article class="proof-card">
+        <span class="proof-crop">Soybean</span>
+        <h3>Hollow Creek</h3>
+        <span class="proof-meta">61 ha · sandy loam · driest July on record</span>
+        <p class="proof-change"><b>What we changed —</b> pivots moved off a fixed calendar onto probe readings and forecast demand.</p>
+
+        <div class="proof-bars">
+          <div class="pb">
+            <span class="pb-top">
+              <span class="pb-label">Water applied</span>
+              <span class="pb-vals"><i>320</i>→<b><span class="pb-num" data-from="320" data-to="262" data-dec="0">320</span> mm</b></span>
+            </span>
+            <span class="pb-track"><span class="pb-was" data-w="88"></span><span class="pb-now" data-w="72"></span></span>
+          </div>
+          <div class="pb">
+            <span class="pb-top">
+              <span class="pb-label">Irrigation passes</span>
+              <span class="pb-vals"><i>14</i>→<b><span class="pb-num" data-from="14" data-to="9" data-dec="0">14</span> passes</b></span>
+            </span>
+            <span class="pb-track"><span class="pb-was" data-w="78"></span><span class="pb-now" data-w="50"></span></span>
+          </div>
+        </div>
+        <span class="proof-out">−18% water · yield held</span>
+      </article>
+
+      <article class="proof-card">
+        <span class="proof-crop">Apples</span>
+        <h3>Eastmark Orchard</h3>
+        <span class="proof-meta">27 ha · four varieties · packhouse contract</span>
+        <p class="proof-change"><b>What we changed —</b> picking moved four days later and split into two passes off brix and firmness sampling.</p>
+
+        <div class="proof-bars">
+          <div class="pb">
+            <span class="pb-top">
+              <span class="pb-label">Class I pack-out</span>
+              <span class="pb-vals"><i>78</i>→<b><span class="pb-num" data-from="78" data-to="96" data-dec="0">78</span>%</b></span>
+            </span>
+            <span class="pb-track"><span class="pb-was" data-w="78"></span><span class="pb-now" data-w="96"></span></span>
+          </div>
+          <div class="pb">
+            <span class="pb-top">
+              <span class="pb-label">Fruit lost on the floor</span>
+              <span class="pb-vals"><i>9.1</i>→<b><span class="pb-num" data-from="9.1" data-to="6.3" data-dec="1">9.1</span> t</b></span>
+            </span>
+            <span class="pb-track"><span class="pb-was" data-w="62"></span><span class="pb-now" data-w="43"></span></span>
+          </div>
+        </div>
+        <span class="proof-out">+18pt pack-out · −31% rejects</span>
+      </article>
+
+    </div>
+
+    <p class="proof-note">
+      <span class="proof-key"><i class="was"></i>before the programme<i class="now"></i>first season with us</span>
+      Every figure is the grower's own weighbridge, meter or packhouse record — not a trial plot. Blocks that went backwards are published in the same report.
+    </p>
+
+    <div class="svc-cta">
+      <div class="svc-cta-media" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1595444042058-f038c7e0e778?auto=format&fit=crop&w=1400&q=70" alt="" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+        <span class="svc-cta-veil"></span>
+      </div>
+      <div class="svc-cta-inner">
+        <span class="eyebrow">First visit</span>
+        <h2>Tell us about the block.</h2>
+        <p>An hour on the ground, then a written note of soil, target yield and likely input cost — before you commit to anything.</p>
+        <div class="svc-cta-actions">
+          <a href="contact.html" class="btn btn-primary" data-magnetic>Book a field visit
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="404.html" class="btn btn-outline">Call the farm office · 0712 371 2345</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html#hero" class="logo">
+          <img class="logo-placeholder logo-placeholder-footer" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+          <span class="logo-word" style="display:none">AGRITECH SOLUTIONS</span>
+        </a>
+        <p>Agronomy, irrigation and harvest management — for growers who would rather be advised properly than quickly.</p>
+        <div class="footer-social">
+          <a href="404.html" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="404.html" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 21v-7h2.5l.5-3H14V9.2c0-.9.3-1.7 1.7-1.7H17V5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2V11H8v3h2.6v7"/></svg>
+          </a>
+          <a href="404.html" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="9" width="4" height="10"/><circle cx="5" cy="5" r="1.6"/><path d="M11 19v-6.5a2.5 2.5 0 0 1 5 0V19M11 12.5V19"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Operations</h4>
+        <a href="#what">Soil &amp; nutrition</a>
+        <a href="#what">Irrigation &amp; water</a>
+        <a href="#what">Crop protection</a>
+        <a href="#what">Harvest &amp; logistics</a>
+        <a href="#what">Data &amp; reporting</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get In Touch</h4>
+        <ul class="footer-contact">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+            <a href="404.html" target="_blank" rel="noopener">MMR Complex, Periyakollappatty,<br>Chinna Thirupathi, Salem, Tamil<br>Nadu 636008</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5c0 8.8 6.2 15 15 15l2-3.5-5-2-1.5 2C11.5 15 9 12.5 8.5 9.5l2-1.5-2-5z"/></svg>
+            <a href="404.html">0712 371 2345</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <a href="404.html">hello@stackly.com</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AGRITECH SOLUTIONS</span>
+      <span class="status-dot">Certified practice · Soil to store</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</button>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HOVERABLE = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+/* =========================================================
+   PRELOADER
+   ========================================================= */
+(function(){
+  const el = document.getElementById('preloader');
+  const fill = document.getElementById('preloaderFill');
+  if(!el) return;
+  gsap.fromTo(fill, { width:'0%' }, { width:'100%', duration:1.2, ease:'power1.inOut' });
+  const startedAt = Date.now();
+  function finish(){
+    setTimeout(function(){ el.classList.add('hide'); intro(); }, Math.max(0, 850 - (Date.now() - startedAt)));
+  }
+  if(document.readyState === 'complete'){ finish(); } else { window.addEventListener('load', finish); }
+  setTimeout(function(){ el.classList.add('hide'); intro(); }, 3800);
+})();
+
+window.scrollTo(0,0);
+window.addEventListener('load', function(){ window.scrollTo(0,0); ScrollTrigger.refresh(); });
+
+/* =========================================================
+   HAMBURGER / MOBILE MENU
+   ========================================================= */
+(function(){
+  const hamburger = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  const closeBtn = document.getElementById('mobileMenuClose');
+
+  function open(){
+    menu.style.display = 'flex';
+    void menu.offsetWidth;
+    menu.classList.add('open');
+    hamburger.classList.add('active');
+    document.body.classList.add('menu-open');
+    hamburger.setAttribute('aria-expanded','true');
+    gsap.fromTo('.mobile-menu-links > *', { opacity:0, x:24 },
+      { opacity:1, x:0, duration:.45, stagger:.06, ease:'power3.out', delay:.12 });
+  }
+  function close(){
+    menu.classList.remove('open');
+    hamburger.classList.remove('active');
+    document.body.classList.remove('menu-open');
+    hamburger.setAttribute('aria-expanded','false');
+    setTimeout(function(){ if(!menu.classList.contains('open')) menu.style.display='none'; }, 350);
+  }
+  hamburger.addEventListener('click', function(){ menu.classList.contains('open') ? close() : open(); });
+  closeBtn.addEventListener('click', close);
+  document.querySelectorAll('.mobile-menu a').forEach(function(a){ a.addEventListener('click', close); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && menu.classList.contains('open')) close(); });
+  window.addEventListener('resize', function(){ if(window.innerWidth>900 && menu.classList.contains('open')) close(); });
+})();
+
+/* ---- scroll progress + header contraction ---- */
+gsap.to('#scrollProgress', { width:'100%', ease:'none', scrollTrigger:{ scrub:.3 } });
+ScrollTrigger.create({ start:'top -60', end:99999, toggleClass:{ targets:'#siteHeader', className:'is-pinned' } });
+
+/* =========================================================
+   COUNTERS
+   ========================================================= */
+function runCounters(nodes){
+  nodes.forEach(function(el){
+    const target = parseFloat(el.dataset.count || '0');
+    const suffix = el.dataset.suffix || '';
+    if(REDUCED){ el.textContent = target.toLocaleString() + suffix; return; }
+    const c = { v:0 };
+    gsap.to(c, { v:target, duration:1.9, ease:'power1.out',
+      onUpdate:function(){ el.textContent = Math.round(c.v).toLocaleString() + suffix; } });
+  });
+}
+gsap.utils.toArray('[data-count]').forEach(function(el){
+  if(el.closest('.svc-hero-stats')) return;
+  ScrollTrigger.create({ trigger:el, start:'top 90%', once:true, onEnter:function(){ runCounters([el]); } });
+});
+
+/* =========================================================
+   1. HERO INTRO
+   ========================================================= */
+let introPlayed = false;
+function intro(){
+  if(introPlayed) return;
+  introPlayed = true;
+  const tl = gsap.timeline({ defaults:{ ease:'power3.out' } });
+  tl.from('.svc-hero .eyebrow', { opacity:0, x:-16, duration:.5 })
+    .from('.svc-hero-title .line-in', { yPercent:120, rotate:2.5, duration:1, stagger:.09, ease:'expo.out' }, '-=.2')
+    .from('.svc-hero-sub', { opacity:0, y:18, duration:.6 }, '-=.55')
+    .from('.svc-hero-actions > *', { opacity:0, y:14, duration:.5, stagger:.08 }, '-=.45')
+    .fromTo('.ss', { clipPath:'inset(0% 0% 100% 0%)', opacity:0 },
+      { clipPath:'inset(0% 0% 0% 0%)', opacity:1, duration:1, stagger:.1, ease:'expo.out' }, '-=.9')
+    .from('.svc-hero-stats > div', { opacity:0, y:16, duration:.5, stagger:.07 }, '-=.5');
+  runCounters(document.querySelectorAll('.svc-hero-stats .stat-num'));
+}
+
+/* hero strip parallax */
+if(!REDUCED){
+  gsap.utils.toArray('.ss img').forEach(function(img, i){
+    gsap.fromTo(img, { yPercent:-6 }, { yPercent:6, ease:'none',
+      scrollTrigger:{ trigger:'.svc-hero', start:'top top', end:'bottom top', scrub:true } });
+  });
+}
+
+/* =========================================================
+   GENERIC SCROLL REVEALS
+   ========================================================= */
+(function(){
+  const singles = ['.svc-index-head', '.svc-index-hint', '.section-title', '.svc-flow-head',
+    '.svc-kit-copy', '.svc-plans-head', '.svc-compare-head', '.proof-head', '.svc-cta-inner'];
+  singles.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      gsap.from(el, { opacity:0, y:24, duration:.7, ease:'power2.out',
+        scrollTrigger:{ trigger:el, start:'top 88%', once:true } });
+    });
+  });
+  const groups = ['.svc-card', '.plan', '.proof-card', '.compare tbody tr', '.svc-specs > div'];
+  groups.forEach(function(sel){
+    const items = gsap.utils.toArray(sel);
+    if(!items.length) return;
+    gsap.from(items, { opacity:0, y:26, duration:.6, ease:'power3.out', stagger:.06,
+      scrollTrigger:{ trigger:items[0], start:'top 88%', once:true } });
+  });
+})();
+
+/* =========================================================
+   2. WHAT WE DO — the sticky picture follows the list
+   ========================================================= */
+(function(){
+  const rows = gsap.utils.toArray('#svcList .svc-row');
+  const shots = gsap.utils.toArray('#svcStage .svc-shot');
+  const label = document.getElementById('svcStageLabel');
+  const fill = document.getElementById('svcStageFill');
+  if(!rows.length || !shots.length) return;
+
+  const names = rows.map(function(r){ return r.querySelector('h3').textContent.trim(); });
+
+  function show(i){
+    rows.forEach(function(r, n){ r.classList.toggle('is-on', n === i); });
+    shots.forEach(function(s, n){ s.classList.toggle('is-on', n === i); });
+    label.textContent = String(i + 1).padStart(2, '0') + ' · ' + names[i];
+    gsap.to(fill, { width:((i + 1) / rows.length * 100) + '%', duration:.5, ease:'power2.out' });
+    if(!REDUCED){
+      gsap.fromTo(label, { opacity:0, y:8 }, { opacity:1, y:0, duration:.35, ease:'power2.out' });
+    }
+  }
+
+  rows.forEach(function(row, i){
+    ScrollTrigger.create({
+      trigger: row,
+      start: 'top 62%',
+      end: 'bottom 40%',
+      onEnter: function(){ show(i); },
+      onEnterBack: function(){ show(i); }
+    });
+    row.addEventListener('click', function(){ show(i); });
+  });
+  show(0);
+})();
+
+/* =========================================================
+   4. HOW IT RUNS — the line draws as you pass it
+   ========================================================= */
+(function(){
+  const flow = document.querySelector('.flow');
+  const fill = document.getElementById('flowFill');
+  const steps = gsap.utils.toArray('.flow-step');
+  if(!flow || !fill) return;
+
+  gsap.fromTo(fill, { scaleY:0 }, {
+    scaleY:1, ease:'none',
+    scrollTrigger:{ trigger:flow, start:'top 70%', end:'bottom 75%', scrub:.5 }
+  });
+
+  steps.forEach(function(step){
+    gsap.from(step.querySelector('.flow-card'), {
+      opacity:0, y:28, duration:.65, ease:'power3.out',
+      scrollTrigger:{ trigger:step, start:'top 84%', once:true }
+    });
+    ScrollTrigger.create({
+      trigger: step, start:'top 72%', end:'bottom 45%',
+      onEnter: function(){ step.classList.add('is-lit'); },
+      onEnterBack: function(){ step.classList.add('is-lit'); }
+    });
+  });
+})();
+
+/* =========================================================
+   5. KIT — image reveal + the capability marquee
+   ========================================================= */
+(function(){
+  const media = document.querySelector('.svc-kit-media');
+  if(media){
+    gsap.fromTo(media, { clipPath:'inset(0% 0% 100% 0%)' }, {
+      clipPath:'inset(0% 0% 0% 0%)', duration:1.1, ease:'expo.out',
+      scrollTrigger:{ trigger:media, start:'top 82%', once:true }
+    });
+    if(!REDUCED){
+      gsap.fromTo(media.querySelector('img'), { yPercent:-7, scale:1.08 }, {
+        yPercent:7, ease:'none',
+        scrollTrigger:{ trigger:'.svc-kit', start:'top bottom', end:'bottom top', scrub:true }
+      });
+    }
+  }
+
+  const track = document.getElementById('marqueeTrack');
+  if(track && !REDUCED){
+    track.innerHTML = track.innerHTML + track.innerHTML;   // one seamless loop
+    gsap.to(track, { xPercent:-50, duration:26, ease:'none', repeat:-1 });
+  }
+})();
+
+/* =========================================================
+   6. PLANS — per season / per year
+   ========================================================= */
+(function(){
+  const toggle = document.getElementById('planToggle');
+  const ind = document.getElementById('planInd');
+  const btns = toggle ? toggle.querySelectorAll('.plan-btn') : [];
+  const figures = gsap.utils.toArray('.plan-figure');
+  if(!toggle) return;
+
+  function place(btn, animate){
+    gsap.to(ind, { x:btn.offsetLeft, width:btn.offsetWidth, duration: animate ? .45 : 0, ease:'power3.out' });
+  }
+  place(toggle.querySelector('.plan-btn.active'), false);
+  window.addEventListener('resize', function(){ place(toggle.querySelector('.plan-btn.active'), false); });
+
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(btn.classList.contains('active')) return;
+      const mode = btn.dataset.mode;
+      btns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      toggle.setAttribute('data-mode', mode);
+      place(btn, !REDUCED);
+
+      figures.forEach(function(el){
+        const to = parseFloat(el.dataset[mode]);
+        if(REDUCED){ el.textContent = to; return; }
+        const c = { v: parseFloat(el.textContent.replace(/[^\d.]/g,'')) || 0 };
+        gsap.to(c, { v:to, duration:.5, ease:'power2.out',
+          onUpdate:function(){ el.textContent = Math.round(c.v); } });
+      });
+      document.querySelectorAll('.plan-price em').forEach(function(em){
+        if(em.textContent.indexOf('assessment') > -1) return;
+        em.textContent = mode === 'year' ? '/ ha / year' : '/ ha / season';
+      });
+    });
+  });
+})();
+
+/* =========================================================
+   8. PROOF — the two bars grow and the figure counts to the
+   season's result as each card arrives
+   ========================================================= */
+(function(){
+  const cards = gsap.utils.toArray('.proof-card');
+  if(!cards.length) return;
+
+  cards.forEach(function(card){
+    ScrollTrigger.create({
+      trigger: card, start:'top 82%', once:true,
+      onEnter: function(){
+        card.querySelectorAll('.pb-was, .pb-now').forEach(function(bar, i){
+          const w = bar.getAttribute('data-w') + '%';
+          if(REDUCED){ bar.style.width = w; return; }
+          gsap.fromTo(bar, { width:'0%' },
+            { width:w, duration:.9, delay:.06 * i, ease:'power3.out' });
+        });
+        card.querySelectorAll('.pb-num').forEach(function(el, i){
+          const from = parseFloat(el.dataset.from);
+          const to = parseFloat(el.dataset.to);
+          const dec = parseInt(el.dataset.dec || '0', 10);
+          if(REDUCED){ el.textContent = to.toFixed(dec); return; }
+          const c = { v: from };
+          gsap.to(c, { v:to, duration:1, delay:.14 + .06 * i, ease:'power2.out',
+            onUpdate:function(){ el.textContent = c.v.toFixed(dec); } });
+        });
+      }
+    });
+  });
+})();
+
+/* ---- closing CTA photograph drifts ---- */
+if(!REDUCED){
+  gsap.fromTo('.svc-cta-media img', { yPercent:-8, scale:1.06 }, {
+    yPercent:8, ease:'none',
+    scrollTrigger:{ trigger:'.svc-cta', start:'top bottom', end:'bottom top', scrub:true }
+  });
+}
+
+/* =========================================================
+   MAGNETIC BUTTONS
+   ========================================================= */
+if(HOVERABLE && !REDUCED){
+  document.querySelectorAll('[data-magnetic]').forEach(function(el){
+    el.addEventListener('mousemove', function(e){
+      const r = el.getBoundingClientRect();
+      gsap.to(el, { x:(e.clientX - r.left - r.width/2)*.22, y:(e.clientY - r.top - r.height/2)*.3, duration:.4, ease:'power2.out' });
+    });
+    el.addEventListener('mouseleave', function(){
+      gsap.to(el, { x:0, y:0, duration:.5, ease:'elastic.out(1,.5)' });
+    });
+  });
+}
+
+/* =========================================================
+   ANCHORS + BACK TO TOP
+   ========================================================= */
+(function(){
+  function headerH(){ return document.querySelector('header').offsetHeight; }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      const id = a.getAttribute('href');
+      const target = id.length > 1 ? document.querySelector(id) : null;
+      if(!target) return;
+      e.preventDefault();
+      const destY = target.getBoundingClientRect().top + window.scrollY - headerH() - 16;
+      const obj = { y: window.scrollY };
+      gsap.to(obj, { y:destY, duration:.9, ease:'power2.inOut', onUpdate:function(){ window.scrollTo(0, obj.y); } });
+    });
+  });
+
+  const toTop = document.getElementById('toTop');
+  ScrollTrigger.create({ start:'top -600', end:99999,
+    onToggle:function(self){ toTop.classList.toggle('show', self.isActive); } });
+  toTop.addEventListener('click', function(){
+    const obj = { y: window.scrollY };
+    gsap.to(obj, { y:0, duration:.8, ease:'power2.inOut', onUpdate:function(){ window.scrollTo(0, obj.y); } });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly — About</title>
+<script>
+  if('scrollRestoration' in history){ history.scrollRestoration = 'manual'; }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="stylesheet" href="../css/about.css">
+</head>
+<body>
+
+<!-- ============ PRELOADER ============ -->
+<div class="preloader" id="preloader">
+  <div class="preloader-inner">
+    <svg class="preloader-crest" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="60" cy="60" r="52" stroke-width="1.2"/>
+      <g stroke-width="1.6">
+        <path d="M60 86V44"/>
+        <path d="M60 58c0-12 9-21 22-21 0 14-9 23-22 21z"/>
+        <path d="M60 68c0-10-7-17-18-17 0 12 7 19 18 17z"/>
+      </g>
+    </svg>
+    <div class="preloader-word">STACKLY</div>
+    <div class="preloader-bar"><div class="preloader-bar-fill" id="preloaderFill"></div></div>
+  </div>
+</div>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ============ HEADER ============ -->
+<header id="siteHeader">
+  <nav class="nav">
+    <a href="index.html#hero" class="logo">
+      <img class="logo-placeholder" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+      <span class="logo-word" style="display:none">AGRITECH SOLUTIONS</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html"><span>Home</span></a>
+      <a href="services.html"><span>Services</span></a>
+      <a href="about.html" class="active"><span>About</span></a>
+      <a href="blog.html"><span>Blog</span></a>
+      <a href="contact.html"><span>Contact</span></a>
+    </div>
+    <div class="nav-right">
+      <a href="login.html" class="nav-login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 5-6 7.5-6s6 2 7.5 6"/></svg>
+        Login
+      </a>
+      <a href="signup.html" class="btn-gold nav-signup" data-magnetic>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c1.2-3.4 4.2-5 6.5-5s5.3 1.6 6.5 5"/><path d="M19 8v6M22 11h-6"/></svg>
+        Sign Up
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ MOBILE MENU ============ -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-top">
+    <a href="index.html#hero" class="logo">
+      <img class="logo-placeholder" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+      <span class="logo-word" style="display:none">AGRITECH SOLUTIONS</span>
+    </a>
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu-links">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="about.html" class="active">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html" class="nav-login" style="text-align:left;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 5-6 7.5-6s6 2 7.5 6"/></svg>
+      Login
+    </a>
+    <a href="signup.html" class="btn-gold">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c1.2-3.4 4.2-5 6.5-5s5.3 1.6 6.5 5"/><path d="M19 8v6M22 11h-6"/></svg>
+      Sign Up
+    </a>
+  </div>
+</div>
+
+<!-- ============ 1. ABOUT HERO ============ -->
+<section class="ab-hero" id="top">
+  <div class="ab-hero-bg" aria-hidden="true"><span class="ab-hero-rows"></span><span class="ab-hero-glow"></span></div>
+  <div class="wrap">
+    <span class="eyebrow">About us</span>
+    <h1 class="ab-hero-title">
+      <span class="line"><span class="line-in">Thirty-one seasons</span></span>
+      <span class="line"><span class="line-in">on the same soil.</span></span>
+    </h1>
+    <div class="ab-hero-row">
+      <p class="ab-hero-sub">We started with one borrowed soil auger and a notebook. What has not changed is the rule we set that first spring: measure the block before you argue about it.</p>
+      <ul class="ab-hero-meta">
+        <li><span>Founded</span><b>1994, Salem</b></li>
+        <li><span>Team</span><b>24 across four divisions</b></li>
+        <li><span>Owned by</span><b>The people who work here</b></li>
+      </ul>
+    </div>
+
+    <figure class="ab-hero-shot">
+      <img src="https://images.unsplash.com/photo-1612298389479-585588cab492?auto=format&fit=crop&w=1600&q=70" alt="Open farmland under a wide sky" onerror="this.classList.add('is-broken')">
+      <span class="ab-hero-veil"></span>
+      <figcaption>Block A, North Ridge — the first field we ever sampled</figcaption>
+    </figure>
+
+    <div class="ab-hero-stats">
+      <div><span class="stat-num" data-count="31">0</span><span class="stat-label">Seasons</span></div>
+      <div><span class="stat-num" data-count="1240" data-suffix="+">0</span><span class="stat-label">Hectares under plan</span></div>
+      <div><span class="stat-num" data-count="24">0</span><span class="stat-label">People</span></div>
+      <div><span class="stat-num" data-count="71" data-suffix="%">0</span><span class="stat-label">Growers past year three</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. THE STORY — alternating eras ============ -->
+<section class="ab-story" id="story">
+  <div class="wrap">
+    <div class="ab-head">
+      <div>
+        <span class="eyebrow">The story</span>
+        <h2>How a notebook became<br>a sensor network.</h2>
+      </div>
+      <p class="ab-head-note">Five turns in the road. None of them were planned more than a season ahead.</p>
+    </div>
+
+    <div class="eras">
+      <article class="era">
+        <span class="era-ghost" aria-hidden="true">1994</span>
+        <figure class="era-media">
+          <img src="https://images.unsplash.com/photo-1595024600400-2a49b9fce270?auto=format&fit=crop&w=900&q=70" alt="Worked soil before drilling" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="era-veil"></span>
+        </figure>
+        <div class="era-copy">
+          <span class="era-year">1994</span>
+          <h3>One auger, one notebook</h3>
+          <p>Mara's father farmed 40 hectares and guessed at the nitrogen like everyone else did. She started sampling his field properly, then the neighbour's, then eleven more that first autumn.</p>
+          <span class="era-fact">11 blocks · 1 client who paid</span>
+        </div>
+      </article>
+
+      <article class="era era-flip">
+        <span class="era-ghost" aria-hidden="true">2003</span>
+        <figure class="era-media">
+          <img src="https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?auto=format&fit=crop&w=900&q=70" alt="Growing under glass" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="era-veil"></span>
+        </figure>
+        <div class="era-copy">
+          <span class="era-year">2003</span>
+          <h3>Under cover for the first time</h3>
+          <p>A tomato grower asked whether the same discipline worked in a glasshouse. It did — and protected cropping has been a quarter of the work ever since.</p>
+          <span class="era-fact">First glasshouse contract · 4 staff</span>
+        </div>
+      </article>
+
+      <article class="era">
+        <span class="era-ghost" aria-hidden="true">2011</span>
+        <figure class="era-media">
+          <img src="https://images.unsplash.com/photo-1591268315196-2c9b815d71cd?auto=format&fit=crop&w=900&q=70" alt="Green cereal crop in early growth" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="era-veil"></span>
+        </figure>
+        <div class="era-copy">
+          <span class="era-year">2011</span>
+          <h3>We stopped selling inputs</h3>
+          <p>The distribution side was profitable and we closed it. You cannot recommend a product honestly and take a margin on it, and every grower knew that before we admitted it.</p>
+          <span class="era-fact">Zero supplier commission, ever since</span>
+        </div>
+      </article>
+
+      <article class="era era-flip">
+        <span class="era-ghost" aria-hidden="true">2018</span>
+        <figure class="era-media">
+          <img src="https://images.unsplash.com/photo-1523438927869-e5819c560724?auto=format&fit=crop&w=900&q=70" alt="Survey drone lifting off" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="era-veil"></span>
+        </figure>
+        <div class="era-copy">
+          <span class="era-year">2018</span>
+          <h3>Probes, stations, and a drone</h3>
+          <p>Readings moved off a clipboard and onto a network. The clipboard decisions were mostly right — they just arrived three days after they were needed.</p>
+          <span class="era-fact">80 probes · 9 weather stations</span>
+        </div>
+      </article>
+
+      <article class="era">
+        <span class="era-ghost" aria-hidden="true">2026</span>
+        <figure class="era-media">
+          <img src="https://images.unsplash.com/photo-1635174815612-fd9636f70146?auto=format&fit=crop&w=900&q=70" alt="Harvesters working a cereal block" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="era-veil"></span>
+        </figure>
+        <div class="era-copy">
+          <span class="era-year">2026</span>
+          <h3>Still walking the blocks</h3>
+          <p>Twelve hundred hectares and a data platform, and the first thing that happens on a new block is still an agronomist standing in it with a spade.</p>
+          <span class="era-fact">1,240 ha · 24 people · 8 divisions</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. WHAT WE BELIEVE ============ -->
+<section class="ab-beliefs" id="beliefs">
+  <div class="wrap">
+    <span class="eyebrow">What we believe</span>
+    <h2 class="section-title">Four rules we have never had to rewrite.</h2>
+
+    <div class="belief-grid">
+      <article class="belief">
+        <span class="belief-num">01</span>
+        <h3>Measure before you argue</h3>
+        <p>Opinions about a block are cheap and usually wrong. A sample, a probe and a weighbridge ticket settle it in an afternoon.</p>
+      </article>
+      <article class="belief">
+        <span class="belief-num">02</span>
+        <h3>Take no margin on inputs</h3>
+        <p>We sell advice and nothing else. No supplier pays us, so a recommendation is only ever about what the crop needs.</p>
+      </article>
+      <article class="belief">
+        <span class="belief-num">03</span>
+        <h3>Publish the bad years</h3>
+        <p>The close-out report goes out whether the season was kind or not. A wet July belongs in the record as much as a good harvest.</p>
+      </article>
+      <article class="belief">
+        <span class="belief-num">04</span>
+        <h3>The same person, all season</h3>
+        <p>The agronomist who walked your block in March is the one who answers the phone in August. No handovers, no account team.</p>
+      </article>
+    </div>
+
+    <blockquote class="ab-quote">
+      <p>We would rather turn a block down than take it on and give it half an agronomist.</p>
+      <cite>Mara Ilić — Farm Manager, here since 1994</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ============ 4. THE PEOPLE ============ -->
+<section class="ab-people" id="people">
+  <div class="wrap">
+    <div class="ab-head">
+      <div>
+        <span class="eyebrow">The people</span>
+        <h2>Who you would<br>actually be working with.</h2>
+      </div>
+      <p class="ab-head-note">Four agronomists, six field technicians and a support team that has been here longer than most of them.</p>
+    </div>
+
+    <div class="people-grid">
+      <article class="person">
+        <span class="person-media">
+          <img src="https://images.unsplash.com/photo-1605176647037-cb9e5e5dc87d?auto=format&fit=crop&w=560&q=70" alt="Mara Ilić" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="person-veil"></span>
+        </span>
+        <div class="person-body">
+          <h3>Mara Ilić</h3>
+          <p>Farm Manager · Arable agronomy</p>
+          <span class="person-since">Here since 1994</span>
+          <span class="person-line">Started the whole thing with her father's auger. Still takes the difficult blocks herself.</span>
+        </div>
+      </article>
+
+      <article class="person">
+        <span class="person-media">
+          <img src="https://images.unsplash.com/photo-1662815020802-2bd475c72d93?auto=format&fit=crop&w=560&q=70" alt="Tom Okafor" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="person-veil"></span>
+        </span>
+        <div class="person-body">
+          <h3>Tom Okafor</h3>
+          <p>Senior Agronomist · Irrigation</p>
+          <span class="person-since">Here since 2012</span>
+          <span class="person-line">Built the scheduling model that took 18% off water use across the managed blocks.</span>
+        </div>
+      </article>
+
+      <article class="person">
+        <span class="person-media">
+          <img src="https://images.unsplash.com/photo-1631203883080-9e5338ebcf2d?auto=format&fit=crop&w=560&q=70" alt="Priya Nadar" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="person-veil"></span>
+        </span>
+        <div class="person-body">
+          <h3>Priya Nadar</h3>
+          <p>Soil Scientist · Cover crops</p>
+          <span class="person-since">Here since 2014</span>
+          <span class="person-line">Runs the long-term organic matter trials. Keeps nine years of samples in the cold store.</span>
+        </div>
+      </article>
+
+      <article class="person">
+        <span class="person-media">
+          <img src="https://images.unsplash.com/photo-1617490439585-b855defbe904?auto=format&fit=crop&w=560&q=70" alt="Daniel Voss" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="person-veil"></span>
+        </span>
+        <div class="person-body">
+          <h3>Daniel Voss</h3>
+          <p>Livestock Lead · Forage</p>
+          <span class="person-since">Here since 2017</span>
+          <span class="person-line">Grazing and forage quality. The only one of us who can read a field from the far gate.</span>
+        </div>
+      </article>
+
+      <article class="person">
+        <span class="person-media">
+          <img src="https://images.unsplash.com/photo-1659353887272-703de19bec9a?auto=format&fit=crop&w=560&q=70" alt="Elena Cho" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="person-veil"></span>
+        </span>
+        <div class="person-body">
+          <h3>Elena Cho</h3>
+          <p>Harvest Coordinator · Yield</p>
+          <span class="person-since">Here since 2019</span>
+          <span class="person-line">Crews, haulage and grade-out. Has never once lost a picking window to a scheduling error.</span>
+        </div>
+      </article>
+
+      <article class="person">
+        <span class="person-media">
+          <img src="https://images.unsplash.com/photo-1673538064388-21d1aaaf6594?auto=format&fit=crop&w=560&q=70" alt="Marcus Ide" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <span class="person-veil"></span>
+        </span>
+        <div class="person-body">
+          <h3>Marcus Ide</h3>
+          <p>Field Technician · Telemetry</p>
+          <span class="person-since">Here since 2020</span>
+          <span class="person-line">Every probe in the ground was installed and calibrated by him or by someone he trained.</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. WHERE WE WORK ============ -->
+<section class="ab-ground" id="ground">
+  <div class="wrap ab-ground-grid">
+    <div class="ground-collage" id="groundCollage">
+      <figure class="gc gc-1"><img src="https://images.unsplash.com/photo-1564493031643-4be2c4347a17?auto=format&fit=crop&w=800&q=70" alt="Cereal block at golden hour" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></figure>
+      <figure class="gc gc-2"><img src="https://images.unsplash.com/photo-1708796705570-33fd29ef67d0?auto=format&fit=crop&w=800&q=70" alt="Protected cropping under glass" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></figure>
+      <figure class="gc gc-3"><img src="https://images.unsplash.com/photo-1634143174678-ecd0c3c2375b?auto=format&fit=crop&w=800&q=70" alt="Tractor working a field" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></figure>
+      <span class="gc-rule" aria-hidden="true"></span>
+    </div>
+
+    <div class="ground-copy">
+      <span class="eyebrow">Where we work</span>
+      <h2>An hour's drive,<br>and no further.</h2>
+      <p>Everything we manage is within about ninety minutes of the farm office. It is a deliberate limit: an agronomist who can be on your block the same morning is worth more than one with a wider map.</p>
+      <ul class="ground-list">
+        <li><b data-count="1240" data-suffix=" ha">0</b><span>under active management</span></li>
+        <li><b data-count="38">0</b><span>holdings across eight divisions</span></li>
+        <li><b data-count="90" data-suffix=" min">0</b><span>furthest block from the office</span></li>
+        <li><b data-count="9">0</b><span>weather stations on the network</span></li>
+      </ul>
+      <a href="contact.html" class="btn btn-outline">Ask if we reach you</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. HOW WE ARE HELD TO IT + FIRST VISIT ============ -->
+<section class="ab-standards" id="standards">
+  <div class="wrap">
+    <div class="ab-head">
+      <div>
+        <span class="eyebrow">How we are held to it</span>
+        <h2>Checked by people<br>who are not us.</h2>
+      </div>
+      <p class="ab-head-note">Independent assessment, and a published record that anyone can hold us to.</p>
+    </div>
+
+    <div class="std-grid">
+      <article class="std">
+        <span class="std-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3.4v5.3c0 4.4-3.1 7.5-7.5 9.3-4.4-1.8-7.5-4.9-7.5-9.3V6.4z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg>
+        </span>
+        <h3>Farm assurance</h3>
+        <p>Red Tractor assessed across every managed holding, audited annually with no advance notice on the field visit.</p>
+        <span class="std-meta">Renewed through April 2027</span>
+      </article>
+
+      <article class="std">
+        <span class="std-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/></svg>
+        </span>
+        <h3>Published record</h3>
+        <p>Yield against plan for every managed block, put out each January — including the blocks that went backwards.</p>
+        <span class="std-meta">Five seasons available</span>
+      </article>
+
+      <article class="std">
+        <span class="std-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.6 6 10.5a6 6 0 0 1-12 0C6 9.6 12 3 12 3z"/><path d="M9.5 14a2.5 2.5 0 0 0 5 0"/></svg>
+        </span>
+        <h3>Water stewardship</h3>
+        <p>Abstraction returns prepared and filed for every grower we schedule, reconciled against the meter not the plan.</p>
+        <span class="std-meta">Within licence, all sites</span>
+      </article>
+
+      <article class="std">
+        <span class="std-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+        </span>
+        <h3>No supplier margin</h3>
+        <p>Declared in writing in every engagement letter since 2011, and open to inspection by any grower who asks.</p>
+        <span class="std-meta">Independent since 2011</span>
+      </article>
+    </div>
+
+    <div class="ab-cta">
+      <div class="ab-cta-media" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1597563146687-ffbb906b394e?auto=format&fit=crop&w=1400&q=70" alt="" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+        <span class="ab-cta-veil"></span>
+      </div>
+      <div class="ab-cta-inner">
+        <span class="eyebrow">First visit</span>
+        <h2>Come and meet the block with us.</h2>
+        <p>An hour on the ground with the agronomist who would run it, then a written note of soil, target yield and likely input cost — before you commit to anything.</p>
+        <div class="ab-cta-actions">
+          <a href="contact.html" class="btn btn-primary" data-magnetic>Book a field visit
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="services.html" class="btn btn-outline">See what we do</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html#hero" class="logo">
+          <img class="logo-placeholder logo-placeholder-footer" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+          <span class="logo-word" style="display:none">AGRITECH SOLUTIONS</span>
+        </a>
+        <p>Agronomy, irrigation and harvest management — for growers who would rather be advised properly than quickly.</p>
+        <div class="footer-social">
+          <a href="404.html" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="404.html" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 21v-7h2.5l.5-3H14V9.2c0-.9.3-1.7 1.7-1.7H17V5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2V11H8v3h2.6v7"/></svg>
+          </a>
+          <a href="404.html" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="9" width="4" height="10"/><circle cx="5" cy="5" r="1.6"/><path d="M11 19v-6.5a2.5 2.5 0 0 1 5 0V19M11 12.5V19"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <a href="#story">The story</a>
+        <a href="#beliefs">What we believe</a>
+        <a href="#people">The people</a>
+        <a href="#ground">Where we work</a>
+        <a href="#standards">Our standards</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get In Touch</h4>
+        <ul class="footer-contact">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+            <a href="404.html" target="_blank" rel="noopener">MMR Complex, Periyakollappatty,<br>Chinna Thirupathi, Salem, Tamil<br>Nadu 636008</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5c0 8.8 6.2 15 15 15l2-3.5-5-2-1.5 2C11.5 15 9 12.5 8.5 9.5l2-1.5-2-5z"/></svg>
+            <a href="404.html">0712 371 2345</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <a href="404.html">hello@stackly.com</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AGRITECH SOLUTIONS</span>
+      <span class="status-dot">Certified practice · Soil to store</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</button>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HOVERABLE = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+/* =========================================================
+   PRELOADER
+   ========================================================= */
+(function(){
+  const el = document.getElementById('preloader');
+  const fill = document.getElementById('preloaderFill');
+  if(!el) return;
+  gsap.fromTo(fill, { width:'0%' }, { width:'100%', duration:1.2, ease:'power1.inOut' });
+  const startedAt = Date.now();
+  function finish(){
+    setTimeout(function(){ el.classList.add('hide'); intro(); }, Math.max(0, 850 - (Date.now() - startedAt)));
+  }
+  if(document.readyState === 'complete'){ finish(); } else { window.addEventListener('load', finish); }
+  setTimeout(function(){ el.classList.add('hide'); intro(); }, 3800);
+})();
+
+window.scrollTo(0,0);
+window.addEventListener('load', function(){ window.scrollTo(0,0); ScrollTrigger.refresh(); });
+
+/* =========================================================
+   HAMBURGER / MOBILE MENU
+   ========================================================= */
+(function(){
+  const hamburger = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  const closeBtn = document.getElementById('mobileMenuClose');
+
+  function open(){
+    menu.style.display = 'flex';
+    void menu.offsetWidth;
+    menu.classList.add('open');
+    hamburger.classList.add('active');
+    document.body.classList.add('menu-open');
+    hamburger.setAttribute('aria-expanded','true');
+    gsap.fromTo('.mobile-menu-links > *', { opacity:0, x:24 },
+      { opacity:1, x:0, duration:.45, stagger:.06, ease:'power3.out', delay:.12 });
+  }
+  function close(){
+    menu.classList.remove('open');
+    hamburger.classList.remove('active');
+    document.body.classList.remove('menu-open');
+    hamburger.setAttribute('aria-expanded','false');
+    setTimeout(function(){ if(!menu.classList.contains('open')) menu.style.display='none'; }, 350);
+  }
+  hamburger.addEventListener('click', function(){ menu.classList.contains('open') ? close() : open(); });
+  closeBtn.addEventListener('click', close);
+  document.querySelectorAll('.mobile-menu a').forEach(function(a){ a.addEventListener('click', close); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && menu.classList.contains('open')) close(); });
+  window.addEventListener('resize', function(){ if(window.innerWidth>900 && menu.classList.contains('open')) close(); });
+})();
+
+/* ---- scroll progress + header contraction ---- */
+gsap.to('#scrollProgress', { width:'100%', ease:'none', scrollTrigger:{ scrub:.3 } });
+ScrollTrigger.create({ start:'top -60', end:99999, toggleClass:{ targets:'#siteHeader', className:'is-pinned' } });
+
+/* =========================================================
+   COUNTERS
+   ========================================================= */
+function runCounters(nodes){
+  nodes.forEach(function(el){
+    const target = parseFloat(el.dataset.count || '0');
+    const suffix = el.dataset.suffix || '';
+    if(REDUCED){ el.textContent = target.toLocaleString() + suffix; return; }
+    const c = { v:0 };
+    gsap.to(c, { v:target, duration:1.9, ease:'power1.out',
+      onUpdate:function(){ el.textContent = Math.round(c.v).toLocaleString() + suffix; } });
+  });
+}
+gsap.utils.toArray('[data-count]').forEach(function(el){
+  if(el.closest('.ab-hero-stats')) return;
+  ScrollTrigger.create({ trigger:el, start:'top 90%', once:true, onEnter:function(){ runCounters([el]); } });
+});
+
+/* =========================================================
+   1. HERO INTRO
+   ========================================================= */
+let introPlayed = false;
+function intro(){
+  if(introPlayed) return;
+  introPlayed = true;
+  const tl = gsap.timeline({ defaults:{ ease:'power3.out' } });
+  tl.from('.ab-hero .eyebrow', { opacity:0, x:-16, duration:.5 })
+    .from('.ab-hero-title .line-in', { yPercent:120, rotate:2.5, duration:1, stagger:.09, ease:'expo.out' }, '-=.2')
+    .from('.ab-hero-sub', { opacity:0, y:18, duration:.6 }, '-=.55')
+    .from('.ab-hero-meta li', { opacity:0, y:14, duration:.5, stagger:.08 }, '-=.45')
+    .fromTo('.ab-hero-shot', { clipPath:'inset(0% 0% 100% 0%)' },
+      { clipPath:'inset(0% 0% 0% 0%)', duration:1.15, ease:'expo.out' }, '-=.75')
+    .from('.ab-hero-shot figcaption', { opacity:0, y:12, duration:.5 }, '-=.4')
+    .from('.ab-hero-stats > div', { opacity:0, y:16, duration:.5, stagger:.07 }, '-=.45');
+  runCounters(document.querySelectorAll('.ab-hero-stats .stat-num'));
+}
+if(!REDUCED){
+  gsap.fromTo('.ab-hero-shot img', { yPercent:-6, scale:1.06 }, {
+    yPercent:6, ease:'none',
+    scrollTrigger:{ trigger:'.ab-hero', start:'top top', end:'bottom top', scrub:true }
+  });
+}
+
+/* =========================================================
+   GENERIC REVEALS
+   ========================================================= */
+(function(){
+  const singles = ['.ab-head', '.section-title', '.ab-quote', '.ground-copy', '.ab-cta-inner'];
+  singles.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      gsap.from(el, { opacity:0, y:24, duration:.7, ease:'power2.out',
+        scrollTrigger:{ trigger:el, start:'top 88%', once:true } });
+    });
+  });
+  const groups = ['.person', '.std', '.ground-list li'];
+  groups.forEach(function(sel){
+    const items = gsap.utils.toArray(sel);
+    if(!items.length) return;
+    gsap.from(items, { opacity:0, y:26, duration:.6, ease:'power3.out', stagger:.07,
+      scrollTrigger:{ trigger:items[0], start:'top 88%', once:true } });
+  });
+})();
+
+/* =========================================================
+   2. THE STORY — each era arrives from its own side, the
+   ghost year fades up behind it, and the photograph drifts
+   ========================================================= */
+(function(){
+  const eras = gsap.utils.toArray('.era');
+  if(!eras.length) return;
+
+  eras.forEach(function(era){
+    const flipped = era.classList.contains('era-flip');
+    const media = era.querySelector('.era-media');
+    const copy = era.querySelector('.era-copy');
+    const ghost = era.querySelector('.era-ghost');
+
+    const tl = gsap.timeline({ scrollTrigger:{ trigger:era, start:'top 78%', once:true } });
+    tl.fromTo(ghost, { opacity:0, y:26 }, { opacity:1, y:0, duration:.9, ease:'power2.out' })
+      .fromTo(media,
+        { clipPath: flipped ? 'inset(0% 0% 0% 100%)' : 'inset(0% 100% 0% 0%)' },
+        { clipPath:'inset(0% 0% 0% 0%)', duration:1.05, ease:'expo.out' }, '-=.75')
+      .fromTo(copy, { opacity:0, x: flipped ? -34 : 34 },
+        { opacity:1, x:0, duration:.8, ease:'power3.out' }, '-=.7');
+
+    if(!REDUCED){
+      gsap.fromTo(era.querySelector('.era-media img'), { yPercent:-7 }, {
+        yPercent:7, ease:'none',
+        scrollTrigger:{ trigger:era, start:'top bottom', end:'bottom top', scrub:true }
+      });
+      gsap.fromTo(ghost, { y:30 }, { y:-30, ease:'none',
+        scrollTrigger:{ trigger:era, start:'top bottom', end:'bottom top', scrub:true } });
+    }
+  });
+})();
+
+/* =========================================================
+   3. BELIEFS — each rule wipes open in turn
+   ========================================================= */
+(function(){
+  const cards = gsap.utils.toArray('.belief');
+  if(!cards.length) return;
+  gsap.fromTo(cards,
+    { clipPath:'inset(0% 0% 100% 0%)', opacity:0, y:20 },
+    { clipPath:'inset(0% 0% 0% 0%)', opacity:1, y:0, duration:.85, stagger:.1, ease:'expo.out',
+      scrollTrigger:{ trigger:cards[0], start:'top 85%', once:true } });
+})();
+
+/* =========================================================
+   5. WHERE WE WORK — the three photographs drift at
+   different rates, and the rule draws between them
+   ========================================================= */
+(function(){
+  const collage = document.getElementById('groundCollage');
+  if(!collage) return;
+
+  const tl = gsap.timeline({ scrollTrigger:{ trigger:collage, start:'top 80%', once:true } });
+  tl.fromTo('.gc-1', { clipPath:'inset(0% 100% 0% 0%)' }, { clipPath:'inset(0% 0% 0% 0%)', duration:1, ease:'expo.out' })
+    .fromTo('.gc-2', { clipPath:'inset(100% 0% 0% 0%)' }, { clipPath:'inset(0% 0% 0% 0%)', duration:.95, ease:'expo.out' }, '-=.72')
+    .fromTo('.gc-3', { clipPath:'inset(0% 0% 0% 100%)' }, { clipPath:'inset(0% 0% 0% 0%)', duration:.95, ease:'expo.out' }, '-=.7')
+    .fromTo('.gc-rule', { scaleX:0 }, { scaleX:1, duration:.8, ease:'power2.out' }, '-=.55');
+
+  if(!REDUCED){
+    const rates = [[-8, 8], [7, -7], [-5, 5]];
+    ['.gc-1 img', '.gc-2 img', '.gc-3 img'].forEach(function(sel, i){
+      gsap.fromTo(sel, { yPercent:rates[i][0] }, { yPercent:rates[i][1], ease:'none',
+        scrollTrigger:{ trigger:collage, start:'top bottom', end:'bottom top', scrub:true } });
+    });
+  }
+})();
+
+/* ---- closing CTA photograph drifts ---- */
+if(!REDUCED){
+  gsap.fromTo('.ab-cta-media img', { yPercent:-8, scale:1.06 }, {
+    yPercent:8, ease:'none',
+    scrollTrigger:{ trigger:'.ab-cta', start:'top bottom', end:'bottom top', scrub:true }
+  });
+}
+
+/* =========================================================
+   MAGNETIC BUTTONS
+   ========================================================= */
+if(HOVERABLE && !REDUCED){
+  document.querySelectorAll('[data-magnetic]').forEach(function(el){
+    el.addEventListener('mousemove', function(e){
+      const r = el.getBoundingClientRect();
+      gsap.to(el, { x:(e.clientX - r.left - r.width/2)*.22, y:(e.clientY - r.top - r.height/2)*.3, duration:.4, ease:'power2.out' });
+    });
+    el.addEventListener('mouseleave', function(){
+      gsap.to(el, { x:0, y:0, duration:.5, ease:'elastic.out(1,.5)' });
+    });
+  });
+}
+
+/* =========================================================
+   ANCHORS + BACK TO TOP
+   ========================================================= */
+(function(){
+  function headerH(){ return document.querySelector('header').offsetHeight; }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      const id = a.getAttribute('href');
+      const target = id.length > 1 ? document.querySelector(id) : null;
+      if(!target) return;
+      e.preventDefault();
+      const destY = target.getBoundingClientRect().top + window.scrollY - headerH() - 16;
+      const obj = { y: window.scrollY };
+      gsap.to(obj, { y:destY, duration:.9, ease:'power2.inOut', onUpdate:function(){ window.scrollTo(0, obj.y); } });
+    });
+  });
+
+  const toTop = document.getElementById('toTop');
+  ScrollTrigger.create({ start:'top -600', end:99999,
+    onToggle:function(self){ toTop.classList.toggle('show', self.isActive); } });
+  toTop.addEventListener('click', function(){
+    const obj = { y: window.scrollY };
+    gsap.to(obj, { y:0, duration:.8, ease:'power2.inOut', onUpdate:function(){ window.scrollTo(0, obj.y); } });
+  });
+})();
+</script>
+</body>
+</html>

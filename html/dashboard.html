@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stackly — Farm Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+<div class="console">
+  <div class="rail-scrim" id="sidebar-overlay"></div>
+
+  <!-- ============ RAIL ============ -->
+  <aside class="rail" id="sidebar">
+    <div class="rail-head">
+      <button class="brand" id="brand-home-btn" aria-label="Go to overview">
+        <img id="brand-logo-img" class="brand-img" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+        <span class="brand-word" style="display:none">AGRITECH</span>
+      </button>
+      <button class="rail-close" id="close-sidebar-btn" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <p class="rail-label">Operations</p>
+    <nav class="rail-nav" id="nav-main"></nav>
+    <p class="rail-label">Farm</p>
+    <nav class="rail-nav" id="nav-management"></nav>
+
+    <div class="rail-foot">
+      <div class="rail-user">
+        <span class="seal-initial" id="sidebar-user-avatar">–</span>
+        <div class="rail-user-info">
+          <span class="rail-user-name" id="sidebar-user-name">Signed out</span>
+          <span class="rail-user-email" id="sidebar-user-email">—</span>
+        </div>
+      </div>
+      <button class="rail-signout" id="logout-btn">Sign out</button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="stage">
+    <header class="topbar" id="topbar">
+      <div class="topbar-left">
+        <button class="burger" id="hamburger-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
+        <div class="page-title">
+          <h1 id="page-title-text">Overview</h1>
+          <p id="page-sub-text"></p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <form class="finder" id="topbar-search" autocomplete="off" role="search">
+          <button type="submit" class="finder-go" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>
+          </button>
+          <input id="topbar-search-input" placeholder="Search fields, crops, team…">
+        </form>
+        <button class="bell" id="notif-btn" aria-label="Alerts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 20a2 2 0 0 0 3 0"/></svg>
+          <span class="bell-dot"></span>
+        </button>
+        <div class="whoami" id="topbar-user">
+          <button class="whoami-btn" id="topbar-user-btn">
+            <span class="seal-initial sm" id="topbar-user-avatar">–</span>
+            <span class="whoami-name" id="topbar-user-name">Signed out</span>
+            <svg class="whoami-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="whoami-menu" id="topbar-user-menu">
+            <div class="whoami-menu-head">
+              <span>Signed in as</span>
+              <span class="whoami-menu-email" id="topbar-user-email">—</span>
+            </div>
+            <button class="whoami-item" data-nav="settings">Settings</button>
+            <button class="whoami-item danger" id="topbar-logout-btn">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="sheet" id="content-area"></div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
+/* =========================================================
+   ICONS
+   ========================================================= */
+const ICONS = {
+  grid:   'M4 4h7v7H4zM13 4h7v4h-7zM13 12h7v8h-7zM4 15h7v5H4z',
+  sprout: 'M12 21v-7M12 16c0-3.3 2.5-6 6-6 0 3.9-2.5 6.6-6 6M12 18c0-2.8-2-5-5-5 0 3.4 2 5.6 5 5',
+  team:   'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6M3 20c1-3 3.4-4.6 6-4.6S14 17 15 20M16.5 11.4a2.6 2.6 0 0 0 0-5.2M18.2 20c-.4-1.6-1-2.9-1.9-3.8',
+  check:  'M9 12l2 2 4-4M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18',
+  doc:    'M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h5',
+  cal:    'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
+  chart:  'M3 20h18M7 17v-5M12 17V7M17 17v-8',
+  book:   'M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM17 7h2v13',
+  gear:   'M12 9.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1',
+  drop:   'M12 3s6 6.6 6 10.5a6 6 0 0 1-12 0C6 9.6 12 3 12 3z',
+  sun:    'M12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9M12 2v2.4M12 19.6V22M2 12h2.4M19.6 12H22M5 5l1.7 1.7M17.3 17.3 19 19M19 5l-1.7 1.7M6.7 17.3 5 19',
+  alert:  'M12 4l9 16H3zM12 10v4.2M12 17.4v.4',
+  truck:  'M3 7h11v9H3zM14 10h4l3 3v3h-7zM7.5 19.5a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2M17.5 19.5a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2'
+};
+function ico(name, cls) {
+  return `<svg class="${cls || 'ico'}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[name] || ICONS.grid}"/></svg>`;
+}
+
+/* =========================================================
+   OPERATION AREAS
+   ========================================================= */
+const areaAccents = {
+  "Field ops":   "#5fd48a",
+  "Irrigation":  "#54c3e8",
+  "Soil health": "#d2a63c",
+  "Harvest":     "#f08b4c",
+  "Livestock":   "#b392e0"
+};
+
+/* ---------- Fields ---------- */
+const matters = [
+  { ref: "FLD-2201", name: "North Ridge — Winter Wheat",    client: "Block A · 84 ha", area: "Field ops",   stage: "Tillering",     status: "Active",          progress: 64,  next: "12 Oct", fee: "Drip",     lead: "Mara Ilić" },
+  { ref: "FLD-2214", name: "Hollow Creek — Soybean",        client: "Block C · 61 ha", area: "Irrigation",  stage: "Pod fill",      status: "Active",          progress: 41,  next: "3 Oct",  fee: "Pivot",    lead: "Tom Okafor" },
+  { ref: "FLD-2188", name: "Eastmark Orchard — Apples",     client: "Block F · 27 ha", area: "Harvest",     stage: "Pre-harvest",   status: "Awaiting weather",progress: 78,  next: "28 Sep", fee: "Micro-jet",lead: "Priya Nadar" },
+  { ref: "FLD-2231", name: "Willow Flats — Alfalfa",        client: "Block D · 46 ha", area: "Livestock",   stage: "Second cut",    status: "Active",          progress: 52,  next: "9 Oct",  fee: "Rainfed",  lead: "Daniel Voss" },
+  { ref: "FLD-2150", name: "Sandy Lane — Potatoes",         client: "Block B · 33 ha", area: "Harvest",     stage: "Lifted",        status: "Harvested",       progress: 100, next: "—",      fee: "Drip",     lead: "Elena Cho" },
+  { ref: "FLD-2243", name: "Cold Spring — Cover Crop",      client: "Block G · 52 ha", area: "Soil health", stage: "Establishing",  status: "On hold",         progress: 22,  next: "21 Oct", fee: "Rainfed",  lead: "Priya Nadar" },
+  { ref: "FLD-2226", name: "Mill Bottom — Maize",           client: "Block E · 78 ha", area: "Field ops",   stage: "Grain fill",    status: "Active",          progress: 69,  next: "6 Oct",  fee: "Pivot",    lead: "Tom Okafor" },
+  { ref: "FLD-2209", name: "Far Acre — Sugar Beet",         client: "Block H · 58 ha", area: "Irrigation",  stage: "Canopy close", status: "Awaiting weather",progress: 87,  next: "1 Oct",  fee: "Pivot",    lead: "Mara Ilić" }
+];
+
+/* ---------- Team ---------- */
+const counsel = [
+  { name: "Mara Ilić",    role: "Farm Manager",       called: 2009, initials: "MI", status: "in-field",  matters: 2, practice: "Arable agronomy",       email: "m.ilic@agritech.farm" },
+  { name: "Tom Okafor",   role: "Senior Agronomist",  called: 2012, initials: "TO", status: "in-field",  matters: 2, practice: "Irrigation & water",    email: "t.okafor@agritech.farm" },
+  { name: "Priya Nadar",  role: "Soil Scientist",     called: 2014, initials: "PN", status: "on-site",   matters: 2, practice: "Soil health & cover",   email: "p.nadar@agritech.farm" },
+  { name: "Daniel Voss",  role: "Livestock Lead",     called: 2017, initials: "DV", status: "in-field",  matters: 1, practice: "Forage & grazing",      email: "d.voss@agritech.farm" },
+  { name: "Elena Cho",    role: "Harvest Coordinator",called: 2019, initials: "EC", status: "in-field",  matters: 1, practice: "Yield & logistics",     email: "e.cho@agritech.farm" },
+  { name: "Marcus Ide",   role: "Field Technician",   called: 2020, initials: "MD", status: "on-site",   matters: 3, practice: "Sensors & telemetry",   email: "m.ide@agritech.farm" },
+  { name: "Aiko Yamada",  role: "Data Analyst",       called: 2021, initials: "AY", status: "in-field",  matters: 0, practice: "Yield modelling",       email: "a.yamada@agritech.farm" }
+];
+
+/* ---------- Tasks ---------- */
+const deadlines = [
+  { id: "TSK-1024", task: "Apply nitrogen top dressing",        matter: "FLD-2201", area: "Field ops",   type: "Application", due: "26 Sep", priority: "High",   status: "In progress" },
+  { id: "TSK-1031", task: "Service pivot 3 end gun",            matter: "FLD-2214", area: "Irrigation",  type: "Maintenance", due: "30 Sep", priority: "High",   status: "Open" },
+  { id: "TSK-1044", task: "Book picking crew for Eastmark",     matter: "FLD-2188", area: "Harvest",     type: "Scheduling",  due: "28 Sep", priority: "Medium", status: "In progress" },
+  { id: "TSK-1052", task: "Soil sample Block C to 60cm",        matter: "FLD-2214", area: "Soil health", type: "Sampling",    due: "3 Oct",  priority: "Medium", status: "Open" },
+  { id: "TSK-1067", task: "Cut and bale second alfalfa flush",  matter: "FLD-2231", area: "Livestock",   type: "Field work",  due: "7 Oct",  priority: "High",   status: "Open" },
+  { id: "TSK-1078", task: "Calibrate moisture probes row 4-9",  matter: "FLD-2209", area: "Irrigation",  type: "Calibration", due: "29 Sep", priority: "High",   status: "In progress" },
+  { id: "TSK-1090", task: "Order cover crop seed for Cold Spring", matter: "FLD-2243", area: "Soil health", type: "Procurement", due: "11 Oct", priority: "Low", status: "Open" },
+  { id: "TSK-1103", task: "Close out Sandy Lane harvest record", matter: "FLD-2150", area: "Harvest",     type: "Records",     due: "18 Sep", priority: "Low",    status: "Completed" }
+];
+
+/* ---------- Reports ---------- */
+const memos = [
+  { title: "Nitrogen response trial — North Ridge",      author: "Ilić, M.",   area: "Field ops",   year: 2025, status: "Filed",     reads: 24 },
+  { title: "Water use efficiency — Hollow Creek pivots", author: "Okafor, T.", area: "Irrigation",  year: 2025, status: "Filed",     reads: 41 },
+  { title: "Soil organic matter three-year trend",       author: "Nadar, P.",  area: "Soil health", year: 2025, status: "Filed",     reads: 63 },
+  { title: "Forage quality after second cut",            author: "Voss, D.",   area: "Livestock",   year: 2025, status: "In review", reads: 0 },
+  { title: "Apple grade-out and packhouse losses",       author: "Cho, E.",    area: "Harvest",     year: 2024, status: "Filed",     reads: 18 },
+  { title: "Sensor drift audit — telemetry network",     author: "Ide, M.",    area: "Field ops",   year: 2025, status: "Draft",     reads: 0 }
+];
+
+/* ---------- Schedule ---------- */
+const courtDiary = [
+  { date: "26 Sep", event: "Nitrogen application — North Ridge",     venue: "Block A · sprayer 2",     type: "visit" },
+  { date: "28 Sep", event: "Picking crew briefing — Eastmark",       venue: "Orchard yard",            type: "normal" },
+  { date: "29 Sep", event: "Moisture probe calibration deadline",    venue: "Far Acre",                type: "urgent" },
+  { date: "1 Oct",  event: "Pre-harvest walk — Far Acre beet",       venue: "Block H",                 type: "visit" },
+  { date: "3 Oct",  event: "Soil sampling — Hollow Creek",           venue: "Block C",                 type: "normal" },
+  { date: "7 Oct",  event: "Alfalfa cut and bale",                   venue: "Willow Flats",            type: "visit" },
+  { date: "12 Oct", event: "Agronomy review — winter wheat plan",    venue: "Farm office",             type: "visit" },
+  { date: "21 Oct", event: "Cover crop drilling window opens",       venue: "Cold Spring",             type: "normal" },
+  { date: "30 Oct", event: "Quarterly input cost review",            venue: "Farm office",             type: "normal" }
+];
+
+/* ---------- Budgets ---------- */
+const billing = [
+  { account: "North Ridge — Winter Wheat",  area: "Field ops",   budget: 210000, billed: 148000 },
+  { account: "Hollow Creek — Soybean",      area: "Irrigation",  budget: 182000, billed: 96000 },
+  { account: "Eastmark Orchard — Apples",   area: "Harvest",     budget: 95000,  billed: 91000 },
+  { account: "Willow Flats — Alfalfa",      area: "Livestock",   budget: 122000, billed: 44000 },
+  { account: "Mill Bottom — Maize",         area: "Field ops",   budget: 140000, billed: 119000 },
+  { account: "Far Acre — Sugar Beet",       area: "Irrigation",  budget: 176000, billed: 162000 },
+  { account: "Cold Spring — Cover Crop",    area: "Soil health", budget: 68000,  billed: 12000 }
+];
+
+/* ---------- Resource library ---------- */
+const precedents = [
+  { title: "Winter Wheat Agronomy Handbook 2025", type: "Handbook",  year: 2025, pages: 96,  uses: 384 },
+  { title: "Irrigation Scheduling Calculator",    type: "Tool",      year: 2024, pages: 148, uses: 712 },
+  { title: "Soil Sampling Protocol",              type: "Protocol",  year: 2024, pages: 62,  uses: 245 },
+  { title: "Harvest Readiness Checklist",         type: "Checklist", year: 2025, pages: 40,  uses: 563 },
+  { title: "Cover Crop Species Selector",         type: "Guide",     year: 2023, pages: 110, uses: 192 }
+];
+
+/* ---------- Activity ---------- */
+const chambersLog = [
+  { text: "North Ridge nitrogen plan approved by agronomy", time: "2h ago" },
+  { text: "Hollow Creek pivot 3 back online — 41 nozzles cleared", time: "4h ago" },
+  { text: "Eastmark brix readings cleared the harvest threshold", time: "Yesterday" },
+  { text: "Second alfalfa cut scheduled for Willow Flats", time: "Yesterday" },
+  { text: "Sandy Lane potatoes lifted and record closed", time: "2d ago" },
+  { text: "Soil carbon results filed for Cold Spring", time: "3d ago" },
+  { text: "Two new moisture probes commissioned in Block E", time: "4d ago" }
+];
+
+const navItems = [
+  { label: "Overview",  id: "dashboard",  icon: "grid" },
+  { label: "Fields",    id: "matters",    icon: "sprout" },
+  { label: "Team",      id: "counsel",    icon: "team" },
+  { label: "Tasks",     id: "deadlines",  icon: "check" },
+  { label: "Reports",   id: "memos",      icon: "doc" },
+  { label: "Schedule",  id: "diary",      icon: "cal" },
+  { label: "Budgets",   id: "billing",    icon: "chart" },
+  { label: "Resources", id: "precedents", icon: "book" },
+  { label: "Settings",  id: "settings",   icon: "gear" }
+];
+
+const statusClass = { "Active": "st-active", "Awaiting weather": "st-wait", "On hold": "st-hold", "Harvested": "st-closed" };
+const priorityColor = { "Low": "#7fbf8f", "Medium": "#d2a63c", "High": "#ef6a5a" };
+const memoStatusColor = { "Filed": "#5fd48a", "In review": "#d2a63c", "Draft": "#7d9585" };
+const diaryColor = { urgent: "#ef6a5a", normal: "#d2a63c", visit: "#5fd48a" };
+
+const pageMap = {
+  dashboard:  { title: "Overview",   sub: "Where the farm stands this week" },
+  matters:    { title: "Fields",     sub: "Every block currently in the ground" },
+  counsel:    { title: "Team",       sub: "Agronomists, technicians and support" },
+  deadlines:  { title: "Tasks",      sub: "Applications, maintenance and field work" },
+  memos:      { title: "Reports",    sub: "Trial results and agronomy notes" },
+  diary:      { title: "Schedule",   sub: "Field visits, windows and key dates" },
+  billing:    { title: "Budgets",    sub: "Input budgets against spend to date" },
+  precedents: { title: "Resources",  sub: "Handbooks, protocols and checklists" },
+  settings:   { title: "Settings",   sub: "Profile and preferences" }
+};
+
+/* =========================================================
+   SIGNED-IN USER LOOKUP
+   Unchanged in behaviour: checks the usual key names across
+   localStorage then sessionStorage, accepts a JSON object or
+   a bare address, digs into nested objects, and finally
+   sweeps every key for something that looks like an address.
+   ========================================================= */
+const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+const USER_KEY_CANDIDATES = [
+  'user', 'currentUser', 'loggedInUser', 'authUser', 'stacklyUser', 'agritechUser',
+  'userData', 'profile', 'account', 'auth', 'session',
+  'userEmail', 'email', 'username'
+];
+const EMAIL_FIELDS = ['email', 'mail', 'useremail', 'emailaddress', 'e-mail', 'username', 'login', 'user'];
+const NAME_FIELDS = ['name', 'fullname', 'displayname', 'firstname', 'givenname'];
+let foundUserKey = null;
+
+function asEmail(v) {
+  if (typeof v !== 'string') return null;
+  const s = v.trim();
+  return EMAIL_RE.test(s) ? s : null;
+}
+function objToUser(obj, depth) {
+  depth = depth || 0;
+  if (!obj || depth > 4) return null;
+  if (typeof obj === 'string') {
+    const direct = asEmail(obj);
+    if (direct) return { email: direct };
+    return rawToUser(obj, depth + 1);
+  }
+  if (Array.isArray(obj)) {
+    for (let i = 0; i < obj.length; i++) {
+      const hit = objToUser(obj[i], depth + 1);
+      if (hit) return hit;
+    }
+    return null;
+  }
+  if (typeof obj !== 'object') return null;
+  for (const k in obj) {
+    if (EMAIL_FIELDS.indexOf(String(k).toLowerCase()) === -1) continue;
+    const hit = asEmail(obj[k]);
+    if (hit) return Object.assign({}, obj, { email: hit });
+  }
+  for (const k in obj) {
+    const hit = asEmail(obj[k]);
+    if (hit) return Object.assign({}, obj, { email: hit });
+  }
+  for (const k in obj) {
+    const v = obj[k];
+    if (v && typeof v === 'object') {
+      const nested = objToUser(v, depth + 1);
+      if (nested) return nested;
+    } else if (typeof v === 'string' && (v.trim().charAt(0) === '{' || v.trim().charAt(0) === '[')) {
+      const nested = rawToUser(v, depth + 1);
+      if (nested) return nested;
+    }
+  }
+  return null;
+}
+function rawToUser(raw, depth) {
+  depth = depth || 0;
+  if (!raw || depth > 4) return null;
+  const trimmed = String(raw).trim();
+  if (!trimmed) return null;
+  const first = trimmed.charAt(0);
+  if (first === '{' || first === '[' || first === '"') {
+    try { return objToUser(JSON.parse(trimmed), depth); } catch (e) {}
+  }
+  const direct = asEmail(trimmed);
+  if (direct) return { email: direct };
+  try { return objToUser(JSON.parse(trimmed), depth); } catch (e) { return null; }
+}
+function pickName(obj) {
+  if (!obj || typeof obj !== 'object') return '';
+  for (const k in obj) {
+    if (NAME_FIELDS.indexOf(String(k).toLowerCase()) === -1) continue;
+    const v = obj[k];
+    if (typeof v === 'string' && v.trim() && !asEmail(v)) return v.trim();
+  }
+  return '';
+}
+function getCurrentUser() {
+  const stores = [];
+  try { if (window.localStorage) stores.push(localStorage); } catch (e) {}
+  try { if (window.sessionStorage) stores.push(sessionStorage); } catch (e) {}
+  for (let s = 0; s < stores.length; s++) {
+    try { if (stores[s].getItem('isAuthenticated') === 'false') return null; } catch (e) {}
+  }
+  for (let s = 0; s < stores.length; s++) {
+    for (let i = 0; i < USER_KEY_CANDIDATES.length; i++) {
+      const key = USER_KEY_CANDIDATES[i];
+      let hit = null;
+      try { hit = rawToUser(stores[s].getItem(key)); } catch (e) {}
+      if (hit) { foundUserKey = key; return hit; }
+    }
+  }
+  for (let s = 0; s < stores.length; s++) {
+    let len = 0;
+    try { len = stores[s].length; } catch (e) {}
+    for (let i = 0; i < len; i++) {
+      let key = null, hit = null;
+      try { key = stores[s].key(i); hit = rawToUser(stores[s].getItem(key)); } catch (e) {}
+      if (hit) { foundUserKey = key; return hit; }
+    }
+  }
+  return null;
+}
+function usernameFromEmail(email) { if (!email) return ''; return email.includes('@') ? email.split('@')[0] : email; }
+
+const currentUser = getCurrentUser();
+const currentEmail = currentUser ? (asEmail(currentUser.email) || '') : '';
+const storedName = currentUser ? pickName(currentUser) : '';
+const currentUsername = currentEmail || storedName ? (storedName || usernameFromEmail(currentEmail)) : '';
+const currentInitial = ((currentEmail || currentUsername || '?').trim().charAt(0) || '?').toUpperCase();
+
+function paintUserChrome() {
+  const nameToShow = currentUsername || currentEmail || 'Signed out';
+  const emailToShow = currentEmail || '—';
+  document.getElementById('sidebar-user-avatar').textContent = currentInitial;
+  document.getElementById('sidebar-user-name').textContent = nameToShow;
+  document.getElementById('sidebar-user-name').setAttribute('title', nameToShow);
+  document.getElementById('sidebar-user-email').textContent = emailToShow;
+  document.getElementById('sidebar-user-email').setAttribute('title', emailToShow);
+  document.getElementById('topbar-user-avatar').textContent = currentInitial;
+  document.getElementById('topbar-user-name').textContent = nameToShow;
+  document.getElementById('topbar-user-email').textContent = emailToShow;
+}
+
+function logout() {
+  const keys = ['user', 'isAuthenticated', 'activeNav', 'settings'].concat(USER_KEY_CANDIDATES);
+  if (foundUserKey && keys.indexOf(foundUserKey) === -1) keys.push(foundUserKey);
+  keys.forEach(function (k) {
+    try { localStorage.removeItem(k); } catch (e) {}
+    try { sessionStorage.removeItem(k); } catch (e) {}
+  });
+  window.location.href = 'login.html';
+}
+
+function getSavedNav() {
+  try { const saved = localStorage.getItem('activeNav'); if (saved && pageMap[saved]) return saved; } catch (e) {}
+  return 'dashboard';
+}
+function loadSettings() {
+  const defaults = { hearingAlerts: true, weeklyDigest: false, compactRows: false, language: "English" };
+  try { const raw = localStorage.getItem('settings'); if (raw) return Object.assign(defaults, JSON.parse(raw)); } catch (e) {}
+  return defaults;
+}
+function saveSettings() { try { localStorage.setItem('settings', JSON.stringify(state.settings)); } catch (e) {} }
+
+let state = { activeNav: getSavedNav(), matterFilter: "All", deadlineSearch: "", settings: loadSettings() };
+
+function money(n) { return "$" + n.toLocaleString(); }
+function go404() { window.location.href = "404.html"; }
+function areaTag(area) {
+  const c = areaAccents[area] || "#5fd48a";
+  return `<span class="area-tag" style="color:${c};border-color:${c}55;background:${c}18;">${area}</span>`;
+}
+
+function fillBars() {
+  requestAnimationFrame(function () {
+    document.querySelectorAll('[data-w]').forEach(function (el) {
+      el.style.width = el.getAttribute('data-w') + '%';
+    });
+  });
+}
+
+function entrance() {
+  if (typeof gsap === 'undefined') return;
+  gsap.killTweensOf('.figure, .panel, .listing, .counsel-card, .precedent-card');
+  gsap.fromTo('.figure', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.06 });
+  gsap.fromTo('.panel', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out', stagger: 0.06, delay: 0.06 });
+  gsap.fromTo('.panel-rule', { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'expo.out', stagger: 0.06, delay: 0.1 });
+  gsap.fromTo('.listing, .counsel-card, .precedent-card, .runs-table tbody tr',
+    { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out', stagger: 0.025, delay: 0.15 });
+
+  document.querySelectorAll('.figure-value').forEach(function (el) {
+    const raw = el.textContent.trim();
+    const match = raw.match(/^([^\d]*)([\d,]+\.?\d*)(.*)$/);
+    if (!match) return;
+    const prefix = match[1], numStr = match[2].replace(/,/g, ''), suffix = match[3];
+    const num = parseFloat(numStr);
+    if (isNaN(num)) return;
+    const isInt = Number.isInteger(num) && numStr.indexOf('.') === -1;
+    const counter = { val: 0 };
+    gsap.to(counter, {
+      val: num, duration: 1.1, ease: 'power2.out', delay: 0.1,
+      onUpdate: function () {
+        const shown = isInt ? Math.round(counter.val).toLocaleString() : counter.val.toFixed(1);
+        el.textContent = prefix + shown + suffix;
+      },
+      onComplete: function () { el.textContent = raw; }
+    });
+  });
+}
+
+/* =========================================================
+   STAT TILES — separate cards on a grid, each with its own
+   icon, ring and reading
+   ========================================================= */
+function figureBand(items) {
+  return `<section class="band">${items.map(function (f) {
+    return `<div class="figure" onclick="go404()">
+      <span class="figure-ico">${ico(f.icon || 'sprout')}</span>
+      <span class="figure-label">${f.label}</span>
+      <span class="figure-value">${f.value}</span>
+      <span class="figure-note">${f.note || ''}</span>
+      <span class="figure-track"><span class="figure-fill" data-w="${f.bar}"></span></span>
+    </div>`;
+  }).join("")}</section>`;
+}
+
+/* =========================================================
+   OVERVIEW
+   ========================================================= */
+function renderDashboard() {
+  const band = figureBand([
+    { label: "Fields in the ground", value: "34",       note: "6 drilled this month",  bar: 72, icon: "sprout" },
+    { label: "Field visits this month", value: "9",     note: "3 in the next week",    bar: 48, icon: "cal" },
+    { label: "Unspent input budget", value: "$412,000", note: "across 21 blocks",      bar: 64, icon: "chart" },
+    { label: "Team on the farm",     value: "18",       note: "2 joined this year",    bar: 88, icon: "team" }
+  ]);
+
+  const today = courtDiary.slice(0, 5).map(function (d) {
+    return `<li class="docket" onclick="go404()">
+      <span class="docket-date">${d.date}</span>
+      <span class="docket-mark" style="background:${diaryColor[d.type]}"></span>
+      <span class="docket-body">
+        <span class="docket-event">${d.event}</span>
+        <span class="docket-venue">${d.venue}</span>
+      </span>
+    </li>`;
+  }).join("");
+
+  const attention = matters.filter(function (m) { return m.status !== "Harvested"; }).slice(0, 5).map(function (m) {
+    return `<li class="listing" onclick="go404()">
+      <span class="listing-ref">${m.ref}</span>
+      <span class="listing-main">
+        <span class="listing-title">${m.name}</span>
+        <span class="listing-sub">${m.client} · ${m.lead}</span>
+      </span>
+      <span class="listing-side">
+        <span class="badge ${statusClass[m.status]}">${m.status}</span>
+        <span class="listing-date">next ${m.next}</span>
+      </span>
+    </li>`;
+  }).join("");
+
+  const bills = billing.slice(0, 4).map(function (b) {
+    const pct = Math.round(b.billed / b.budget * 100);
+    return `<div class="meter" onclick="go404()">
+      <div class="meter-top">
+        <span class="meter-name">${b.account}</span>
+        <span class="meter-figures"><b>${money(b.billed)}</b> of ${money(b.budget)}</span>
+      </div>
+      <div class="meter-track"><div class="meter-fill ${pct > 90 ? 'over' : ''}" data-w="${pct}"></div></div>
+    </div>`;
+  }).join("");
+
+  const log = chambersLog.slice(0, 6).map(function (a) {
+    return `<li class="note" onclick="go404()">
+      <span class="note-text">${a.text}</span>
+      <span class="note-time">${a.time}</span>
+    </li>`;
+  }).join("");
+
+  return `
+    ${band}
+    <section class="split">
+      <div class="panel">
+        <div class="panel-head"><h2>${ico('cal','head-ico')}In the schedule</h2><p>Next five entries</p></div>
+        <span class="panel-rule"></span>
+        <ul class="docket-list">${today}</ul>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>${ico('alert','head-ico')}Fields needing attention</h2><p>Live blocks by next key date</p></div>
+        <span class="panel-rule"></span>
+        <ul class="listing-list">${attention}</ul>
+      </div>
+    </section>
+    <section class="split split-wide">
+      <div class="panel">
+        <div class="panel-head"><h2>${ico('chart','head-ico')}Spend against budget</h2><p>Four largest blocks</p></div>
+        <span class="panel-rule"></span>
+        <div class="meter-list">${bills}</div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>${ico('truck','head-ico')}Farm log</h2><p>Recent movement in the fields</p></div>
+        <span class="panel-rule"></span>
+        <ul class="note-list">${log}</ul>
+      </div>
+    </section>`;
+}
+
+/* =========================================================
+   FIELDS
+   ========================================================= */
+function renderMatters() {
+  const statuses = ["All", "Active", "Awaiting weather", "On hold", "Harvested"];
+  const list = state.matterFilter === "All" ? matters : matters.filter(function (m) { return m.status === state.matterFilter; });
+
+  const band = figureBand([
+    { label: "Blocks on the books", value: String(matters.length), note: "all operations", bar: 100, icon: "sprout" },
+    { label: "Active",              value: String(matters.filter(function(m){return m.status==="Active";}).length), note: "being worked now", bar: 60, icon: "check" },
+    { label: "Awaiting weather",    value: String(matters.filter(function(m){return m.status==="Awaiting weather";}).length), note: "window not open", bar: 40, icon: "drop" },
+    { label: "Harvested this year", value: String(matters.filter(function(m){return m.status==="Harvested";}).length), note: "records closed", bar: 20, icon: "truck" }
+  ]);
+
+  const chips = statuses.map(function (s) {
+    return `<button class="chip matter-filter ${state.matterFilter === s ? 'chip-on' : ''}" data-filter="${s}">${s}</button>`;
+  }).join("");
+
+  const rows = list.map(function (m) {
+    return `<tr onclick="go404()">
+      <td class="ref-col" data-label="Ref">${m.ref}</td>
+      <td class="stack-col" data-label="Field"><span class="t-name">${m.name}</span><span class="t-sub">${m.client}</span></td>
+      <td data-label="Operation">${areaTag(m.area)}</td>
+      <td class="plain-col" data-label="Stage">${m.stage}</td>
+      <td data-label="Status"><span class="badge ${statusClass[m.status]}">${m.status}</span></td>
+      <td data-label="Progress"><div class="progress"><div class="progress-track"><div class="progress-fill" data-w="${m.progress}"></div></div><span class="progress-pct">${m.progress}%</span></div></td>
+      <td class="plain-col" data-label="Agronomist">${m.lead}</td>
+      <td class="plain-col" data-label="Next visit">${m.next}</td>
+      <td class="plain-col" data-label="Watering">${m.fee}</td>
+    </tr>`;
+  }).join("");
+
+  return `${band}
+    <div class="panel">
+      <div class="panel-head panel-head-row">
+        <div><h2>${ico('sprout','head-ico')}Field register</h2><p>Every block, with its stage and next date</p></div>
+        <div class="chip-row">${chips}</div>
+      </div>
+      <span class="panel-rule"></span>
+      <div class="table-wrap"><table class="runs-table">
+        <thead><tr><th>Ref</th><th>Field</th><th>Operation</th><th>Stage</th><th>Status</th><th>Progress</th><th>Agronomist</th><th>Next visit</th><th>Watering</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="9" class="empty">No blocks in that state.</td></tr>'}</tbody></table></div>
+    </div>`;
+}
+
+/* =========================================================
+   TEAM
+   ========================================================= */
+function renderCounsel() {
+  const band = figureBand([
+    { label: "Team members",     value: String(counsel.length), note: "across the farm", bar: 80, icon: "team" },
+    { label: "In the field today", value: String(counsel.filter(function(c){return c.status==="in-field";}).length), note: "available", bar: 85, icon: "sprout" },
+    { label: "Blocks led",       value: String(counsel.reduce(function(a,c){return a+c.matters;},0)), note: "currently assigned", bar: 70, icon: "check" },
+    { label: "Average years on", value: String(Math.round(counsel.reduce(function(a,c){return a + (2026 - c.called);},0) / counsel.length)), note: "with the farm", bar: 75, icon: "sun" }
+  ]);
+
+  const cards = counsel.map(function (c) {
+    return `<article class="counsel-card" onclick="go404()">
+      <header>
+        <span class="seal-initial md">${c.initials}<i class="pip pip-${c.status}"></i></span>
+        <span>
+          <span class="counsel-name">${c.name}</span>
+          <span class="counsel-role">${c.role}</span>
+        </span>
+      </header>
+      <dl class="counsel-meta">
+        <div><dt>Speciality</dt><dd>${c.practice}</dd></div>
+        <div><dt>Joined</dt><dd>${c.called}</dd></div>
+        <div><dt>Blocks led</dt><dd>${c.matters}</dd></div>
+        <div><dt>Email</dt><dd class="break">${c.email}</dd></div>
+      </dl>
+    </article>`;
+  }).join("");
+
+  return `${band}
+    <div class="panel">
+      <div class="panel-head"><h2>${ico('team','head-ico')}Who is who</h2><p>Agronomists, technicians and support</p></div>
+      <span class="panel-rule"></span>
+      <div class="counsel-grid">${cards}</div>
+    </div>`;
+}
+
+/* =========================================================
+   TASKS
+   The search reads every column — reference, task, block,
+   operation, type, due date, priority and status — and each
+   word typed has to match somewhere, so "high irrigation"
+   narrows rather than widens.
+   ========================================================= */
+function deadlineMatches(d, terms) {
+  if (!terms.length) return true;
+  const hay = [d.id, d.task, d.matter, d.area, d.type, d.due, d.priority, d.status]
+    .join(" ").toLowerCase();
+  return terms.every(function (t) { return hay.indexOf(t) > -1; });
+}
+
+function renderDeadlines() {
+  const terms = state.deadlineSearch.toLowerCase().split(/\s+/).filter(Boolean);
+  const list = deadlines.filter(function (d) { return deadlineMatches(d, terms); });
+
+  const band = figureBand([
+    { label: "Tasks in the system", value: "412", note: "next twelve months", bar: 75, icon: "check" },
+    { label: "Due within 7 days",   value: "14",  note: "needs attention",    bar: 55, icon: "alert" },
+    { label: "Completed this month",value: "54",  note: "done on time",       bar: 40, icon: "truck" },
+    { label: "Missed",              value: "0",   note: "clean record",       bar: 4,  icon: "sun" }
+  ]);
+
+  const sub = terms.length
+    ? `Showing ${list.length} of ${deadlines.length} entries`
+    : "Everything with a clock running against it";
+
+  const rows = list.map(function (d) {
+    return `<tr onclick="go404()">
+      <td class="ref-col" data-label="Ref">${d.id}</td>
+      <td class="stack-col" data-label="Task"><span class="t-name">${d.task}</span><span class="t-sub">${d.matter}</span></td>
+      <td data-label="Operation">${areaTag(d.area)}</td>
+      <td class="plain-col" data-label="Type">${d.type}</td>
+      <td class="plain-col" data-label="Due">${d.due}</td>
+      <td data-label="Priority"><span class="priority" style="color:${priorityColor[d.priority]}">${d.priority}</span></td>
+      <td data-label="Status"><span class="badge ${d.status === 'Completed' ? 'st-closed' : d.status === 'In progress' ? 'st-active' : 'st-hold'}">${d.status}</span></td>
+    </tr>`;
+  }).join("");
+
+  return `${band}
+    <div class="panel">
+      <div class="panel-head panel-head-row">
+        <div><h2>${ico('check','head-ico')}Field task list</h2><p>${sub}</p></div>
+        <label class="finder finder-inline">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>
+          <input id="product-search-input" placeholder="Task, operation, priority, status…" value="${state.deadlineSearch}">
+        </label>
+      </div>
+      <span class="panel-rule"></span>
+      <div class="table-wrap"><table class="runs-table">
+        <thead><tr><th>Ref</th><th>Task</th><th>Operation</th><th>Type</th><th>Due</th><th>Priority</th><th>Status</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="7" class="empty">Nothing matches that search.</td></tr>'}</tbody></table></div>
+    </div>`;
+}
+
+/* =========================================================
+   REPORTS
+   ========================================================= */
+function renderMemos() {
+  const band = figureBand([
+    { label: "Reports on file", value: String(memos.length), note: "trials and notes", bar: 80, icon: "doc" },
+    { label: "Filed",           value: String(memos.filter(function(m){return m.status==="Filed";}).length), note: "circulated", bar: 70, icon: "check" },
+    { label: "In review",       value: String(memos.filter(function(m){return m.status==="In review";}).length), note: "with the manager", bar: 20, icon: "alert" },
+    { label: "Internal reads",  value: String(memos.reduce(function(a,m){return a+m.reads;},0)), note: "this quarter", bar: 60, icon: "team" }
+  ]);
+
+  const rows = memos.map(function (m) {
+    return `<article class="listing listing-block" onclick="go404()">
+      <span class="listing-main">
+        <span class="listing-title">${m.title}</span>
+        <span class="listing-sub">${m.author} · ${m.area} · ${m.year}</span>
+      </span>
+      <span class="listing-side">
+        <span class="badge" style="background:${memoStatusColor[m.status]}22;color:${memoStatusColor[m.status]}">${m.status}</span>
+        ${m.reads > 0 ? `<span class="listing-date">${m.reads} reads</span>` : ''}
+      </span>
+    </article>`;
+  }).join("");
+
+  return `${band}
+    <div class="panel">
+      <div class="panel-head"><h2>${ico('doc','head-ico')}Trial results and agronomy notes</h2><p>Written work held on the farm</p></div>
+      <span class="panel-rule"></span>
+      <div class="listing-list">${rows}</div>
+    </div>`;
+}
+
+/* =========================================================
+   SCHEDULE
+   ========================================================= */
+function renderDiary() {
+  const rows = courtDiary.map(function (d) {
+    const parts = d.date.split(" ");
+    let tag = "";
+    if (d.type === "urgent") tag = `<span class="badge st-urgent">Deadline</span>`;
+    if (d.type === "visit") tag = `<span class="badge st-hearing">Field visit</span>`;
+    return `<div class="diary-row" onclick="go404()">
+      <div class="diary-date">
+        <span class="diary-day">${parts[0]}</span>
+        <span class="diary-month">${parts[1]}</span>
+      </div>
+      <span class="diary-mark" style="background:${diaryColor[d.type]}"></span>
+      <div class="diary-body">
+        <span class="diary-event">${d.event}</span>
+        <span class="diary-venue">${d.venue}</span>
+      </div>
+      ${tag}
+    </div>`;
+  }).join("");
+
+  return `<div class="panel">
+    <div class="panel-head"><h2>${ico('cal','head-ico')}Farm schedule</h2><p>Field visits, windows and internal deadlines</p></div>
+    <span class="panel-rule"></span>
+    <div class="diary-list">${rows}</div>
+  </div>`;
+}
+
+/* =========================================================
+   BUDGETS
+   ========================================================= */
+function renderBilling() {
+  const budget = billing.reduce(function (a, b) { return a + b.budget; }, 0);
+  const billed = billing.reduce(function (a, b) { return a + b.billed; }, 0);
+  const unbilled = budget - billed;
+  const rate = Math.round(billed / budget * 100);
+
+  const band = figureBand([
+    { label: "Input budgets set", value: money(budget),   note: "seven live blocks",  bar: 100, icon: "chart" },
+    { label: "Spent to date",     value: money(billed),   note: rate + "% of budget", bar: rate, icon: "truck" },
+    { label: "Still to spend",    value: money(unbilled), note: "work in progress",   bar: Math.round(unbilled / budget * 100), icon: "drop" },
+    { label: "Utilisation",       value: rate + "%",      note: "against agreed plan",bar: rate, icon: "check" }
+  ]);
+
+  const rows = billing.map(function (b) {
+    const pct = Math.round(b.billed / b.budget * 100);
+    return `<div class="meter" onclick="go404()">
+      <div class="meter-top">
+        <span class="meter-name">${b.account} ${areaTag(b.area)}</span>
+        <span class="meter-figures"><b>${money(b.billed)}</b> of ${money(b.budget)} <em style="color:${pct > 90 ? '#ef6a5a' : 'var(--leaf-lt)'}">${pct}%</em></span>
+      </div>
+      <div class="meter-track"><div class="meter-fill ${pct > 90 ? 'over' : ''}" data-w="${pct}"></div></div>
+    </div>`;
+  }).join("");
+
+  return `${band}
+    <div class="panel">
+      <div class="panel-head"><h2>${ico('chart','head-ico')}Spend by block</h2><p>Input spend against the agreed budget</p></div>
+      <span class="panel-rule"></span>
+      <div class="meter-list">${rows}</div>
+    </div>`;
+}
+
+/* =========================================================
+   RESOURCES
+   ========================================================= */
+function renderPrecedents() {
+  const band = figureBand([
+    { label: "Documents held", value: String(precedents.length), note: "kept by the agronomy team", bar: 80, icon: "book" },
+    { label: "Times used",     value: precedents.reduce(function(a,p){return a+p.uses;},0).toLocaleString(), note: "across all blocks", bar: 90, icon: "check" },
+    { label: "Total pages",    value: precedents.reduce(function(a,p){return a+p.pages;},0).toLocaleString(), note: "reference material", bar: 65, icon: "doc" },
+    { label: "Latest revision",value: "2025", note: "reviewed each season", bar: 100, icon: "sun" }
+  ]);
+
+  const cards = precedents.map(function (p) {
+    return `<article class="precedent-card" onclick="go404()">
+      <span class="precedent-ico">${ico('book')}</span>
+      <h3>${p.title}</h3>
+      <p>${p.type} · ${p.year} · ${p.pages} pages</p>
+      <footer>
+        <span>${p.uses.toLocaleString()} uses</span>
+        <button class="chip" onclick="event.stopPropagation();go404()">Open</button>
+      </footer>
+    </article>`;
+  }).join("");
+
+  return `${band}
+    <div class="panel">
+      <div class="panel-head"><h2>${ico('book','head-ico')}Resource library</h2><p>Handbooks, protocols and checklists</p></div>
+      <span class="panel-rule"></span>
+      <div class="precedent-grid">${cards}</div>
+    </div>`;
+}
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+function switchHtml(id, value) {
+  return `<span class="switch ${value ? 'on' : ''}" data-toggle="${id}" role="switch" aria-checked="${value}"><span class="switch-knob"></span></span>`;
+}
+
+function renderSettings() {
+  const s = state.settings;
+  const displayName = currentUsername || currentEmail || "Signed out";
+  const displayEmail = currentEmail || "No account signed in";
+  return `
+    <div class="panel">
+      <div class="panel-head"><h2>${ico('team','head-ico')}Account</h2><p>The profile signed in on this device</p></div>
+      <span class="panel-rule"></span>
+      <div class="account">
+        <span class="seal-initial lg">${currentInitial}</span>
+        <div>
+          <span class="account-name">${displayName}</span>
+          <span class="account-email">${displayEmail}</span>
+          <span class="account-role">${currentUser ? (currentUser.role === 'admin' ? 'Administrator' : 'Farm team account') : 'Not signed in'}</span>
+        </div>
+      </div>
+      <button class="chip" onclick="go404()">Edit profile</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>${ico('gear','head-ico')}Preferences</h2><p>Alerts and how the console reads</p></div>
+      <span class="panel-rule"></span>
+      <div class="pref">
+        <div><span class="pref-title">Weather alerts</span><span class="pref-desc">Notify me when frost, wind or heavy rain is forecast</span></div>
+        ${switchHtml("hearingAlerts", s.hearingAlerts)}
+      </div>
+      <div class="pref">
+        <div><span class="pref-title">Monday digest</span><span class="pref-desc">A summary of the week's field tasks every Monday morning</span></div>
+        ${switchHtml("weeklyDigest", s.weeklyDigest)}
+      </div>
+      <div class="pref">
+        <div><span class="pref-title">Compact rows</span><span class="pref-desc">Tighter spacing in the field and task tables</span></div>
+        ${switchHtml("compactRows", s.compactRows)}
+      </div>
+      <div class="pref pref-last">
+        <div><span class="pref-title">Language</span><span class="pref-desc">Interface display language</span></div>
+        <select class="pref-select" id="lang-select">${["English","French","Spanish","Mandarin","Portuguese"].map(function(l){return `<option ${s.language===l?'selected':''}>${l}</option>`;}).join("")}</select>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>${ico('check','head-ico')}Session</h2><p>Sign out of this account on this device</p></div>
+      <span class="panel-rule"></span>
+      <div class="session">
+        <p>Signed in as <strong>${displayEmail}</strong>. Signing out clears the session and returns you to the sign-in screen.</p>
+        <button class="chip chip-danger" id="settings-logout-btn">Sign out</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>${ico('alert','head-ico')}Account actions</h2><p>These cannot be undone</p></div>
+      <span class="panel-rule"></span>
+      <div class="danger-row">
+        <button class="chip chip-danger" onclick="go404()">Reset password</button>
+        <button class="chip chip-danger" onclick="go404()">Close account</button>
+      </div>
+    </div>`;
+}
+
+const pageRenderers = {
+  dashboard: renderDashboard, matters: renderMatters, counsel: renderCounsel,
+  deadlines: renderDeadlines, memos: renderMemos, diary: renderDiary,
+  billing: renderBilling, precedents: renderPrecedents, settings: renderSettings
+};
+
+/* =========================================================
+   SHELL
+   ========================================================= */
+function renderNav() {
+  const main = navItems.slice(0, 6);
+  const mgmt = navItems.slice(6);
+  function itemHtml(item) {
+    const badge = item.id === "deadlines" ? `<span class="rail-badge">14</span>`
+                : item.id === "matters"   ? `<span class="rail-badge">8</span>` : "";
+    return `<button class="rail-item ${state.activeNav === item.id ? 'on' : ''}" data-nav="${item.id}">${ico(item.icon, 'rail-ico')}<span>${item.label}</span>${badge}</button>`;
+  }
+  document.getElementById("nav-main").innerHTML = main.map(itemHtml).join("");
+  document.getElementById("nav-management").innerHTML = mgmt.map(itemHtml).join("");
+}
+
+function renderPage() {
+  const page = pageMap[state.activeNav];
+  document.getElementById("page-title-text").textContent = page.title;
+  document.getElementById("page-sub-text").textContent = page.sub;
+  document.getElementById("content-area").innerHTML = pageRenderers[state.activeNav]();
+  document.body.classList.toggle('compact', !!state.settings.compactRows);
+  renderNav();
+  const settingsLogoutBtn = document.getElementById("settings-logout-btn");
+  if (settingsLogoutBtn) settingsLogoutBtn.addEventListener("click", logout);
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  fillBars();
+  entrance();
+}
+
+function navigateTo(id) {
+  state.activeNav = id;
+  try { localStorage.setItem('activeNav', id); } catch (e) {}
+  closeRail();
+  closeWhoami();
+  renderPage();
+}
+
+/* ---- rail open / close with page-scroll lock ---- */
+let savedScrollY = 0;
+function lockScroll() {
+  savedScrollY = window.scrollY || window.pageYOffset || 0;
+  document.documentElement.classList.add("nav-open");
+  document.body.classList.add("nav-open");
+}
+function unlockScroll() {
+  if (!document.body.classList.contains("nav-open")) return;
+  document.documentElement.classList.remove("nav-open");
+  document.body.classList.remove("nav-open");
+  window.scrollTo(0, savedScrollY);
+}
+function openRail() {
+  document.getElementById("sidebar").classList.add("open");
+  document.getElementById("sidebar-overlay").classList.add("show");
+  lockScroll();
+}
+function closeRail() {
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("sidebar-overlay").classList.remove("show");
+  unlockScroll();
+}
+function closeWhoami() { document.getElementById("topbar-user").classList.remove("open"); }
+
+document.getElementById("hamburger-btn").addEventListener("click", openRail);
+document.getElementById("close-sidebar-btn").addEventListener("click", closeRail);
+document.getElementById("brand-home-btn").addEventListener("click", function () { navigateTo("dashboard"); });
+document.getElementById("sidebar-overlay").addEventListener("click", closeRail);
+document.getElementById("notif-btn").addEventListener("click", go404);
+document.getElementById("logout-btn").addEventListener("click", logout);
+document.getElementById("topbar-logout-btn").addEventListener("click", logout);
+document.getElementById("topbar-user-btn").addEventListener("click", function (e) {
+  e.stopPropagation();
+  document.getElementById("topbar-user").classList.toggle("open");
+});
+document.addEventListener("click", closeWhoami);
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeRail(); closeWhoami(); } });
+window.addEventListener("resize", function () { if (window.innerWidth > 1040) closeRail(); });
+
+/* ---- topbar search: anything typed, then Enter or the
+        magnifier, opens the results page ---- */
+(function () {
+  const form = document.getElementById("topbar-search");
+  const input = document.getElementById("topbar-search-input");
+  if (!form || !input) return;
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!input.value.trim()) { input.focus(); return; }
+    go404();
+  });
+})();
+
+document.addEventListener("click", function (e) {
+  const navBtn = e.target.closest("[data-nav]");
+  if (navBtn) { navigateTo(navBtn.getAttribute("data-nav")); return; }
+  const filterBtn = e.target.closest(".matter-filter");
+  if (filterBtn) { state.matterFilter = filterBtn.getAttribute("data-filter"); renderPage(); return; }
+  const toggle = e.target.closest("[data-toggle]");
+  if (toggle) {
+    const key = toggle.getAttribute("data-toggle");
+    state.settings[key] = !state.settings[key];
+    saveSettings();
+    toggle.classList.toggle("on", state.settings[key]);
+    toggle.setAttribute("aria-checked", String(state.settings[key]));
+    if (key === "compactRows") document.body.classList.toggle("compact", state.settings[key]);
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(toggle.querySelector('.switch-knob'), { scale: 0.7 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' });
+    }
+    return;
+  }
+});
+
+document.addEventListener("input", function (e) {
+  if (e.target && e.target.id === "product-search-input") {
+    state.deadlineSearch = e.target.value;
+    const caretPos = e.target.selectionStart;
+    renderPage();
+    const input = document.getElementById("product-search-input");
+    if (input) { input.focus(); input.setSelectionRange(caretPos, caretPos); }
+  }
+});
+
+document.addEventListener("change", function (e) {
+  if (e.target && e.target.id === "lang-select") { state.settings.language = e.target.value; saveSettings(); }
+});
+
+paintUserChrome();
+if (typeof gsap !== 'undefined') {
+  gsap.from('#topbar', { y: -14, opacity: 0, duration: 0.5, ease: 'power2.out' });
+  // The rail only slides in where it is a fixed column. Below that it is an
+  // off-canvas drawer driven by a CSS transform, so an inline transform from
+  // GSAP would fight the .open class — fade it instead and clear up after.
+  if (window.innerWidth > 1040) {
+    gsap.from('.rail', { x: -18, opacity: 0, duration: 0.6, ease: 'power3.out', clearProps: 'transform' });
+  } else {
+    gsap.from('.rail', { opacity: 0, duration: 0.4, ease: 'power2.out' });
+  }
+}
+renderPage();
+</script>
+</body>
+</html>

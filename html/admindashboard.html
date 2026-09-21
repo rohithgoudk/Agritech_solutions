@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stackly — Farm Administration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admindashboard.css" />
+</head>
+<body>
+<div class="console">
+  <div class="rail-scrim" id="sidebar-overlay"></div>
+
+  <!-- ============ RAIL ============ -->
+  <aside class="rail" id="sidebar">
+    <div class="rail-head">
+      <button class="brand" id="brand-home-btn" aria-label="Go to overview">
+        <img id="brand-logo-img" class="brand-img" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+        <span class="brand-word" style="display:none">AGRITECH</span>
+      </button>
+      <button class="rail-close" id="close-sidebar-btn" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <p class="rail-stamp">Farm administration</p>
+
+    <p class="rail-label">The business</p>
+    <nav class="rail-nav" id="nav-main"></nav>
+    <p class="rail-label">Governance</p>
+    <nav class="rail-nav" id="nav-management"></nav>
+
+    <div class="rail-foot">
+      <div class="rail-user">
+        <span class="seal" id="sidebar-user-avatar">–</span>
+        <span class="rail-user-info">
+          <span class="rail-user-name" id="sidebar-user-name">Signed out</span>
+          <span class="rail-user-email" id="sidebar-user-email">—</span>
+        </span>
+      </div>
+      <button class="rail-signout" id="logout-btn">Sign out</button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="stage">
+    <header class="topbar" id="topbar">
+      <div class="topbar-left">
+        <button class="burger" id="hamburger-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
+        <div class="page-title">
+          <h1 id="page-title-text">Overview</h1>
+          <p id="page-sub-text"></p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <form class="finder" id="topbar-search" autocomplete="off" role="search">
+          <button type="submit" class="finder-go" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>
+          </button>
+          <input id="topbar-search-input" placeholder="Search buyers, people, blocks…">
+        </form>
+        <button class="bell" id="notif-btn" aria-label="Alerts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 20a2 2 0 0 0 3 0"/></svg>
+          <span class="bell-dot"></span>
+        </button>
+        <div class="whoami" id="topbar-user">
+          <button class="whoami-btn" id="topbar-user-btn">
+            <span class="seal sm" id="topbar-user-avatar">–</span>
+            <span class="whoami-name" id="topbar-user-name">Signed out</span>
+            <svg class="whoami-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="whoami-menu" id="topbar-user-menu">
+            <div class="whoami-menu-head">
+              <span>Signed in as</span>
+              <span class="whoami-menu-email" id="topbar-user-email">—</span>
+            </div>
+            <button class="whoami-item" data-nav="settings">Settings</button>
+            <button class="whoami-item danger" id="topbar-logout-btn">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="sheet" id="content-area"></div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
+/* ---------- Division accents ---------- */
+const groupAccents = {
+  "Arable":     "#5fd48a",
+  "Orchard":    "#f08b4c",
+  "Livestock":  "#b392e0",
+  "Greenhouse": "#54c3e8",
+  "Agronomy":   "#d2a63c"
+};
+
+/* ---------- Buyers and contracts on the books ---------- */
+const clients = [
+  { name: "Meridian Grain Co.",       engagement: "Annual contract", matters: 12, billedYtd: 486000, status: "Active",   since: "Jan 2023", group: "Arable" },
+  { name: "Northbridge Produce",      engagement: "Fixed tonnage",   matters: 5,  billedYtd: 214000, status: "Active",   since: "Mar 2024", group: "Greenhouse" },
+  { name: "Solvane Foods",            engagement: "Annual contract", matters: 17, billedYtd: 702000, status: "Active",   since: "Jun 2022", group: "Arable" },
+  { name: "Harrow & Vane Haulage",    engagement: "Spot",            matters: 2,  billedYtd: 38000,  status: "Prospect", since: "Aug 2026", group: "Livestock" },
+  { name: "Kestrel Dairy",            engagement: "Annual contract", matters: 9,  billedYtd: 331000, status: "Active",   since: "Nov 2023", group: "Livestock" },
+  { name: "Bramwell Mills",           engagement: "Spot",            matters: 1,  billedYtd: 12000,  status: "Dormant",  since: "Feb 2025", group: "Agronomy" },
+  { name: "Continental Fresh",        engagement: "Annual contract", matters: 21, billedYtd: 918000, status: "Active",   since: "May 2021", group: "Orchard" },
+  { name: "The Ridgeway Farm Trust",  engagement: "Fixed tonnage",   matters: 4,  billedYtd: 96000,  status: "On hold",  since: "Sep 2024", group: "Agronomy" }
+];
+
+/* ---------- People on the farm ---------- */
+const people = [
+  { name: "Mara Ilić",     role: "Farm Manager",        group: "Arable",     access: "Full",       lastActive: "2h ago", status: "Active" },
+  { name: "Tom Okafor",    role: "Senior Agronomist",   group: "Agronomy",   access: "Full",       lastActive: "5h ago", status: "Active" },
+  { name: "Priya Nadar",   role: "Soil Scientist",      group: "Agronomy",   access: "Full",       lastActive: "1d ago", status: "Active" },
+  { name: "Daniel Voss",   role: "Livestock Lead",      group: "Livestock",  access: "Standard",   lastActive: "3h ago", status: "Active" },
+  { name: "Elena Cho",     role: "Harvest Coordinator", group: "Orchard",    access: "Standard",   lastActive: "6h ago", status: "Active" },
+  { name: "Marcus Ide",    role: "Field Technician",    group: "Arable",     access: "Standard",   lastActive: "2d ago", status: "Suspended" },
+  { name: "Aiko Yamada",   role: "Data Analyst",        group: "Greenhouse", access: "Restricted", lastActive: "1h ago", status: "Active" },
+  { name: "Jordan Reyes",  role: "Operations Manager",  group: "Administration", access: "Full",   lastActive: "4d ago", status: "Pending" }
+];
+
+/* ---------- Divisions ---------- */
+const practiceGroups = [
+  { name: "Arable",     earners: 8, matters: 54, share: 34 },
+  { name: "Orchard",    earners: 6, matters: 38, share: 27 },
+  { name: "Livestock",  earners: 3, matters: 18, share: 14 },
+  { name: "Greenhouse", earners: 4, matters: 16, share: 13 },
+  { name: "Agronomy",   earners: 3, matters: 11, share: 12 }
+];
+
+/* ---------- Audit trail ---------- */
+const auditTrail = [
+  { time: "Today · 09:14",     actor: "Mara Ilić",    action: "Opened a new block record",         target: "Far Acre — Sugar Beet",        scope: "Arable" },
+  { time: "Today · 08:02",     actor: "System",       action: "Ran the overnight sensor sweep",    target: "137 active probes",            scope: "Farm-wide" },
+  { time: "Yesterday · 17:40", actor: "Priya Nadar",  action: "Released a delivery note",          target: "Ridgeway Farm Trust",          scope: "Agronomy" },
+  { time: "Yesterday · 14:15", actor: "Admin (You)",  action: "Placed a buyer on hold",            target: "Bramwell Mills",               scope: "Farm-wide" },
+  { time: "Yesterday · 11:30", actor: "Jordan Reyes", action: "Granted block access",              target: "Elena Cho — FLD-2150",         scope: "Orchard" },
+  { time: "2 days ago",        actor: "System",       action: "Archived a closed harvest record",  target: "Sandy Lane potatoes",          scope: "Farm-wide" },
+  { time: "3 days ago",        actor: "Admin (You)",  action: "Adjusted an input cost rate",       target: "Fertiliser band, Arable",      scope: "Farm-wide" },
+  { time: "4 days ago",        actor: "Tom Okafor",   action: "Signed off a supply agreement",     target: "Northbridge Produce",          scope: "Greenhouse" }
+];
+
+/* ---------- Compliance checks ---------- */
+const complianceChecks = [
+  { name: "Spray application register", state: "clear",     detail: "Swept 2 hours ago · every application logged",  metric: "137 records" },
+  { name: "Organic certification",      state: "clear",     detail: "All certified blocks inspected within 12 months", metric: "8 of 8" },
+  { name: "Water abstraction licence",  state: "clear",     detail: "Within the licensed volume on 21 September",    metric: "Monthly" },
+  { name: "Farm assurance scheme",      state: "clear",     detail: "Assessment passed through 30 April 2027",       metric: "Red Tractor" },
+  { name: "Machinery safety checks",    state: "attention", detail: "9 machines past their inspection date",         metric: "9 machines" }
+];
+
+/* ---------- Farm systems ---------- */
+const systems = [
+  { name: "Weather station network", type: "Telemetry", status: "Connected", desks: 5 },
+  { name: "Irrigation controllers",  type: "Control",   status: "Connected", desks: 8 },
+  { name: "Grain store monitoring",  type: "Telemetry", status: "Connected", desks: 3 },
+  { name: "Fleet and machinery",     type: "Logistics", status: "Connected", desks: 8 },
+  { name: "Accounting and payroll",  type: "Finance",   status: "Connected", desks: 6 },
+  { name: "Single sign-on",          type: "Identity",  status: "Connected", desks: 8 }
+];
+
+/* ---------- Contract income ---------- */
+const billingAccounts = [
+  { client: "Meridian Grain Co.",      engagement: "Annual contract", monthly: 42000, next: "1 Oct",  state: "Paid" },
+  { client: "Northbridge Produce",     engagement: "Fixed tonnage",   monthly: 18000, next: "3 Oct",  state: "Paid" },
+  { client: "Solvane Foods",           engagement: "Annual contract", monthly: 56000, next: "5 Oct",  state: "Paid" },
+  { client: "Harrow & Vane Haulage",   engagement: "Spot",            monthly: 6000,  next: "12 Oct", state: "On account" },
+  { client: "Kestrel Dairy",           engagement: "Annual contract", monthly: 19000, next: "8 Oct",  state: "Paid" },
+  { client: "Bramwell Mills",          engagement: "Spot",            monthly: 5000,  next: "28 Sep", state: "Overdue" },
+  { client: "Continental Fresh",       engagement: "Annual contract", monthly: 78000, next: "15 Oct", state: "Paid" },
+  { client: "Ridgeway Farm Trust",     engagement: "Fixed tonnage",   monthly: 17500, next: "20 Oct", state: "Paid" }
+];
+
+const navItems = [
+  { label: "Overview",       id: "dashboard" },
+  { label: "Buyers",         id: "clients" },
+  { label: "People",         id: "people" },
+  { label: "Divisions",      id: "groups" },
+  { label: "Audit trail",    id: "audit" },
+  { label: "Compliance",     id: "compliance" },
+  { label: "Systems",        id: "systems" },
+  { label: "Contracts",      id: "billing" },
+  { label: "Security",       id: "security" },
+  { label: "Settings",       id: "settings" }
+];
+
+const stateClass = {
+  "Active": "is-good", "Prospect": "is-watch", "Dormant": "is-quiet", "On hold": "is-warn",
+  "Suspended": "is-warn", "Pending": "is-watch", "Paid": "is-good", "Overdue": "is-warn",
+  "On account": "is-watch", "Connected": "is-good", "clear": "is-good", "attention": "is-warn"
+};
+const accessColor = { "Full": "#7fe0a4", "Standard": "#d2a63c", "Restricted": "#8b9c90" };
+
+const pageMap = {
+  dashboard:  { title: "Overview",    sub: "The farm business at a glance this week" },
+  clients:    { title: "Buyers",      sub: "Every buyer and contract on the books" },
+  people:     { title: "People",      sub: "Staff, contractors and their access" },
+  groups:     { title: "Divisions",   sub: "Headcount, workload and revenue share" },
+  audit:      { title: "Audit trail", sub: "Every administrative action, in order" },
+  compliance: { title: "Compliance",  sub: "Regulatory checks and standing obligations" },
+  systems:    { title: "Systems",     sub: "Telemetry, control, finance and identity" },
+  billing:    { title: "Contracts",   sub: "Agreements and recurring contract income" },
+  security:   { title: "Security",    sub: "Farm-wide access policy" },
+  settings:   { title: "Settings",    sub: "Profile and preferences" }
+};
+
+/* =========================================================
+   SIGNED-IN USER LOOKUP
+   Same behaviour as before: the usual key names in
+   localStorage then sessionStorage, a JSON object or a bare
+   address, nested objects, then a sweep of every stored key.
+   JSON is parsed before anything is treated as an address.
+   ========================================================= */
+const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+const USER_KEY_CANDIDATES = [
+  'user', 'currentUser', 'loggedInUser', 'authUser', 'stacklyUser', 'agritechUser',
+  'userData', 'profile', 'account', 'auth', 'session',
+  'userEmail', 'email', 'username'
+];
+const EMAIL_FIELDS = ['email', 'mail', 'useremail', 'emailaddress', 'e-mail', 'username', 'login', 'user'];
+const NAME_FIELDS = ['name', 'fullname', 'displayname', 'firstname', 'givenname'];
+const ROLE_FIELDS = ['role', 'userrole', 'accounttype', 'type'];
+let foundUserKey = null;
+
+function asEmail(v) {
+  if (typeof v !== 'string') return null;
+  const s = v.trim();
+  return EMAIL_RE.test(s) ? s : null;
+}
+function objToUser(obj, depth) {
+  depth = depth || 0;
+  if (!obj || depth > 4) return null;
+  if (typeof obj === 'string') {
+    const direct = asEmail(obj);
+    if (direct) return { email: direct };
+    return rawToUser(obj, depth + 1);
+  }
+  if (Array.isArray(obj)) {
+    for (let i = 0; i < obj.length; i++) {
+      const hit = objToUser(obj[i], depth + 1);
+      if (hit) return hit;
+    }
+    return null;
+  }
+  if (typeof obj !== 'object') return null;
+  for (const k in obj) {
+    if (EMAIL_FIELDS.indexOf(String(k).toLowerCase()) === -1) continue;
+    const hit = asEmail(obj[k]);
+    if (hit) return Object.assign({}, obj, { email: hit });
+  }
+  for (const k in obj) {
+    const hit = asEmail(obj[k]);
+    if (hit) return Object.assign({}, obj, { email: hit });
+  }
+  for (const k in obj) {
+    const v = obj[k];
+    if (v && typeof v === 'object') {
+      const nested = objToUser(v, depth + 1);
+      if (nested) return nested;
+    } else if (typeof v === 'string' && (v.trim().charAt(0) === '{' || v.trim().charAt(0) === '[')) {
+      const nested = rawToUser(v, depth + 1);
+      if (nested) return nested;
+    }
+  }
+  return null;
+}
+function rawToUser(raw, depth) {
+  depth = depth || 0;
+  if (!raw || depth > 4) return null;
+  const trimmed = String(raw).trim();
+  if (!trimmed) return null;
+  const first = trimmed.charAt(0);
+  if (first === '{' || first === '[' || first === '"') {
+    try { return objToUser(JSON.parse(trimmed), depth); } catch (e) {}
+  }
+  const direct = asEmail(trimmed);
+  if (direct) return { email: direct };
+  try { return objToUser(JSON.parse(trimmed), depth); } catch (e) { return null; }
+}
+function pickField(obj, fields) {
+  if (!obj || typeof obj !== 'object') return '';
+  for (const k in obj) {
+    if (fields.indexOf(String(k).toLowerCase()) === -1) continue;
+    const v = obj[k];
+    if (typeof v === 'string' && v.trim() && !asEmail(v)) return v.trim();
+  }
+  return '';
+}
+function getCurrentUser() {
+  const stores = [];
+  try { if (window.localStorage) stores.push(localStorage); } catch (e) {}
+  try { if (window.sessionStorage) stores.push(sessionStorage); } catch (e) {}
+  for (let s = 0; s < stores.length; s++) {
+    try { if (stores[s].getItem('isAuthenticated') === 'false') return null; } catch (e) {}
+  }
+  for (let s = 0; s < stores.length; s++) {
+    for (let i = 0; i < USER_KEY_CANDIDATES.length; i++) {
+      const key = USER_KEY_CANDIDATES[i];
+      let hit = null;
+      try { hit = rawToUser(stores[s].getItem(key)); } catch (e) {}
+      if (hit) { foundUserKey = key; return hit; }
+    }
+  }
+  for (let s = 0; s < stores.length; s++) {
+    let len = 0;
+    try { len = stores[s].length; } catch (e) {}
+    for (let i = 0; i < len; i++) {
+      let key = null, hit = null;
+      try { key = stores[s].key(i); hit = rawToUser(stores[s].getItem(key)); } catch (e) {}
+      if (hit) { foundUserKey = key; return hit; }
+    }
+  }
+  return null;
+}
+function usernameFromEmail(email) { if (!email) return ''; return email.includes('@') ? email.split('@')[0] : email; }
+
+const currentUser = getCurrentUser();
+const currentEmail = currentUser ? (asEmail(currentUser.email) || '') : '';
+const storedName = currentUser ? pickField(currentUser, NAME_FIELDS) : '';
+const currentRole = currentUser ? pickField(currentUser, ROLE_FIELDS).toLowerCase() : '';
+const currentUsername = (currentEmail || storedName) ? (storedName || usernameFromEmail(currentEmail)) : '';
+const currentInitial = ((currentEmail || currentUsername || '?').trim().charAt(0) || '?').toUpperCase();
+
+function paintUserChrome() {
+  const nameToShow = currentUsername || currentEmail || 'Signed out';
+  const emailToShow = currentEmail || '—';
+  document.getElementById('sidebar-user-avatar').textContent = currentInitial;
+  document.getElementById('sidebar-user-name').textContent = nameToShow;
+  document.getElementById('sidebar-user-name').setAttribute('title', nameToShow);
+  document.getElementById('sidebar-user-email').textContent = emailToShow;
+  document.getElementById('sidebar-user-email').setAttribute('title', emailToShow);
+  document.getElementById('topbar-user-avatar').textContent = currentInitial;
+  document.getElementById('topbar-user-name').textContent = nameToShow;
+  document.getElementById('topbar-user-email').textContent = emailToShow;
+}
+
+function logout() {
+  const keys = ['user', 'isAuthenticated', 'activeNav', 'settings'].concat(USER_KEY_CANDIDATES);
+  if (foundUserKey && keys.indexOf(foundUserKey) === -1) keys.push(foundUserKey);
+  keys.forEach(function (k) {
+    try { localStorage.removeItem(k); } catch (e) {}
+    try { sessionStorage.removeItem(k); } catch (e) {}
+  });
+  window.location.href = 'login.html';
+}
+
+function getSavedNav() {
+  try { const saved = localStorage.getItem('activeNav'); if (saved && pageMap[saved]) return saved; } catch (e) {}
+  return 'dashboard';
+}
+function loadSettings() {
+  const defaults = {
+    hearingAlerts: true, weeklyDigest: false, compactRows: false, language: "English",
+    twoFactor: true, ssoRequired: true, ipAllowlist: false, matterWalls: true, sessionTimeout: "30 minutes"
+  };
+  try { const raw = localStorage.getItem('settings'); if (raw) return Object.assign(defaults, JSON.parse(raw)); } catch (e) {}
+  return defaults;
+}
+function saveSettings() { try { localStorage.setItem('settings', JSON.stringify(state.settings)); } catch (e) {} }
+
+let state = { activeNav: getSavedNav(), clientFilter: "All", peopleSearch: "", settings: loadSettings() };
+
+function money(n) { return "$" + n.toLocaleString(); }
+function go404() { window.location.href = "404.html"; }
+function groupTag(g) {
+  const c = groupAccents[g] || "#5fd48a";
+  return `<span class="group-tag" style="color:${c};border-color:${c}55;background:${c}18;">${g}</span>`;
+}
+function pill(text) { return `<span class="pill ${stateClass[text] || 'is-quiet'}">${text}</span>`; }
+
+/* =========================================================
+   TOPBAR HEIGHT
+   The header is sticky, and the account menu is sized against
+   whatever height it settles at, so it is measured whenever
+   the header can have re-wrapped.
+   ========================================================= */
+function syncTopbarHeight() {
+  const tb = document.getElementById('topbar');
+  if (!tb) return;
+  const h = tb.offsetHeight;
+  if (h) document.documentElement.style.setProperty('--topbar-h', h + 'px');
+}
+
+function fillBars() {
+  requestAnimationFrame(function () {
+    document.querySelectorAll('[data-w]').forEach(function (el) {
+      el.style.width = el.getAttribute('data-w') + '%';
+    });
+  });
+}
+
+function entrance() {
+  if (typeof gsap === 'undefined') return;
+  gsap.killTweensOf('.masthead, .block, .tally, .flag, .trail-item, .group-card, .ledger tbody tr');
+  gsap.fromTo('.masthead', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
+  gsap.fromTo('.block', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.06, delay: 0.05 });
+  gsap.fromTo('.block-rule', { scaleX: 0 }, { scaleX: 1, duration: 0.75, ease: 'expo.out', stagger: 0.05, delay: 0.1 });
+  gsap.fromTo('.tally, .flag, .trail-item, .group-card, .system-row, .ledger tbody tr',
+    { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out', stagger: 0.03, delay: 0.14 });
+
+  document.querySelectorAll('.count').forEach(function (el) {
+    const raw = el.textContent.trim();
+    const match = raw.match(/^([^\d]*)([\d,]+\.?\d*)(.*)$/);
+    if (!match) return;
+    const prefix = match[1], numStr = match[2].replace(/,/g, ''), suffix = match[3];
+    const num = parseFloat(numStr);
+    if (isNaN(num)) return;
+    const isInt = Number.isInteger(num) && numStr.indexOf('.') === -1;
+    const counter = { val: 0 };
+    gsap.to(counter, {
+      val: num, duration: 1.05, ease: 'power2.out', delay: 0.1,
+      onUpdate: function () {
+        const shown = isInt ? Math.round(counter.val).toLocaleString() : counter.val.toFixed(1);
+        el.textContent = prefix + shown + suffix;
+      },
+      onComplete: function () { el.textContent = raw; }
+    });
+  });
+}
+
+/* ---------- shared pieces ---------- */
+function masthead(caption, figures) {
+  return `<section class="masthead">
+    <div class="masthead-id">
+      <span class="masthead-firm">Agritech Solutions</span>
+      <span class="masthead-caption">${caption}</span>
+    </div>
+    <div class="masthead-figures">
+      ${figures.map(function (f) {
+        return `<div class="mf" onclick="go404()">
+          <span class="mf-value count">${f.value}</span>
+          <span class="mf-label">${f.label}</span>
+        </div>`;
+      }).join("")}
+    </div>
+  </section>`;
+}
+
+function tallyList(rows) {
+  return `<div class="tally-list">${rows.map(function (r) {
+    return `<div class="tally" onclick="go404()">
+      <span class="tally-label">${r.label}</span>
+      <span class="tally-value count">${r.value}</span>
+      <span class="tally-note">${r.note || ''}</span>
+      <span class="tally-track"><span class="tally-fill" data-w="${r.bar}"></span></span>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+/* =========================================================
+   OVERVIEW
+   ========================================================= */
+function renderDashboard() {
+  const feesMonth = billingAccounts.reduce(function (a, b) { return a + b.monthly; }, 0);
+  const attention = clients.filter(function (c) { return c.status !== "Active"; });
+
+  const head = masthead("Autumn season · week commencing 21 September", [
+    { value: "137", label: "Blocks in the ground" },
+    { value: "24",  label: "People on the farm" },
+    { value: money(feesMonth), label: "Contract income" }
+  ]);
+
+  const tallies = tallyList([
+    { label: "Buyers on the books", value: String(clients.length), note: "3 signed this quarter", bar: 80 },
+    { label: "Blocks drilled this month", value: "19", note: "against 14 harvested", bar: 62 },
+    { label: "Machine hours logged", value: "1,842", note: "94% of plan", bar: 94 },
+    { label: "Deliveries awaiting release", value: "11", note: "worth $214,000", bar: 38 }
+  ]);
+
+  const flags = complianceChecks.slice(0, 5).map(function (c) {
+    return `<li class="flag" onclick="go404()">
+      <span class="flag-mark ${c.state === 'clear' ? 'ok' : 'warn'}"></span>
+      <span class="flag-body">
+        <span class="flag-name">${c.name}</span>
+        <span class="flag-detail">${c.detail}</span>
+      </span>
+      ${pill(c.state === 'clear' ? 'Clear' : 'Attention')}
+    </li>`;
+  }).join("");
+
+  const groups = practiceGroups.map(function (g) {
+    return `<div class="bar-group" onclick="go404()">
+      <div class="bar-group-top">
+        <span class="bar-group-name">${g.name}</span>
+        <span class="bar-group-figs">${g.matters} blocks · ${g.earners} staff · <b>${g.share}%</b></span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" data-w="${g.share * 2.6}" style="background:linear-gradient(90deg, ${groupAccents[g.name]}88, ${groupAccents[g.name]})"></div></div>
+    </div>`;
+  }).join("");
+
+  const trail = auditTrail.slice(0, 5).map(function (a) {
+    return `<li class="trail-item" onclick="go404()">
+      <span class="trail-dot ${a.actor === 'System' ? 'auto' : ''}"></span>
+      <span class="trail-body">
+        <span class="trail-line"><b>${a.actor}</b> ${a.action.toLowerCase()} — ${a.target}</span>
+        <span class="trail-meta">${a.time} · ${a.scope}</span>
+      </span>
+    </li>`;
+  }).join("");
+
+  const attentionRows = attention.map(function (c) {
+    return `<li class="flag" onclick="go404()">
+      <span class="flag-mark warn"></span>
+      <span class="flag-body">
+        <span class="flag-name">${c.name}</span>
+        <span class="flag-detail">${c.engagement} · buyer since ${c.since}</span>
+      </span>
+      ${pill(c.status)}
+    </li>`;
+  }).join("");
+
+  return `${head}
+    <section class="cols cols-a">
+      <div class="block">
+        <div class="block-head"><span class="block-kicker">Farm-wide</span><h2>This month in numbers</h2><p>Every division, all blocks</p></div>
+        <span class="block-rule"></span>
+        ${tallies}
+      </div>
+      <div class="block">
+        <div class="block-head"><span class="block-kicker">Assurance</span><h2>Standing checks</h2><p>Regulatory obligations and their state</p></div>
+        <span class="block-rule"></span>
+        <ul class="flag-list">${flags}</ul>
+      </div>
+    </section>
+    <section class="cols cols-b">
+      <div class="block">
+        <div class="block-head"><span class="block-kicker">Divisions</span><h2>Where the work sits</h2><p>Share of contract income by division</p></div>
+        <span class="block-rule"></span>
+        <div class="bar-list">${groups}</div>
+      </div>
+      <div class="block">
+        <div class="block-head"><span class="block-kicker">Action</span><h2>Buyers needing a decision</h2><p>Prospects, dormant accounts and holds</p></div>
+        <span class="block-rule"></span>
+        <ul class="flag-list">${attentionRows || '<li class="empty">Every buyer is in good standing.</li>'}</ul>
+      </div>
+    </section>
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Log</span><h2>Recent activity</h2><p>The last five entries on the audit trail</p></div>
+      <span class="block-rule"></span>
+      <ul class="trail">${trail}</ul>
+    </div>`;
+}
+
+/* =========================================================
+   BUYERS
+   ========================================================= */
+function renderClients() {
+  const states = ["All", "Active", "Prospect", "On hold", "Dormant"];
+  const list = state.clientFilter === "All" ? clients : clients.filter(function (c) { return c.status === state.clientFilter; });
+  const totalBilled = clients.reduce(function (a, c) { return a + c.billedYtd; }, 0);
+
+  const head = masthead("Buyer book · year to date", [
+    { value: String(clients.length), label: "Buyers" },
+    { value: String(clients.reduce(function(a,c){return a+c.matters;},0)), label: "Deliveries" },
+    { value: money(totalBilled), label: "Invoiced YTD" }
+  ]);
+
+  const chips = states.map(function (s) {
+    return `<button class="chip client-filter ${state.clientFilter === s ? 'chip-on' : ''}" data-client-filter="${s}">${s}</button>`;
+  }).join("");
+
+  const rows = list.map(function (c) {
+    const shareOfMax = Math.round(c.billedYtd / 918000 * 100);
+    return `<tr onclick="go404()">
+      <td class="stack-col" data-label="Buyer"><span class="t-name">${c.name}</span><span class="t-sub">Buyer since ${c.since}</span></td>
+      <td data-label="Division">${groupTag(c.group)}</td>
+      <td class="plain" data-label="Agreement">${c.engagement}</td>
+      <td class="plain" data-label="Deliveries">${c.matters}</td>
+      <td data-label="Invoiced YTD"><div class="mini"><div class="mini-track"><div class="mini-fill" data-w="${shareOfMax}"></div></div><span class="mini-num">${money(c.billedYtd)}</span></div></td>
+      <td data-label="Status">${pill(c.status)}</td>
+    </tr>`;
+  }).join("");
+
+  return `${head}
+    <div class="block">
+      <div class="block-head block-head-row">
+        <div><span class="block-kicker">Register</span><h2>Buyer register</h2><p>Agreements, volume and value invoiced</p></div>
+        <div class="chip-row">${chips}</div>
+      </div>
+      <span class="block-rule"></span>
+      <div class="table-wrap"><table class="ledger">
+        <thead><tr><th>Buyer</th><th>Division</th><th>Agreement</th><th>Deliveries</th><th>Invoiced YTD</th><th>Status</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="empty">No buyers in that state.</td></tr>'}</tbody>
+      </table></div>
+    </div>`;
+}
+
+/* =========================================================
+   PEOPLE
+   The search reads every column — name, role, division, access
+   level, last active and status — and each word typed has to
+   match somewhere, so "suspended arable" narrows.
+
+   Typing swaps the rows and the count line only. The block,
+   the masthead and the input itself are untouched, so nothing
+   re-animates and the caret stays put.
+   ========================================================= */
+function peopleTerms() {
+  return state.peopleSearch.toLowerCase().split(/\s+/).filter(Boolean);
+}
+
+function peopleList() {
+  const terms = peopleTerms();
+  if (!terms.length) return people.slice();
+  return people.filter(function (p) {
+    const hay = [p.name, p.role, p.group, p.access, p.lastActive, p.status].join(" ").toLowerCase();
+    return terms.every(function (t) { return hay.indexOf(t) > -1; });
+  });
+}
+
+function peopleRowsHtml(list) {
+  if (!list.length) return '<tr><td colspan="5" class="empty">Nobody matches that search.</td></tr>';
+  return list.map(function (p) {
+    return `<tr onclick="go404()">
+      <td class="stack-col" data-label="Name"><span class="t-name">${p.name}</span><span class="t-sub">${p.role}</span></td>
+      <td data-label="Division">${p.group === "Administration" ? '<span class="plain">Administration</span>' : groupTag(p.group)}</td>
+      <td data-label="Access"><span class="access" style="color:${accessColor[p.access]}">${p.access}</span></td>
+      <td class="plain" data-label="Last active">${p.lastActive}</td>
+      <td data-label="Status">${pill(p.status)}</td>
+    </tr>`;
+  }).join("");
+}
+
+function peopleSubText(list) {
+  return peopleTerms().length
+    ? `Showing ${list.length} of ${people.length} people`
+    : "Who can see what, and when they were last in";
+}
+
+function updatePeopleRows() {
+  const body = document.getElementById("people-rows");
+  if (!body) return;
+  const list = peopleList();
+  body.innerHTML = peopleRowsHtml(list);
+  const sub = document.getElementById("people-sub");
+  if (sub) sub.textContent = peopleSubText(list);
+}
+
+function renderPeople() {
+  const list = peopleList();
+
+  const head = masthead("Everyone with a login to the farm system", [
+    { value: "24", label: "People" },
+    { value: String(people.filter(function(p){return p.access==="Full";}).length), label: "Full access" },
+    { value: String(people.filter(function(p){return p.status==="Pending";}).length), label: "Pending invites" }
+  ]);
+
+  return `${head}
+    <div class="block">
+      <div class="block-head block-head-row">
+        <div><span class="block-kicker">Access</span><h2>People and access</h2><p id="people-sub">${peopleSubText(list)}</p></div>
+        <label class="finder finder-inline">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>
+          <input id="user-search-input" placeholder="Name, division, access, status…" value="${state.peopleSearch}">
+        </label>
+      </div>
+      <span class="block-rule"></span>
+      <div class="table-wrap"><table class="ledger">
+        <thead><tr><th>Name</th><th>Division</th><th>Access</th><th>Last active</th><th>Status</th></tr></thead>
+        <tbody id="people-rows">${peopleRowsHtml(list)}</tbody>
+      </table></div>
+    </div>`;
+}
+
+/* =========================================================
+   DIVISIONS
+   ========================================================= */
+function renderGroups() {
+  const head = masthead("How the farm's work divides", [
+    { value: String(practiceGroups.length), label: "Divisions" },
+    { value: String(practiceGroups.reduce(function(a,g){return a+g.matters;},0)), label: "Blocks" },
+    { value: String(practiceGroups.reduce(function(a,g){return a+g.earners;},0)), label: "Staff" }
+  ]);
+
+  const cards = practiceGroups.map(function (g) {
+    const c = groupAccents[g.name];
+    return `<article class="group-card" onclick="go404()" style="--accent:${c}">
+      <span class="group-share count">${g.share}%</span>
+      <h3>${g.name}</h3>
+      <p>of contract income this season</p>
+      <div class="bar-track"><div class="bar-fill" data-w="${g.share * 2.6}" style="background:linear-gradient(90deg, ${c}88, ${c})"></div></div>
+      <dl class="group-meta">
+        <div><dt>Blocks</dt><dd>${g.matters}</dd></div>
+        <div><dt>Staff</dt><dd>${g.earners}</dd></div>
+        <div><dt>Blocks each</dt><dd>${(g.matters / g.earners).toFixed(1)}</dd></div>
+      </dl>
+    </article>`;
+  }).join("");
+
+  return `${head}
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Structure</span><h2>Divisions</h2><p>Headcount against workload and income</p></div>
+      <span class="block-rule"></span>
+      <div class="group-grid">${cards}</div>
+    </div>`;
+}
+
+/* =========================================================
+   AUDIT TRAIL
+   ========================================================= */
+function renderAudit() {
+  const rows = auditTrail.map(function (a) {
+    return `<li class="trail-item" onclick="go404()">
+      <span class="trail-dot ${a.actor === 'System' ? 'auto' : ''}"></span>
+      <span class="trail-body">
+        <span class="trail-line"><b>${a.actor}</b> ${a.action.toLowerCase()} — ${a.target}</span>
+        <span class="trail-meta">${a.time} · ${a.scope}</span>
+      </span>
+    </li>`;
+  }).join("");
+
+  return `<div class="block">
+    <div class="block-head"><span class="block-kicker">Log</span><h2>Audit trail</h2><p>Every administrative and system action, most recent first</p></div>
+    <span class="block-rule"></span>
+    <ul class="trail">${rows}</ul>
+  </div>`;
+}
+
+/* =========================================================
+   COMPLIANCE
+   ========================================================= */
+function renderCompliance() {
+  const clear = complianceChecks.filter(function (c) { return c.state === "clear"; }).length;
+  const head = masthead("Standing obligations reviewed weekly", [
+    { value: String(complianceChecks.length), label: "Checks" },
+    { value: String(clear), label: "Clear" },
+    { value: String(complianceChecks.length - clear), label: "Need attention" }
+  ]);
+
+  const rows = complianceChecks.map(function (c) {
+    return `<div class="check" onclick="go404()">
+      <span class="check-mark ${c.state === 'clear' ? 'ok' : 'warn'}"></span>
+      <div class="check-body">
+        <span class="check-name">${c.name}</span>
+        <span class="check-detail">${c.detail}</span>
+      </div>
+      <span class="check-metric">${c.metric}</span>
+      ${pill(c.state === 'clear' ? 'Clear' : 'Attention')}
+    </div>`;
+  }).join("");
+
+  return `${head}
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Regulatory</span><h2>Compliance checks</h2><p>Spray records, certification, water and assurance</p></div>
+      <span class="block-rule"></span>
+      <div class="check-list">${rows}</div>
+    </div>`;
+}
+
+/* =========================================================
+   SYSTEMS
+   ========================================================= */
+function renderSystems() {
+  const head = masthead("Services the farm depends on", [
+    { value: String(systems.length), label: "Systems" },
+    { value: String(systems.filter(function(s){return s.status==="Connected";}).length), label: "Connected" },
+    { value: String(systems.reduce(function(a,s){return a+s.desks;},0)), label: "Seat connections" }
+  ]);
+
+  const rows = systems.map(function (s) {
+    return `<div class="system-row" onclick="go404()">
+      <div class="system-body">
+        <span class="system-name">${s.name}</span>
+        <span class="system-meta">${s.type} · ${s.desks} seat${s.desks !== 1 ? 's' : ''} connected</span>
+      </div>
+      ${pill(s.status)}
+      <button class="chip" onclick="event.stopPropagation();go404()">Manage</button>
+    </div>`;
+  }).join("");
+
+  return `${head}
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Integrations</span><h2>Connected systems</h2><p>Telemetry, control, logistics, finance and identity</p></div>
+      <span class="block-rule"></span>
+      <div class="system-list">${rows}</div>
+    </div>`;
+}
+
+/* =========================================================
+   CONTRACTS
+   ========================================================= */
+function renderBilling() {
+  const monthly = billingAccounts.reduce(function (a, b) { return a + b.monthly; }, 0);
+  const paid = billingAccounts.filter(function (b) { return b.state === "Paid"; }).length;
+  const overdue = billingAccounts.filter(function (b) { return b.state === "Overdue"; }).length;
+
+  const head = masthead("Recurring contract income by agreement", [
+    { value: money(monthly), label: "Invoiced monthly" },
+    { value: String(paid),   label: "Settled" },
+    { value: String(overdue),label: "Overdue" }
+  ]);
+
+  const rows = billingAccounts.map(function (b) {
+    const share = Math.round(b.monthly / 78000 * 100);
+    return `<tr onclick="go404()">
+      <td class="stack-col" data-label="Buyer"><span class="t-name">${b.client}</span><span class="t-sub">${b.engagement}</span></td>
+      <td data-label="Monthly value"><div class="mini"><div class="mini-track"><div class="mini-fill" data-w="${share}"></div></div><span class="mini-num">${money(b.monthly)}</span></div></td>
+      <td class="plain" data-label="Next invoice">${b.next}</td>
+      <td data-label="Payment">${pill(b.state)}</td>
+    </tr>`;
+  }).join("");
+
+  return `${head}
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Income</span><h2>Contract ledger</h2><p>What each buyer is invoiced and when it falls due</p></div>
+      <span class="block-rule"></span>
+      <div class="table-wrap"><table class="ledger">
+        <thead><tr><th>Buyer</th><th>Monthly value</th><th>Next invoice</th><th>Payment</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>
+    </div>`;
+}
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+function switchHtml(id, value) {
+  return `<span class="switch ${value ? 'on' : ''}" data-toggle="${id}" role="switch" aria-checked="${value}"><span class="switch-knob"></span></span>`;
+}
+
+function renderSecurity() {
+  const s = state.settings;
+  return `
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Policy</span><h2>Access policy</h2><p>Applied to everyone with a login</p></div>
+      <span class="block-rule"></span>
+      <div class="pref">
+        <div><span class="pref-title">Two-factor for managers and admins</span><span class="pref-desc">Required at every sign-in, no exceptions</span></div>
+        ${switchHtml("twoFactor", s.twoFactor)}
+      </div>
+      <div class="pref">
+        <div><span class="pref-title">Single sign-on only</span><span class="pref-desc">Staff authenticate through the farm's identity provider</span></div>
+        ${switchHtml("ssoRequired", s.ssoRequired)}
+      </div>
+      <div class="pref">
+        <div><span class="pref-title">Site IP allowlist</span><span class="pref-desc">Restrict the console to the farm office and the packhouse</span></div>
+        ${switchHtml("ipAllowlist", s.ipAllowlist)}
+      </div>
+      <div class="pref pref-last">
+        <div><span class="pref-title">Division barriers</span><span class="pref-desc">Seal a division's blocks so only its own team can open them</span></div>
+        ${switchHtml("matterWalls", s.matterWalls)}
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Sessions</span><h2>Session policy</h2><p>How long an idle session stays signed in</p></div>
+      <span class="block-rule"></span>
+      <div class="pref pref-last">
+        <div><span class="pref-title">Automatic sign-out</span><span class="pref-desc">Applies to every account on the farm</span></div>
+        <select class="pref-select" id="timeout-select">${["15 minutes","30 minutes","1 hour","4 hours"].map(function(t){return `<option ${s.sessionTimeout===t?'selected':''}>${t}</option>`;}).join("")}</select>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Danger</span><h2>Farm-wide actions</h2><p>These take effect immediately for everyone</p></div>
+      <span class="block-rule"></span>
+      <div class="danger-row">
+        <button class="chip chip-danger" onclick="go404()">Sign out every session</button>
+        <button class="chip chip-danger" onclick="go404()">Rotate system keys</button>
+      </div>
+    </div>`;
+}
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+function renderSettings() {
+  const s = state.settings;
+  const displayName = currentUsername || currentEmail || "Signed out";
+  const displayEmail = currentEmail || "No account signed in";
+  return `
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Profile</span><h2>Account</h2><p>The profile signed in on this device</p></div>
+      <span class="block-rule"></span>
+      <div class="account">
+        <span class="seal lg">${currentInitial}</span>
+        <div>
+          <span class="account-name">${displayName}</span>
+          <span class="account-email">${displayEmail}</span>
+          <span class="account-role">${currentUser ? (currentRole === 'admin' ? 'Farm administrator' : 'Farm team account') : 'Not signed in'}</span>
+        </div>
+      </div>
+      <button class="chip" onclick="go404()">Edit profile</button>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Preferences</span><h2>Preferences</h2><p>Alerts and how the console reads</p></div>
+      <span class="block-rule"></span>
+      <div class="pref">
+        <div><span class="pref-title">Weather and deadline alerts</span><span class="pref-desc">Notify me when a date moves anywhere on the farm</span></div>
+        ${switchHtml("hearingAlerts", s.hearingAlerts)}
+      </div>
+      <div class="pref">
+        <div><span class="pref-title">Monday digest</span><span class="pref-desc">A summary of the week's invoicing and dates</span></div>
+        ${switchHtml("weeklyDigest", s.weeklyDigest)}
+      </div>
+      <div class="pref">
+        <div><span class="pref-title">Compact rows</span><span class="pref-desc">Tighter spacing in the register tables</span></div>
+        ${switchHtml("compactRows", s.compactRows)}
+      </div>
+      <div class="pref pref-last">
+        <div><span class="pref-title">Language</span><span class="pref-desc">Interface display language</span></div>
+        <select class="pref-select" id="lang-select">${["English","French","Spanish","Mandarin","Portuguese"].map(function(l){return `<option ${s.language===l?'selected':''}>${l}</option>`;}).join("")}</select>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Session</span><h2>Session</h2><p>Sign out of this account on this device</p></div>
+      <span class="block-rule"></span>
+      <div class="session">
+        <p>Signed in as <strong>${displayEmail}</strong>. Signing out clears the session and returns you to the sign-in screen.</p>
+        <button class="chip chip-danger" id="settings-logout-btn">Sign out</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="block-kicker">Danger</span><h2>Account actions</h2><p>These cannot be undone</p></div>
+      <span class="block-rule"></span>
+      <div class="danger-row">
+        <button class="chip chip-danger" onclick="go404()">Reset password</button>
+        <button class="chip chip-danger" onclick="go404()">Close account</button>
+      </div>
+    </div>`;
+}
+
+const pageRenderers = {
+  dashboard: renderDashboard, clients: renderClients, people: renderPeople,
+  groups: renderGroups, audit: renderAudit, compliance: renderCompliance,
+  systems: renderSystems, billing: renderBilling, security: renderSecurity, settings: renderSettings
+};
+
+/* =========================================================
+   SHELL
+   ========================================================= */
+function renderNav() {
+  const main = navItems.slice(0, 6);
+  const mgmt = navItems.slice(6);
+  function itemHtml(item) {
+    const needsAttention = clients.filter(function (c) { return c.status !== "Active"; }).length;
+    const flagged = complianceChecks.filter(function (c) { return c.state !== "clear"; }).length;
+    let badge = "";
+    if (item.id === "clients" && needsAttention > 0) badge = `<span class="rail-badge">${needsAttention}</span>`;
+    if (item.id === "compliance" && flagged > 0) badge = `<span class="rail-badge alert">${flagged}</span>`;
+    return `<button class="rail-item ${state.activeNav === item.id ? 'on' : ''}" data-nav="${item.id}"><span>${item.label}</span>${badge}</button>`;
+  }
+  document.getElementById("nav-main").innerHTML = main.map(itemHtml).join("");
+  document.getElementById("nav-management").innerHTML = mgmt.map(itemHtml).join("");
+}
+
+function renderPage() {
+  const page = pageMap[state.activeNav];
+  document.getElementById("page-title-text").textContent = page.title;
+  document.getElementById("page-sub-text").textContent = page.sub;
+  document.getElementById("content-area").innerHTML = pageRenderers[state.activeNav]();
+  document.body.classList.toggle('compact', !!state.settings.compactRows);
+  renderNav();
+  const settingsLogoutBtn = document.getElementById("settings-logout-btn");
+  if (settingsLogoutBtn) settingsLogoutBtn.addEventListener("click", logout);
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  syncTopbarHeight();
+  fillBars();
+  entrance();
+}
+
+function navigateTo(id) {
+  state.activeNav = id;
+  try { localStorage.setItem('activeNav', id); } catch (e) {}
+  closeRail();
+  closeWhoami();
+  renderPage();
+}
+
+/* ---- rail open / close with page-scroll lock ---- */
+let savedScrollY = 0;
+function lockScroll() {
+  savedScrollY = window.scrollY || window.pageYOffset || 0;
+  document.documentElement.classList.add("nav-open");
+  document.body.classList.add("nav-open");
+}
+function unlockScroll() {
+  if (!document.body.classList.contains("nav-open")) return;
+  document.documentElement.classList.remove("nav-open");
+  document.body.classList.remove("nav-open");
+  window.scrollTo(0, savedScrollY);
+}
+function openRail() {
+  document.getElementById("sidebar").classList.add("open");
+  document.getElementById("sidebar-overlay").classList.add("show");
+  lockScroll();
+}
+function closeRail() {
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("sidebar-overlay").classList.remove("show");
+  unlockScroll();
+}
+function closeWhoami() { document.getElementById("topbar-user").classList.remove("open"); }
+
+document.getElementById("hamburger-btn").addEventListener("click", openRail);
+document.getElementById("close-sidebar-btn").addEventListener("click", closeRail);
+document.getElementById("brand-home-btn").addEventListener("click", function () { navigateTo("dashboard"); });
+document.getElementById("sidebar-overlay").addEventListener("click", closeRail);
+document.getElementById("notif-btn").addEventListener("click", go404);
+document.getElementById("logout-btn").addEventListener("click", logout);
+document.getElementById("topbar-logout-btn").addEventListener("click", logout);
+document.getElementById("topbar-user-btn").addEventListener("click", function (e) {
+  e.stopPropagation();
+  document.getElementById("topbar-user").classList.toggle("open");
+});
+document.addEventListener("click", closeWhoami);
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeRail(); closeWhoami(); } });
+window.addEventListener("resize", function () {
+  if (window.innerWidth > 1040) closeRail();
+  syncTopbarHeight();
+});
+window.addEventListener("orientationchange", syncTopbarHeight);
+window.addEventListener("load", syncTopbarHeight);
+if (document.fonts && document.fonts.ready) {
+  // Web fonts change the header's height once they land.
+  document.fonts.ready.then(syncTopbarHeight);
+}
+
+/* ---- topbar search: anything typed, then Enter or the
+        magnifier, opens the results page ---- */
+(function () {
+  const form = document.getElementById("topbar-search");
+  const input = document.getElementById("topbar-search-input");
+  if (!form || !input) return;
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!input.value.trim()) { input.focus(); return; }
+    go404();
+  });
+})();
+
+document.addEventListener("click", function (e) {
+  const navBtn = e.target.closest("[data-nav]");
+  if (navBtn) { navigateTo(navBtn.getAttribute("data-nav")); return; }
+  const filterBtn = e.target.closest(".client-filter");
+  if (filterBtn) { state.clientFilter = filterBtn.getAttribute("data-client-filter"); renderPage(); return; }
+  const toggle = e.target.closest("[data-toggle]");
+  if (toggle) {
+    const key = toggle.getAttribute("data-toggle");
+    state.settings[key] = !state.settings[key];
+    saveSettings();
+    toggle.classList.toggle("on", state.settings[key]);
+    toggle.setAttribute("aria-checked", String(state.settings[key]));
+    if (key === "compactRows") document.body.classList.toggle("compact", state.settings[key]);
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(toggle.querySelector('.switch-knob'), { scale: 0.7 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' });
+    }
+    return;
+  }
+});
+
+document.addEventListener("input", function (e) {
+  if (e.target && e.target.id === "user-search-input") {
+    state.peopleSearch = e.target.value;
+    updatePeopleRows();
+  }
+});
+
+document.addEventListener("change", function (e) {
+  if (e.target && e.target.id === "lang-select") { state.settings.language = e.target.value; saveSettings(); }
+  if (e.target && e.target.id === "timeout-select") { state.settings.sessionTimeout = e.target.value; saveSettings(); }
+});
+
+paintUserChrome();
+if (typeof gsap !== 'undefined') {
+  gsap.from('#topbar', { y: -14, opacity: 0, duration: 0.5, ease: 'power2.out' });
+  // The rail only slides in where it is a fixed column. Below that it is an
+  // off-canvas drawer driven by a CSS transform, so an inline transform from
+  // GSAP would fight the .open class — fade it instead and clear up after.
+  if (window.innerWidth > 1040) {
+    gsap.from('.rail', { x: -18, opacity: 0, duration: 0.6, ease: 'power3.out', clearProps: 'transform' });
+  } else {
+    gsap.from('.rail', { opacity: 0, duration: 0.4, ease: 'power2.out' });
+  }
+}
+renderPage();
+syncTopbarHeight();
+</script>
+</body>
+</html>

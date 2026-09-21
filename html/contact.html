@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly — Contact</title>
+<script>
+  if('scrollRestoration' in history){ history.scrollRestoration = 'manual'; }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="stylesheet" href="../css/contact.css">
+</head>
+<body>
+
+<!-- ============ PRELOADER ============ -->
+<div class="preloader" id="preloader">
+  <div class="preloader-inner">
+    <svg class="preloader-crest" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="60" cy="60" r="52" stroke-width="1.2"/>
+      <g stroke-width="1.6">
+        <path d="M60 86V44"/>
+        <path d="M60 58c0-12 9-21 22-21 0 14-9 23-22 21z"/>
+        <path d="M60 68c0-10-7-17-18-17 0 12 7 19 18 17z"/>
+      </g>
+    </svg>
+    <div class="preloader-word">STACKLY</div>
+    <div class="preloader-bar"><div class="preloader-bar-fill" id="preloaderFill"></div></div>
+  </div>
+</div>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ============ HEADER ============ -->
+<header id="siteHeader">
+  <nav class="nav">
+    <a href="index.html#hero" class="logo">
+      <img class="logo-placeholder" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+      <span class="logo-word" style="display:none">AGRITECH SOLUTIONS</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html"><span>Home</span></a>
+      <a href="services.html"><span>Services</span></a>
+      <a href="about.html"><span>About</span></a>
+      <a href="blog.html"><span>Blog</span></a>
+      <a href="contact.html" class="active"><span>Contact</span></a>
+    </div>
+    <div class="nav-right">
+      <a href="login.html" class="nav-login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 5-6 7.5-6s6 2 7.5 6"/></svg>
+        Login
+      </a>
+      <a href="signup.html" class="btn-gold nav-signup" data-magnetic>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c1.2-3.4 4.2-5 6.5-5s5.3 1.6 6.5 5"/><path d="M19 8v6M22 11h-6"/></svg>
+        Sign Up
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ MOBILE MENU ============ -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-top">
+    <a href="index.html#hero" class="logo">
+      <img class="logo-placeholder" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+      <span class="logo-word" style="display:none">AGRITECH SOLUTIONS</span>
+    </a>
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu-links">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html" class="active">Contact</a>
+    <a href="login.html" class="nav-login" style="text-align:left;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 5-6 7.5-6s6 2 7.5 6"/></svg>
+      Login
+    </a>
+    <a href="signup.html" class="btn-gold">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c1.2-3.4 4.2-5 6.5-5s5.3 1.6 6.5 5"/><path d="M19 8v6M22 11h-6"/></svg>
+      Sign Up
+    </a>
+  </div>
+</div>
+
+<!-- ============ 1. HERO + THREE WAYS IN ============ -->
+<section class="ct-hero" id="top">
+  <div class="ct-hero-bg" aria-hidden="true"><span class="ct-hero-rows"></span><span class="ct-hero-glow"></span></div>
+  <div class="wrap">
+    <span class="eyebrow">Contact</span>
+    <h1 class="ct-hero-title">
+      <span class="line"><span class="line-in">Tell us about</span></span>
+      <span class="line"><span class="line-in">the block.</span></span>
+    </h1>
+    <p class="ct-hero-sub">Call the farm office, send a note, or ask us to come and walk it. Whichever you pick, an agronomist answers — not a call centre.</p>
+
+    <div class="ways" id="ways">
+      <a class="way" href="tel:07123712345">
+        <span class="way-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c0 8.8 6.2 15 15 15l2-3.5-5-2-1.5 2C11.5 15 9 12.5 8.5 9.5l2-1.5-2-5z"/></svg>
+        </span>
+        <span class="way-label">Call the farm office</span>
+        <b>0712 371 2345</b>
+        <span class="way-note">Mon–Fri, 7am to 6pm</span>
+      </a>
+
+      <a class="way" href="mailto:hello@agritechsolutions.com">
+        <span class="way-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        </span>
+        <span class="way-label">Send a note</span>
+        <b>hello@stackly.com</b>
+        <span class="way-note">Answered inside one working day</span>
+      </a>
+
+      <a class="way" href="#enquiry">
+        <span class="way-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+        </span>
+        <span class="way-label">Ask for a field visit</span>
+        <b>Book a walk</b>
+        <span class="way-note">An hour on the block, no charge</span>
+      </a>
+    </div>
+
+    <div class="ct-hero-stats">
+      <div><span class="stat-num" data-count="1">0</span><span class="stat-label">Working day to reply</span></div>
+      <div><span class="stat-num" data-count="90" data-suffix=" min">0</span><span class="stat-label">Furthest block we cover</span></div>
+      <div><span class="stat-num" data-count="24">0</span><span class="stat-label">People you could reach</span></div>
+      <div><span class="stat-num" data-count="0">0</span><span class="stat-label">Sales reps on staff</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. THE ENQUIRY ============ -->
+<section class="ct-form" id="enquiry">
+  <div class="wrap ct-form-grid">
+    <div class="form-aside">
+      <span class="eyebrow">Send a note</span>
+      <h2>What we need<br>to be useful.</h2>
+      <p>The more you can tell us about the block, the more specific the first answer can be. None of it is compulsory — a line saying "call me" is fine too.</p>
+      <ul class="aside-list">
+        <li><b>No sales follow-up</b><span>We reply once. If you do not answer, that is the end of it.</span></li>
+        <li><b>An agronomist reads it</b><span>Not a form queue — the person who would run the block.</span></li>
+        <li><b>Nothing is shared</b><span>Your details stay with us and are never passed on.</span></li>
+      </ul>
+    </div>
+
+    <form class="enq" id="enqForm" novalidate>
+      <div class="enq-row">
+        <div class="field">
+          <label for="ct-name">Your name</label>
+          <div class="field-wrap" id="ct-name-wrap"><input type="text" id="ct-name" placeholder="Jordan Reyes" autocomplete="name"></div>
+          <span class="field-error" id="ct-name-error">Tell us who you are.</span>
+        </div>
+        <div class="field">
+          <label for="ct-email">Email</label>
+          <div class="field-wrap" id="ct-email-wrap"><input type="email" id="ct-email" placeholder="name@farm.com" autocomplete="email"></div>
+          <span class="field-error" id="ct-email-error">Enter a valid email address.</span>
+        </div>
+      </div>
+
+      <div class="enq-row">
+        <div class="field">
+          <label for="ct-phone">Phone <em>optional</em></label>
+          <div class="field-wrap" id="ct-phone-wrap"><input type="tel" id="ct-phone" placeholder="0712 371 2345" autocomplete="tel"></div>
+        </div>
+        <div class="field">
+          <label for="ct-farm">Farm or company</label>
+          <div class="field-wrap" id="ct-farm-wrap"><input type="text" id="ct-farm" placeholder="North Ridge Farms" autocomplete="organization"></div>
+          <span class="field-error" id="ct-farm-error">Where are we coming to?</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What is it about?</label>
+        <div class="pick-row" id="pickRow">
+          <button type="button" class="pick-chip is-on" data-subject="Agronomy">Agronomy</button>
+          <button type="button" class="pick-chip" data-subject="Irrigation">Irrigation</button>
+          <button type="button" class="pick-chip" data-subject="Harvest">Harvest</button>
+          <button type="button" class="pick-chip" data-subject="Soil health">Soil health</button>
+          <button type="button" class="pick-chip" data-subject="Something else">Something else</button>
+        </div>
+      </div>
+
+      <div class="enq-row">
+        <div class="field">
+          <label for="ct-size">Block size <em>hectares</em></label>
+          <div class="field-wrap" id="ct-size-wrap"><input type="text" id="ct-size" placeholder="84" inputmode="decimal"></div>
+        </div>
+        <div class="field">
+          <label for="ct-crop">Crop</label>
+          <div class="field-wrap" id="ct-crop-wrap"><input type="text" id="ct-crop" placeholder="Winter wheat"></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="ct-msg">What is happening on it?</label>
+        <div class="field-wrap field-area" id="ct-msg-wrap">
+          <textarea id="ct-msg" rows="5" placeholder="Yield has drifted down three seasons running and we cannot see why…"></textarea>
+        </div>
+        <span class="field-error" id="ct-msg-error">A couple of lines is plenty.</span>
+        <span class="field-hint"><span id="msgCount">0</span> / 600</span>
+      </div>
+
+      <label class="tick" id="ct-consent-wrap">
+        <input type="checkbox" id="ct-consent">
+        <span class="tick-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>I'm happy for Agritech Solutions to reply to this enquiry.</span>
+      </label>
+      <span class="field-error" id="ct-consent-error">We need your say-so before we can reply.</span>
+
+      <button type="submit" class="btn btn-primary enq-submit" id="enqBtn">
+        <span id="enqLabel">Send the note</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+
+      <div class="enq-done" id="enqDone" hidden>
+        <span class="enq-done-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        <b>That is with us.</b>
+        <span>An agronomist will come back to you inside one working day — usually the same afternoon.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============ 3. WHO PICKS UP ============ -->
+<section class="ct-people" id="who">
+  <div class="wrap">
+    <div class="ct-head">
+      <div>
+        <span class="eyebrow">Who picks up</span>
+        <h2>Straight to the<br>right desk.</h2>
+      </div>
+      <p class="ct-head-note">Skip the switchboard — these are the direct lines, and they are answered by the person named.</p>
+    </div>
+
+    <div class="desk-grid">
+      <article class="desk">
+        <span class="desk-ava"><img src="https://images.unsplash.com/photo-1605176647037-cb9e5e5dc87d?auto=format&fit=crop&w=200&q=70" alt="Mara Ilić" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        <h3>Mara Ilić</h3>
+        <span class="desk-role">Farm Manager · new enquiries</span>
+        <a class="desk-line" href="mailto:m.ilic@agritech.farm">m.ilic@agritech.farm</a>
+        <a class="desk-line" href="tel:07123712345">0712 371 2345 <em>ext 1</em></a>
+        <span class="desk-hours">Mon–Fri · 7am–6pm</span>
+      </article>
+
+      <article class="desk">
+        <span class="desk-ava"><img src="https://images.unsplash.com/photo-1662815020802-2bd475c72d93?auto=format&fit=crop&w=200&q=70" alt="Tom Okafor" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        <h3>Tom Okafor</h3>
+        <span class="desk-role">Irrigation &amp; water</span>
+        <a class="desk-line" href="mailto:t.okafor@agritech.farm">t.okafor@agritech.farm</a>
+        <a class="desk-line" href="tel:07123712345">0712 371 2345 <em>ext 2</em></a>
+        <span class="desk-hours">Mon–Sat · 6am–7pm in season</span>
+      </article>
+
+      <article class="desk">
+        <span class="desk-ava"><img src="https://images.unsplash.com/photo-1659353887272-703de19bec9a?auto=format&fit=crop&w=200&q=70" alt="Elena Cho" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        <h3>Elena Cho</h3>
+        <span class="desk-role">Harvest &amp; haulage</span>
+        <a class="desk-line" href="mailto:e.cho@agritech.farm">e.cho@agritech.farm</a>
+        <a class="desk-line" href="tel:07123712345">0712 371 2345 <em>ext 3</em></a>
+        <span class="desk-hours">Daily through harvest</span>
+      </article>
+
+      <article class="desk">
+        <span class="desk-ava"><img src="https://images.unsplash.com/photo-1631203883080-9e5338ebcf2d?auto=format&fit=crop&w=200&q=70" alt="Priya Nadar" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')"></span>
+        <h3>Priya Nadar</h3>
+        <span class="desk-role">Soil, samples &amp; reports</span>
+        <a class="desk-line" href="mailto:p.nadar@agritech.farm">p.nadar@agritech.farm</a>
+        <a class="desk-line" href="tel:07123712345">0712 371 2345 <em>ext 4</em></a>
+        <span class="desk-hours">Mon–Fri · 8am–5pm</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. FIND US — THE MAP ============ -->
+<section class="ct-map" id="find">
+  <div class="wrap">
+    <div class="ct-head">
+      <div>
+        <span class="eyebrow">Find us</span>
+        <h2>The farm office,<br>Salem.</h2>
+      </div>
+      <p class="ct-head-note">Park in the yard behind the grain store. If the gate is shut, the bell is on the left-hand post.</p>
+    </div>
+
+    <div class="map-grid">
+      <div class="map-frame" id="mapFrame">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3907.1616097152896!2d78.1739798!3d11.682956599999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babefef7fd970bb%3A0xe11aef1a71994f9!2sStackly!5e0!3m2!1sen!2sin!4v1789969500676!5m2!1sen!2sin"
+          title="Agritech Solutions farm office on Google Maps"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <span class="map-badge">
+          <i class="map-pip"></i>Farm office · open now
+        </span>
+      </div>
+
+      <div class="map-side">
+        <div class="map-card">
+          <span class="map-card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+          </span>
+          <h3>The address</h3>
+          <address>
+            MMR Complex, Periyakollappatty,<br>
+            Chinna Thirupathi, Salem,<br>
+            Tamil Nadu 636008
+          </address>
+          <a class="btn btn-outline map-go" href="https://www.google.com/maps/search/?api=1&query=11.6829566,78.1739798" target="_blank" rel="noopener">
+            Open in Google Maps
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+
+        <ul class="map-facts">
+          <li><span>Coordinates</span><b>11.6830° N, 78.1740° E</b></li>
+          <li><span>From Salem junction</span><b>About 20 minutes</b></li>
+          <li><span>Parking</span><b>Yard behind the grain store</b></li>
+          <li><span>Deliveries</span><b>Weekdays before 4pm</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. WHEN WE ARE AROUND ============ -->
+<section class="ct-hours" id="hours">
+  <div class="wrap ct-hours-grid">
+    <div class="hours-copy">
+      <span class="eyebrow">When we are around</span>
+      <h2>Office hours,<br>and field hours.</h2>
+      <p>The office keeps ordinary hours. The agronomists do not — through drilling and harvest the phone gets answered from the cab, and often well before seven.</p>
+      <div class="hours-now" id="hoursNow">
+        <span class="now-pip" id="nowPip"></span>
+        <span class="now-text" id="nowText">Checking the clock…</span>
+      </div>
+      <span class="hours-note">Times are IST (UTC+5:30). In season we answer weekends too — try the mobile numbers above.</span>
+    </div>
+
+    <div class="hours-table" id="hoursTable">
+      <div class="hrow" data-day="1"><span class="hday">Monday</span><span class="hval">7:00 — 18:00</span></div>
+      <div class="hrow" data-day="2"><span class="hday">Tuesday</span><span class="hval">7:00 — 18:00</span></div>
+      <div class="hrow" data-day="3"><span class="hday">Wednesday</span><span class="hval">7:00 — 18:00</span></div>
+      <div class="hrow" data-day="4"><span class="hday">Thursday</span><span class="hval">7:00 — 18:00</span></div>
+      <div class="hrow" data-day="5"><span class="hday">Friday</span><span class="hval">7:00 — 18:00</span></div>
+      <div class="hrow" data-day="6"><span class="hday">Saturday</span><span class="hval">8:00 — 13:00</span></div>
+      <div class="hrow" data-day="0"><span class="hday">Sunday</span><span class="hval hval-off">Closed — field emergencies only</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. BEFORE YOU WRITE ============ -->
+<section class="ct-check" id="prep">
+  <div class="wrap">
+    <div class="ct-head">
+      <div>
+        <span class="eyebrow">Before you write</span>
+        <h2>Four things that<br>save a phone call.</h2>
+      </div>
+      <p class="ct-head-note">Not compulsory — but if you have them to hand, the first answer gets a lot more specific.</p>
+    </div>
+
+    <ul class="checks" id="checks">
+      <li class="check">
+        <span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <div><b>The size and the crop</b><span>Hectares and what is in the ground. "84 ha of winter wheat" tells us more than a paragraph.</span></div>
+      </li>
+      <li class="check">
+        <span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <div><b>Your last soil test</b><span>Even an old one. If there isn't one, say so — that is useful in itself.</span></div>
+      </li>
+      <li class="check">
+        <span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <div><b>Three seasons of yield</b><span>Weighbridge numbers if you have them, a decent estimate if you don't.</span></div>
+      </li>
+      <li class="check">
+        <span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <div><b>What is actually worrying you</b><span>The thing you would say to a neighbour over the gate. That is usually the real question.</span></div>
+      </li>
+    </ul>
+
+    <div class="ct-close">
+      <div class="ct-close-media" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1564493031643-4be2c4347a17?auto=format&fit=crop&w=1400&q=70" alt="" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+        <span class="ct-close-veil"></span>
+      </div>
+      <div class="ct-close-inner">
+        <h2>Would rather just talk?</h2>
+        <p>Ring the office. If Mara is in a block she will call you back the same day — she always does.</p>
+        <div class="ct-close-actions">
+          <a href="404.html" class="btn btn-primary" data-magnetic>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c0 8.8 6.2 15 15 15l2-3.5-5-2-1.5 2C11.5 15 9 12.5 8.5 9.5l2-1.5-2-5z"/></svg>
+            0712 371 2345
+          </a>
+          <a href="404.html" class="btn btn-outline">Back to the form</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html#hero" class="logo">
+          <img class="logo-placeholder logo-placeholder-footer" src="../assets/Logo.webp" alt="Agritech Solutions" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+          <span class="logo-word" style="display:none">AGRITECH SOLUTIONS</span>
+        </a>
+        <p>Agronomy, irrigation and harvest management — for growers who would rather be advised properly than quickly.</p>
+        <div class="footer-social">
+          <a href="404.html" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="404.html" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 21v-7h2.5l.5-3H14V9.2c0-.9.3-1.7 1.7-1.7H17V5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2V11H8v3h2.6v7"/></svg>
+          </a>
+          <a href="404.html" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="9" width="4" height="10"/><circle cx="5" cy="5" r="1.6"/><path d="M11 19v-6.5a2.5 2.5 0 0 1 5 0V19M11 12.5V19"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="#enquiry">Send a note</a>
+        <a href="#who">Direct lines</a>
+        <a href="#find">Find the office</a>
+        <a href="#hours">Opening hours</a>
+        <a href="#prep">Before you write</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get In Touch</h4>
+        <ul class="footer-contact">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+            <a href="404.html" target="_blank" rel="noopener">MMR Complex, Periyakollappatty,<br>Chinna Thirupathi, Salem, Tamil<br>Nadu 636008</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5c0 8.8 6.2 15 15 15l2-3.5-5-2-1.5 2C11.5 15 9 12.5 8.5 9.5l2-1.5-2-5z"/></svg>
+            <a href="404.html">0712 371 2345</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <a href="404.html">hello@stackly.com</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AGRITECH SOLUTIONS</span>
+      <span class="status-dot">Certified practice · Soil to store</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</button>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HOVERABLE = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+/* =========================================================
+   PRELOADER
+   ========================================================= */
+(function(){
+  const el = document.getElementById('preloader');
+  const fill = document.getElementById('preloaderFill');
+  if(!el) return;
+  gsap.fromTo(fill, { width:'0%' }, { width:'100%', duration:1.2, ease:'power1.inOut' });
+  const startedAt = Date.now();
+  function finish(){
+    setTimeout(function(){ el.classList.add('hide'); intro(); }, Math.max(0, 850 - (Date.now() - startedAt)));
+  }
+  if(document.readyState === 'complete'){ finish(); } else { window.addEventListener('load', finish); }
+  setTimeout(function(){ el.classList.add('hide'); intro(); }, 3800);
+})();
+
+window.scrollTo(0,0);
+window.addEventListener('load', function(){ window.scrollTo(0,0); ScrollTrigger.refresh(); });
+
+/* =========================================================
+   HAMBURGER / MOBILE MENU
+   ========================================================= */
+(function(){
+  const hamburger = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  const closeBtn = document.getElementById('mobileMenuClose');
+
+  function open(){
+    menu.style.display = 'flex';
+    void menu.offsetWidth;
+    menu.classList.add('open');
+    hamburger.classList.add('active');
+    document.body.classList.add('menu-open');
+    hamburger.setAttribute('aria-expanded','true');
+    gsap.fromTo('.mobile-menu-links > *', { opacity:0, x:24 },
+      { opacity:1, x:0, duration:.45, stagger:.06, ease:'power3.out', delay:.12 });
+  }
+  function close(){
+    menu.classList.remove('open');
+    hamburger.classList.remove('active');
+    document.body.classList.remove('menu-open');
+    hamburger.setAttribute('aria-expanded','false');
+    setTimeout(function(){ if(!menu.classList.contains('open')) menu.style.display='none'; }, 350);
+  }
+  hamburger.addEventListener('click', function(){ menu.classList.contains('open') ? close() : open(); });
+  closeBtn.addEventListener('click', close);
+  document.querySelectorAll('.mobile-menu a').forEach(function(a){ a.addEventListener('click', close); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && menu.classList.contains('open')) close(); });
+  window.addEventListener('resize', function(){ if(window.innerWidth>900 && menu.classList.contains('open')) close(); });
+})();
+
+/* ---- scroll progress + header contraction ---- */
+gsap.to('#scrollProgress', { width:'100%', ease:'none', scrollTrigger:{ scrub:.3 } });
+ScrollTrigger.create({ start:'top -60', end:99999, toggleClass:{ targets:'#siteHeader', className:'is-pinned' } });
+
+/* =========================================================
+   COUNTERS
+   ========================================================= */
+function runCounters(nodes){
+  nodes.forEach(function(el){
+    const target = parseFloat(el.dataset.count || '0');
+    const suffix = el.dataset.suffix || '';
+    if(REDUCED){ el.textContent = target.toLocaleString() + suffix; return; }
+    const c = { v:0 };
+    gsap.to(c, { v:target, duration:1.6, ease:'power1.out',
+      onUpdate:function(){ el.textContent = Math.round(c.v).toLocaleString() + suffix; } });
+  });
+}
+gsap.utils.toArray('[data-count]').forEach(function(el){
+  if(el.closest('.ct-hero-stats')) return;
+  ScrollTrigger.create({ trigger:el, start:'top 92%', once:true, onEnter:function(){ runCounters([el]); } });
+});
+
+/* =========================================================
+   1. HERO INTRO
+   ========================================================= */
+let introPlayed = false;
+function intro(){
+  if(introPlayed) return;
+  introPlayed = true;
+  const tl = gsap.timeline({ defaults:{ ease:'power3.out' } });
+  tl.from('.ct-hero .eyebrow', { opacity:0, x:-16, duration:.5 })
+    .from('.ct-hero-title .line-in', { yPercent:120, rotate:2.5, duration:1, stagger:.09, ease:'expo.out' }, '-=.2')
+    .from('.ct-hero-sub', { opacity:0, y:18, duration:.6 }, '-=.55')
+    .from('.way', { opacity:0, y:26, duration:.6, stagger:.09 }, '-=.35')
+    .from('.ct-hero-stats > div', { opacity:0, y:16, duration:.5, stagger:.07 }, '-=.35');
+  runCounters(document.querySelectorAll('.ct-hero-stats .stat-num'));
+}
+
+/* =========================================================
+   GENERIC REVEALS
+   ========================================================= */
+(function(){
+  const singles = ['.ct-head', '.form-aside', '.hours-copy', '.ct-close-inner'];
+  singles.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      gsap.from(el, { opacity:0, y:24, duration:.7, ease:'power2.out',
+        scrollTrigger:{ trigger:el, start:'top 88%', once:true } });
+    });
+  });
+  const groups = ['.desk', '.aside-list li', '.map-facts li'];
+  groups.forEach(function(sel){
+    const items = gsap.utils.toArray(sel);
+    if(!items.length) return;
+    gsap.from(items, { opacity:0, y:24, duration:.6, ease:'power3.out', stagger:.07,
+      scrollTrigger:{ trigger:items[0], start:'top 88%', once:true } });
+  });
+})();
+
+/* =========================================================
+   2. THE ENQUIRY — chips, counter, validation, send
+   ========================================================= */
+(function(){
+  const form = document.getElementById('enqForm');
+  if(!form) return;
+
+  /* fields rise in as the form arrives */
+  gsap.from('.enq > *', { opacity:0, y:20, duration:.6, stagger:.06, ease:'power3.out',
+    scrollTrigger:{ trigger:form, start:'top 82%', once:true } });
+
+  /* subject chips */
+  let subject = 'Agronomy';
+  const chips = form.querySelectorAll('.pick-chip');
+  chips.forEach(function(chip){
+    chip.addEventListener('click', function(){
+      if(chip.classList.contains('is-on')) return;
+      chips.forEach(function(c){ c.classList.remove('is-on'); });
+      chip.classList.add('is-on');
+      subject = chip.dataset.subject;
+      if(!REDUCED) gsap.fromTo(chip, { scale:.92 }, { scale:1, duration:.35, ease:'back.out(2.4)' });
+    });
+  });
+
+  /* message counter */
+  const msg = document.getElementById('ct-msg');
+  const count = document.getElementById('msgCount');
+  msg.addEventListener('input', function(){
+    if(msg.value.length > 600) msg.value = msg.value.slice(0, 600);
+    count.textContent = msg.value.length;
+  });
+
+  /* validation */
+  const RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/;
+  const rules = [
+    { id:'ct-name',  wrap:'ct-name-wrap',  err:'ct-name-error',  test:function(v){ return v.trim().length >= 2; } },
+    { id:'ct-email', wrap:'ct-email-wrap', err:'ct-email-error', test:function(v){ return RE.test(v.trim()); } },
+    { id:'ct-farm',  wrap:'ct-farm-wrap',  err:'ct-farm-error',  test:function(v){ return v.trim().length >= 2; } },
+    { id:'ct-msg',   wrap:'ct-msg-wrap',   err:'ct-msg-error',   test:function(v){ return v.trim().length >= 10; } }
+  ];
+
+  function flag(wrapId, errId, show){
+    const wrap = document.getElementById(wrapId);
+    const err = document.getElementById(errId);
+    wrap.classList.toggle('has-error', show);
+    err.classList.toggle('is-visible', show);
+    if(show && !REDUCED){
+      gsap.fromTo(wrap, { x:-5 }, { x:0, duration:.5, ease:'elastic.out(1,.35)' });
+      gsap.fromTo(err, { opacity:0, y:-5 }, { opacity:1, y:0, duration:.3 });
+    }
+  }
+
+  rules.forEach(function(r){
+    document.getElementById(r.id).addEventListener('input', function(){ flag(r.wrap, r.err, false); });
+  });
+  const consent = document.getElementById('ct-consent');
+  const consentWrap = document.getElementById('ct-consent-wrap');
+  const consentErr = document.getElementById('ct-consent-error');
+  consent.addEventListener('change', function(){
+    consentWrap.classList.remove('has-error');
+    consentErr.classList.remove('is-visible');
+  });
+
+  const btn = document.getElementById('enqBtn');
+  const label = document.getElementById('enqLabel');
+  const done = document.getElementById('enqDone');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    let ok = true;
+    rules.forEach(function(r){
+      const good = r.test(document.getElementById(r.id).value);
+      flag(r.wrap, r.err, !good);
+      if(!good) ok = false;
+    });
+    if(!consent.checked){
+      consentWrap.classList.add('has-error');
+      consentErr.classList.add('is-visible');
+      if(!REDUCED) gsap.fromTo(consentWrap, { x:-5 }, { x:0, duration:.5, ease:'elastic.out(1,.35)' });
+      ok = false;
+    }
+    if(!ok) return;
+
+    btn.setAttribute('disabled','true');
+    label.textContent = 'Sending…';
+    setTimeout(function(){
+      form.classList.add('is-done');
+      done.hidden = false;
+      label.textContent = 'Sent — thank you';
+      if(!REDUCED){
+        gsap.fromTo(done, { opacity:0, y:14 }, { opacity:1, y:0, duration:.5, ease:'power3.out' });
+        gsap.fromTo('.enq-done-mark', { scale:0, rotate:-30 }, { scale:1, rotate:0, duration:.6, delay:.1, ease:'back.out(2.4)' });
+      }
+      done.scrollIntoView({ block:'nearest', behavior:'smooth' });
+      /* the subject is carried with the note */
+      form.dataset.subject = subject;
+    }, 800);
+  });
+})();
+
+/* =========================================================
+   4. THE MAP — the frame opens, then the pin settles
+   ========================================================= */
+(function(){
+  const frame = document.getElementById('mapFrame');
+  if(!frame) return;
+  const tl = gsap.timeline({ scrollTrigger:{ trigger:frame, start:'top 82%', once:true } });
+  tl.fromTo(frame, { clipPath:'inset(0% 0% 100% 0%)' },
+      { clipPath:'inset(0% 0% 0% 0%)', duration:1.1, ease:'expo.out' })
+    .fromTo('.map-badge', { opacity:0, y:-12 }, { opacity:1, y:0, duration:.5, ease:'back.out(2)' }, '-=.35')
+    .fromTo('.map-card', { opacity:0, x:26 }, { opacity:1, x:0, duration:.7, ease:'power3.out' }, '-=.6');
+})();
+
+/* =========================================================
+   5. HOURS — today's row lights up, and the badge says
+   whether the office is actually open right now (IST)
+   ========================================================= */
+(function(){
+  const rows = gsap.utils.toArray('.hrow');
+  const pip = document.getElementById('nowPip');
+  const text = document.getElementById('nowText');
+  const badge = document.getElementById('hoursNow');
+  if(!rows.length) return;
+
+  /* office hours in IST, whatever the reader's own clock says */
+  const OPEN = { 1:[7,18], 2:[7,18], 3:[7,18], 4:[7,18], 5:[7,18], 6:[8,13], 0:null };
+
+  function istNow(){
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    return new Date(utc + 5.5 * 3600000);
+  }
+
+  function paint(){
+    const ist = istNow();
+    const day = ist.getDay();
+    const mins = ist.getHours() * 60 + ist.getMinutes();
+    const hours = OPEN[day];
+    const open = !!hours && mins >= hours[0] * 60 && mins < hours[1] * 60;
+
+    rows.forEach(function(row){ row.classList.toggle('is-today', Number(row.dataset.day) === day); });
+    badge.classList.toggle('is-open', open);
+    const clock = String(ist.getHours()).padStart(2,'0') + ':' + String(ist.getMinutes()).padStart(2,'0');
+    text.textContent = open
+      ? 'Open now — it is ' + clock + ' at the farm office'
+      : 'Closed now — it is ' + clock + ' at the farm office';
+  }
+
+  paint();
+  setInterval(paint, 30000);
+
+  gsap.from(rows, { opacity:0, x:-14, duration:.5, stagger:.05, ease:'power2.out',
+    scrollTrigger:{ trigger:rows[0], start:'top 88%', once:true } });
+})();
+
+/* =========================================================
+   6. BEFORE YOU WRITE — each line ticks itself as it arrives
+   ========================================================= */
+(function(){
+  const checks = gsap.utils.toArray('.check');
+  if(!checks.length) return;
+  checks.forEach(function(item, i){
+    ScrollTrigger.create({
+      trigger:item, start:'top 80%', once:true,
+      onEnter:function(){
+        item.classList.add('is-ticked');
+        if(!REDUCED){
+          gsap.fromTo(item, { opacity:0, x:-18 }, { opacity:1, x:0, duration:.55, ease:'power3.out' });
+          gsap.fromTo(item.querySelector('.check-box svg'), { scale:0, rotate:-25 },
+            { scale:1, rotate:0, duration:.5, delay:.18, ease:'back.out(2.6)' });
+        }
+      }
+    });
+  });
+
+  if(!REDUCED){
+    gsap.fromTo('.ct-close-media img', { yPercent:-8, scale:1.06 }, {
+      yPercent:8, ease:'none',
+      scrollTrigger:{ trigger:'.ct-close', start:'top bottom', end:'bottom top', scrub:true }
+    });
+  }
+})();
+
+/* =========================================================
+   MAGNETIC BUTTONS
+   ========================================================= */
+if(HOVERABLE && !REDUCED){
+  document.querySelectorAll('[data-magnetic]').forEach(function(el){
+    el.addEventListener('mousemove', function(e){
+      const r = el.getBoundingClientRect();
+      gsap.to(el, { x:(e.clientX - r.left - r.width/2)*.22, y:(e.clientY - r.top - r.height/2)*.3, duration:.4, ease:'power2.out' });
+    });
+    el.addEventListener('mouseleave', function(){
+      gsap.to(el, { x:0, y:0, duration:.5, ease:'elastic.out(1,.5)' });
+    });
+  });
+}
+
+/* =========================================================
+   ANCHORS + BACK TO TOP
+   ========================================================= */
+(function(){
+  function headerH(){ return document.querySelector('header').offsetHeight; }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      const id = a.getAttribute('href');
+      const target = id.length > 1 ? document.querySelector(id) : null;
+      if(!target) return;
+      e.preventDefault();
+      const destY = target.getBoundingClientRect().top + window.scrollY - headerH() - 16;
+      const obj = { y: window.scrollY };
+      gsap.to(obj, { y:destY, duration:.9, ease:'power2.inOut', onUpdate:function(){ window.scrollTo(0, obj.y); } });
+    });
+  });
+
+  const toTop = document.getElementById('toTop');
+  ScrollTrigger.create({ start:'top -600', end:99999,
+    onToggle:function(self){ toTop.classList.toggle('show', self.isActive); } });
+  toTop.addEventListener('click', function(){
+    const obj = { y: window.scrollY };
+    gsap.to(obj, { y:0, duration:.8, ease:'power2.inOut', onUpdate:function(){ window.scrollTo(0, obj.y); } });
+  });
+})();
+</script>
+</body>
+</html>
