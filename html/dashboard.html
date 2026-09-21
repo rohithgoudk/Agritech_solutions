@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Stackly — Farm Console</title>
+<title>Agritech Solutions — Farm Console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -975,8 +975,15 @@ document.addEventListener("click", function (e) {
     toggle.classList.toggle("on", state.settings[key]);
     toggle.setAttribute("aria-checked", String(state.settings[key]));
     if (key === "compactRows") document.body.classList.toggle("compact", state.settings[key]);
-    if (typeof gsap !== 'undefined') {
-      gsap.fromTo(toggle.querySelector('.switch-knob'), { scale: 0.7 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' });
+    // The knob pop is a CSS animation, not a GSAP tween: GSAP would write an
+    // inline transform (and translate:none) over the knob and strand it on the
+    // wrong side of the track. Removing the class and forcing a reflow lets the
+    // animation replay on every click.
+    var knob = toggle.querySelector('.switch-knob');
+    if (knob) {
+      knob.classList.remove('pop');
+      void knob.offsetWidth;
+      knob.classList.add('pop');
     }
     return;
   }
