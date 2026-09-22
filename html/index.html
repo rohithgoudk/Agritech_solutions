@@ -1044,7 +1044,8 @@ gsap.utils.toArray('[data-count]').forEach(function(el){
     for(let i = 0; i < n; i++){
       const centre = n === 1 ? 0 : i / (n - 1);
       const d = gsap.utils.clamp(-1, 1, (progress - centre) * 2.2);
-      gsap.set(kids[i], { rotateY: d * -14, scale: 1 - Math.abs(d) * .06 });
+      // the perspective belongs to each slide, not the track — see index.css
+      gsap.set(kids[i], { transformPerspective: 1600, rotateY: d * -14, scale: 1 - Math.abs(d) * .06 });
     }
   }
 
@@ -1167,20 +1168,34 @@ gsap.utils.toArray('[data-count]').forEach(function(el){
   const cards = Array.from(track.children);
   let index = 0, step = 0, maxIndex = 0, dragging = false, startX = 0, startOffset = 0, offset = 0;
 
+  /* How far the track can travel before the last card is flush with the
+     right-hand edge. Measured from the cards themselves: counting how many
+     "fit" and rounding leaves the final card hanging off the edge whenever
+     the cards do not divide evenly into the viewport. The live x offset is
+     subtracted so this reads the same whatever position the track is in. */
+  let limit = 0;
+  function measureLimit(){
+    const padR = parseFloat(getComputedStyle(viewport).paddingRight) || 0;
+    const edge = viewport.getBoundingClientRect().right - padR;
+    // the live x offset is subtracted, so this reads the same at any position
+    const x = parseFloat(gsap.getProperty(track, 'x')) || 0;
+    const last = cards[cards.length - 1].getBoundingClientRect().right - x;
+    return Math.max(0, Math.round(last - edge));
+  }
+
   function measure(){
     const style = getComputedStyle(track);
-    const vp = getComputedStyle(viewport);
     const gap = parseFloat(style.columnGap || style.gap || '0') || 0;
     step = cards[0].getBoundingClientRect().width + gap;
-    const inner = viewport.clientWidth - parseFloat(vp.paddingLeft) - parseFloat(vp.paddingRight);
-    const visible = Math.max(1, Math.round((inner + gap) / step));
-    maxIndex = Math.max(0, cards.length - visible);
+    limit = measureLimit();
+    maxIndex = step > 0 ? Math.max(0, Math.ceil(limit / step)) : 0;
     index = Math.min(index, maxIndex);
     goTo(index, false);
   }
   function goTo(i, animate){
     index = Math.max(0, Math.min(i, maxIndex));
-    offset = -index * step;
+    // the last step is clamped, so the final card lands flush, never cut off
+    offset = -Math.min(index * step, limit);
     gsap.to(track, { x:offset, duration: animate === false ? 0 : .7, ease:'power3.out' });
     prev.disabled = index === 0;
     next.disabled = index === maxIndex;

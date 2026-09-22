@@ -407,7 +407,11 @@
   .seasons-track{
     display:flex; gap:22px;
     padding:0 clamp(18px, 4vw, 40px);
-    perspective:1600px;
+    /* No shared `perspective` here. One vanishing point at the centre of a
+       track this wide throws the outer slides sideways as they turn toward
+       the viewer, so the last slide used to ride over its neighbour's image.
+       Each slide now carries its own perspective (GSAP's transformPerspective),
+       which turns it about its own centre with no lateral drift. */
     will-change:transform;
   }
   .season{
@@ -507,7 +511,15 @@
     background:linear-gradient(165deg, #17402a, #0d2417);
     border:1px solid var(--line);
   }
-  .cs-photo img{ width:100%; height:100%; object-fit:cover; filter:saturate(.88) contrast(1.02); transition:transform .6s cubic-bezier(.22,1,.36,1); }
+  /* Portraits are taller than this frame, so `cover` has to trim them. Centring
+     that trim takes the crop from the middle of the photo and cuts the head off.
+     Anchoring it near the top keeps faces in frame. */
+  .cs-photo img{
+    width:100%; height:100%;
+    object-fit:cover; object-position:50% 18%;
+    filter:saturate(.88) contrast(1.02);
+    transition:transform .6s cubic-bezier(.22,1,.36,1);
+  }
   .cs-card:hover .cs-photo img{ transform:scale(1.05); }
   .cs-veil{ position:absolute; inset:0; background:linear-gradient(to top, rgba(6,20,13,.78) 4%, rgba(6,20,13,.1) 55%, rgba(10,40,24,.22)); }
   .cs-rule{ position:absolute; left:18px; right:18px; bottom:18px; height:2px; border-radius:99px; background:linear-gradient(90deg, var(--lime), transparent); }
