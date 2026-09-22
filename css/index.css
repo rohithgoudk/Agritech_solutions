@@ -399,21 +399,19 @@
      6. THE SEASONS — pinned horizontal slides
      ========================================================= */
   .seasons{ padding-bottom:0; overflow:hidden; }
-  /* the pin starts at the top of the viewport, so the heading has to
-     clear the fixed header itself */
-  .seasons-pin{ padding:calc(var(--header-h) + clamp(18px,3vw,34px)) 0 clamp(46px,6vw,70px); }
+  /* the section no longer pins, so it needs no clearance for the fixed header */
+  .seasons-pin{ padding:0 0 clamp(46px,6vw,70px); }
   .seasons-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:22px; flex-wrap:wrap; margin-bottom:32px; }
+  .seasons-head-right{ display:flex; flex-direction:column; align-items:flex-start; gap:14px; }
   .seasons-hint{ font-size:13.5px; color:var(--dim); font-family:var(--font-mono); }
   .seasons-track{
     display:flex; gap:22px;
     padding:0 clamp(18px, 4vw, 40px);
-    /* No shared `perspective` here. One vanishing point at the centre of a
-       track this wide throws the outer slides sideways as they turn toward
-       the viewer, so the last slide used to ride over its neighbour's image.
-       Each slide now carries its own perspective (GSAP's transformPerspective),
-       which turns it about its own centre with no lateral drift. */
     will-change:transform;
+    cursor:grab; touch-action:pan-y;
   }
+  .seasons-track.is-dragging{ cursor:grabbing; }
+  .seasons-track:focus-visible{ outline:2px solid var(--lime); outline-offset:4px; }
   .season{
     flex:0 0 min(680px, 82vw);
     display:grid; grid-template-columns:1fr; gap:0;
@@ -720,14 +718,9 @@
     .mobile-menu-links .btn-gold{ display:inline-flex; }
     .hamburger{ display:flex; }
     header .nav{ padding:10px 14px; }
-    /* the seasons strip becomes a swipe rail */
-    .seasons-track{
-      overflow-x:auto; scroll-snap-type:x mandatory;
-      -webkit-overflow-scrolling:touch; padding-bottom:6px;
-      transform:none !important;
-    }
-    .seasons-track::-webkit-scrollbar{ height:0; }
-    .season{ scroll-snap-align:center; transform:none !important; }
+    /* the seasons rail is arrow- and swipe-driven at every width now, so the
+       old native-scroll override (which forced transform:none) is gone */
+    .seasons-head-right{ width:100%; }
   }
   @media (max-width:860px){
     .panels{ flex-direction:column; height:auto; }

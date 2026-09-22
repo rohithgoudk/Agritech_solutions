@@ -265,6 +265,22 @@
   .field-toggle svg{ width:18px; height:18px; }
   .field-toggle:hover{ color:var(--leaf); background:rgba(79,201,126,.12); }
 
+  /* The browser puts its own reveal control inside a password field — Edge
+     shows one the moment you start typing, which sat next to ours and read as
+     a second eye. We supply the toggle, so the native ones are switched off.
+     These are kept in separate rules on purpose: a selector list containing a
+     pseudo-element the browser does not know is thrown away whole, which would
+     take the other vendor's rule with it. */
+  .field-input-wrap input::-ms-reveal,
+  .field-input-wrap input::-ms-clear{
+    display:none; width:0; height:0; margin:0;
+  }
+  .field-input-wrap input::-webkit-credentials-auto-fill-button,
+  .field-input-wrap input::-webkit-strong-password-auto-fill-button{
+    visibility:hidden; pointer-events:none;
+    width:0; height:0; margin:0;
+  }
+
   .field-input-wrap.has-error, .field.has-error .field-input-wrap{ border-color:var(--danger); }
   .field-error{
     display:block; max-height:0; overflow:hidden;

@@ -295,7 +295,17 @@
         <span class="eyebrow">The growing year</span>
         <h2>Four seasons, one plan.</h2>
       </div>
-      <p class="seasons-hint">Keep scrolling — the year turns sideways.</p>
+      <div class="seasons-head-right">
+        <p class="seasons-hint">Step through the year with the arrows.</p>
+        <div class="cs-nav">
+          <button type="button" class="cs-arrow" id="seasonsPrev" aria-label="Previous season">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          </button>
+          <button type="button" class="cs-arrow" id="seasonsNext" aria-label="Next season">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="seasons-track" id="seasonsTrack">
@@ -317,7 +327,7 @@
 
       <article class="season">
         <div class="season-media">
-          <img src="../assets/I10.webp" alt="Grass and cloud in high summer" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
+          <img src="../assets/I50.webp" alt="Grass and cloud in high summer" loading="lazy" decoding="async" onerror="this.classList.add('is-broken')">
           <span class="season-veil"></span>
         </div>
         <div class="season-body">
@@ -1025,70 +1035,102 @@ gsap.utils.toArray('[data-count]').forEach(function(el){
 })();
 
 /* =========================================================
-   THE SEASONS — the section pins and the four slides travel
-   sideways, each one turning in 3D as it passes the middle.
-   Below 900px it becomes an ordinary swipe strip instead.
+   THE SEASONS — an arrow-driven rail. The section no longer
+   pins the page or turns the slides as you scroll: the year
+   moves sideways only when you ask it to, with the arrows,
+   a drag, or the left/right keys.
    ========================================================= */
 (function(){
-  const pin = document.getElementById('seasonsPin');
   const track = document.getElementById('seasonsTrack');
   const bar = document.getElementById('seasonsBarFill');
-  if(!pin || !track) return;
+  const prev = document.getElementById('seasonsPrev');
+  const next = document.getElementById('seasonsNext');
+  if(!track || !prev || !next) return;
 
-  let st = null;
+  const slides = Array.from(track.children);
+  let index = 0, step = 0, limit = 0, maxIndex = 0, offset = 0;
+  let dragging = false, startX = 0, startOffset = 0, moved = 0;
 
-  /* the turn is driven from the pin's own progress */
-  function turnCards(progress){
-    const kids = track.children;
-    const n = kids.length;
-    for(let i = 0; i < n; i++){
-      const centre = n === 1 ? 0 : i / (n - 1);
-      const d = gsap.utils.clamp(-1, 1, (progress - centre) * 2.2);
-      // the perspective belongs to each slide, not the track — see index.css
-      gsap.set(kids[i], { transformPerspective: 1600, rotateY: d * -14, scale: 1 - Math.abs(d) * .06 });
-    }
+  /* How far the rail can travel before the last slide is flush with the
+     right-hand edge, measured from the slide itself rather than from a
+     count of how many "fit". The live x offset is subtracted so this
+     reads the same whatever position the rail is in. */
+  function measureLimit(){
+    const cs = getComputedStyle(track);
+    const padR = parseFloat(cs.paddingRight) || 0;
+    const x = parseFloat(gsap.getProperty(track, 'x')) || 0;
+    const edge = (track.getBoundingClientRect().right - x) - padR;
+    const last = slides[slides.length - 1].getBoundingClientRect().right - x;
+    return Math.max(0, Math.round(last - edge));
   }
 
-  function rebuild(){
-    if(st){ st.kill(); st = null; }
-    gsap.set(track, { x:0 });
-    gsap.set(track.children, { rotateY:0, scale:1 });
+  function measure(){
+    const cs = getComputedStyle(track);
+    const gap = parseFloat(cs.columnGap || cs.gap || '0') || 0;
+    step = slides[0].getBoundingClientRect().width + gap;
+    limit = measureLimit();
+    maxIndex = step > 0 ? Math.max(0, Math.ceil(limit / step)) : 0;
+    index = Math.min(index, maxIndex);
+    goTo(index, false);
+  }
 
-    if(window.innerWidth < 900 || REDUCED){ gsap.set(bar, { width:'25%' }); return; }
-
-    /* measure from the last slide itself: scrollWidth under-reports the
-       trailing padding in a flex row, which used to leave the final slide
-       hanging off the right edge at the end of the pin */
-    const padRight = parseFloat(getComputedStyle(track).paddingRight) || 0;
-    const trackLeft = track.getBoundingClientRect().left;
-    const lastRight = track.lastElementChild.getBoundingClientRect().right;
-    const distance = Math.max(0, Math.round((lastRight - trackLeft) + padRight - track.clientWidth));
-    if(distance <= 0){ gsap.set(bar, { width:'100%' }); return; }
-
-    st = ScrollTrigger.create({
-      trigger: pin,
-      start: 'top top',
-      end: '+=' + (distance + window.innerHeight * 0.6),
-      pin: true,
-      scrub: 0.6,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      onUpdate: function(self){
-        gsap.set(track, { x: -distance * self.progress });
-        gsap.set(bar, { width: (25 + self.progress * 75) + '%' });
-        turnCards(self.progress);
-      }
+  function goTo(i, animate){
+    index = Math.max(0, Math.min(i, maxIndex));
+    // the last step is clamped, so the final slide lands flush, never cut off
+    offset = -Math.min(index * step, limit);
+    gsap.to(track, {
+      x: offset,
+      duration: (animate === false || REDUCED) ? 0 : .7,
+      ease: 'power3.out'
     });
-    turnCards(0);
+    prev.disabled = index === 0;
+    next.disabled = index === maxIndex;
+    const pct = limit === 0 ? 1 : (-offset / limit);
+    gsap.to(bar, { width: (25 + pct * 75) + '%', duration: REDUCED ? 0 : .5, ease: 'power2.out' });
   }
 
-  rebuild();
+  prev.addEventListener('click', function(){ goTo(index - 1, true); });
+  next.addEventListener('click', function(){ goTo(index + 1, true); });
+
+  track.setAttribute('tabindex', '0');
+  track.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight'){ e.preventDefault(); goTo(index + 1, true); }
+    if(e.key === 'ArrowLeft'){ e.preventDefault(); goTo(index - 1, true); }
+  });
+
+  /* drag / swipe, same feel as the team rail */
+  track.addEventListener('pointerdown', function(e){
+    dragging = true; moved = 0;
+    startX = e.clientX; startOffset = offset;
+    track.classList.add('is-dragging');
+    track.setPointerCapture(e.pointerId);
+  });
+  track.addEventListener('pointermove', function(e){
+    if(!dragging) return;
+    const dx = e.clientX - startX;
+    moved = Math.abs(dx);
+    gsap.set(track, { x: startOffset + dx });
+  });
+  function endDrag(e){
+    if(!dragging) return;
+    dragging = false;
+    track.classList.remove('is-dragging');
+    const dx = e.clientX - startX;
+    if(Math.abs(dx) > step * 0.18){ goTo(index + (dx < 0 ? 1 : -1), true); }
+    else { goTo(index, true); }
+  }
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointercancel', endDrag);
+  /* a drag should not follow a link inside a slide */
+  track.addEventListener('click', function(e){ if(moved > 6){ e.preventDefault(); e.stopPropagation(); } }, true);
+
   let t = null;
   window.addEventListener('resize', function(){
     clearTimeout(t);
-    t = setTimeout(function(){ rebuild(); ScrollTrigger.refresh(); }, 220);
+    t = setTimeout(measure, 200);
   });
-  window.addEventListener('load', function(){ rebuild(); });
+  window.addEventListener('load', measure);
+  measure();
 })();
 
 /* =========================================================

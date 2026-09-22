@@ -173,7 +173,8 @@
       <div class="enq-row">
         <div class="field">
           <label for="ct-phone">Phone <em>optional</em></label>
-          <div class="field-wrap" id="ct-phone-wrap"><input type="tel" id="ct-phone" placeholder="0712 371 2345" autocomplete="tel"></div>
+          <div class="field-wrap" id="ct-phone-wrap"><input type="tel" id="ct-phone" placeholder="0712 371 2345" autocomplete="tel" inputmode="tel"></div>
+          <span class="field-error" id="ct-phone-error">Numbers only — no letters.</span>
         </div>
         <div class="field">
           <label for="ct-farm">Farm or company</label>
@@ -201,6 +202,7 @@
         <div class="field">
           <label for="ct-crop">Crop</label>
           <div class="field-wrap" id="ct-crop-wrap"><input type="text" id="ct-crop" placeholder="Winter wheat"></div>
+          <span class="field-error" id="ct-crop-error">Which crop is in the ground?</span>
         </div>
       </div>
 
@@ -630,16 +632,51 @@ function intro(){
 
   /* validation */
   const RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/;
+
+  /* Name, farm and crop take letters only — no digits. Spaces, hyphens and
+     apostrophes are kept so "North Ridge Farms" and "O'Brien" still pass. */
+  const LETTERS_OK = /^[A-Za-z][A-Za-z '\-]*$/;
+  function lettersTest(v){
+    const s = v.trim();
+    return s.length >= 2 && LETTERS_OK.test(s);
+  }
+
+  /* Phone takes digits only — no letters. Spaces, +, - and brackets are kept
+     so "0712 371 2345" and "+44 (0)712 371 2345" can both be typed. */
+  function phoneTest(v){
+    const s = v.trim();
+    if(s === '') return true;                       // the field is optional
+    return !/[^0-9 +()\-]/.test(s) && (s.match(/\d/g) || []).length >= 6;
+  }
+
+  /* Character sets each field refuses as they are typed. A fresh regex is
+     built per call — a /g regex keeps its lastIndex between .test() calls,
+     which makes repeated checks alternate true/false. */
+  function stripper(kind){
+    return kind === 'digits' ? /[^0-9 +()\-]/g : /[^A-Za-z '\-]/g;
+  }
+  function hasBadChars(kind, v){
+    return kind === 'digits' ? /[^0-9 +()\-]/.test(v) : /[^A-Za-z '\-]/.test(v);
+  }
+
   const rules = [
-    { id:'ct-name',  wrap:'ct-name-wrap',  err:'ct-name-error',  test:function(v){ return v.trim().length >= 2; } },
+    { id:'ct-name',  wrap:'ct-name-wrap',  err:'ct-name-error',  test:lettersTest, kind:'letters',
+      empty:'Tell us who you are.', bad:'Letters only — no numbers.' },
     { id:'ct-email', wrap:'ct-email-wrap', err:'ct-email-error', test:function(v){ return RE.test(v.trim()); } },
-    { id:'ct-farm',  wrap:'ct-farm-wrap',  err:'ct-farm-error',  test:function(v){ return v.trim().length >= 2; } },
+    { id:'ct-farm',  wrap:'ct-farm-wrap',  err:'ct-farm-error',  test:lettersTest, kind:'letters',
+      empty:'Where are we coming to?', bad:'Letters only — no numbers.' },
+    { id:'ct-crop',  wrap:'ct-crop-wrap',  err:'ct-crop-error',  test:lettersTest, kind:'letters',
+      empty:'Which crop is in the ground?', bad:'Letters only — no numbers.' },
+    { id:'ct-phone', wrap:'ct-phone-wrap', err:'ct-phone-error', test:phoneTest, kind:'digits',
+      empty:'Numbers only — no letters.', bad:'Numbers only — no letters.',
+      short:'Enter a full phone number.' },
     { id:'ct-msg',   wrap:'ct-msg-wrap',   err:'ct-msg-error',   test:function(v){ return v.trim().length >= 10; } }
   ];
 
-  function flag(wrapId, errId, show){
+  function flag(wrapId, errId, show, text){
     const wrap = document.getElementById(wrapId);
     const err = document.getElementById(errId);
+    if(show && text) err.textContent = text;
     wrap.classList.toggle('has-error', show);
     err.classList.toggle('is-visible', show);
     if(show && !REDUCED){
@@ -648,8 +685,34 @@ function intro(){
     }
   }
 
+  /* the right message for why a field failed */
+  function messageFor(r, v){
+    if(!r.bad) return null;
+    const s = v.trim();
+    if(s === '') return r.empty;
+    if(hasBadChars(r.kind, s)) return r.bad;
+    return r.short || r.empty;
+  }
+
   rules.forEach(function(r){
     document.getElementById(r.id).addEventListener('input', function(){ flag(r.wrap, r.err, false); });
+  });
+
+  /* Digits and symbols are refused as they are typed, with a line saying why,
+     so the rule is obvious before the form is ever submitted. Registered after
+     the clearing handler above so this one has the last word. */
+  rules.filter(function(r){ return !!r.kind; }).forEach(function(r){
+    const el = document.getElementById(r.id);
+    if(!el) return;
+    el.addEventListener('input', function(){
+      const before = el.value;
+      const cleaned = before.replace(stripper(r.kind), '');
+      if(cleaned === before) return;
+      const caret = Math.max(0, (el.selectionStart || 0) - (before.length - cleaned.length));
+      el.value = cleaned;
+      try{ el.setSelectionRange(caret, caret); }catch(e){}
+      flag(r.wrap, r.err, true, r.bad);
+    });
   });
   const consent = document.getElementById('ct-consent');
   const consentWrap = document.getElementById('ct-consent-wrap');
@@ -667,8 +730,9 @@ function intro(){
     e.preventDefault();
     let ok = true;
     rules.forEach(function(r){
-      const good = r.test(document.getElementById(r.id).value);
-      flag(r.wrap, r.err, !good);
+      const val = document.getElementById(r.id).value;
+      const good = r.test(val);
+      flag(r.wrap, r.err, !good, messageFor(r, val));
       if(!good) ok = false;
     });
     if(!consent.checked){
@@ -681,17 +745,11 @@ function intro(){
 
     btn.setAttribute('disabled','true');
     label.textContent = 'Sending…';
+    /* the subject is carried with the note */
+    form.dataset.subject = subject;
     setTimeout(function(){
-      form.classList.add('is-done');
-      done.hidden = false;
-      label.textContent = 'Sent — thank you';
-      if(!REDUCED){
-        gsap.fromTo(done, { opacity:0, y:14 }, { opacity:1, y:0, duration:.5, ease:'power3.out' });
-        gsap.fromTo('.enq-done-mark', { scale:0, rotate:-30 }, { scale:1, rotate:0, duration:.6, delay:.1, ease:'back.out(2.4)' });
-      }
-      done.scrollIntoView({ block:'nearest', behavior:'smooth' });
-      /* the subject is carried with the note */
-      form.dataset.subject = subject;
+      label.textContent = 'Sent — taking you on…';
+      window.location.href = '404.html';
     }, 800);
   });
 })();
